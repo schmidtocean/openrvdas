@@ -1,0 +1,1 @@
+Timestamp,Header,GPSTime,GPSDay,GPSMonth,GPSYear,LocalHours,LocalZone*CheckSum

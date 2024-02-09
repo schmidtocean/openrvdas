@@ -1,0 +1,232 @@
+################################################################################
+# Device definitions for the ROV Subastian
+#
+# See README.md in this directory
+
+includes:
+  - local/soi/devices/*.yaml
+
+devices:
+  ######################################
+  sb_ctd_sbe49:
+    category: "device"
+    device_type: "CTD_SBE49"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Conductivity: "SB_CTD_SBE49_Conductivity"
+      WaterTemp: "SB_CTD_SBE49_WaterTemp"
+      WaterPres: "SB_CTD_SBE49_WaterPres"
+      Salinity: "SB_CTD_SBE49_Salinity"
+      SoundVelocity: "SB_CTD_SBE49_SoundVelocity"
+
+  ######################################
+  sb_ctd_svx2:
+    category: "device"
+    device_type: "CTD_SVX2"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Conductivity: "SB_CTD_SVX2_Conductivity"
+      WaterTemp: "SB_CTD_SVX2_WaterTemp"
+      WaterPres: "SB_CTD_SVX2_WaterPres"
+      Depth: "SB_CTD_SVX2_Depth"
+      Salinity: "SB_CTD_SVX2_Salinity"
+      SoundVelocity: "SB_CTD_SVX2_SoundVelocity"
+
+  ######################################
+  sb_ctd_uvsvx:
+    category: "device"
+    device_type: "CTD_UVSVX"
+    serial_number: "81173PTSA1014192"
+    description: ""
+
+    fields:
+      SerialNum: "SB_CTD_UVSVX_SerialNum"
+      Density: "SB_CTD_UVSVX_Density"
+      Temperature: "SB_CTD_UVSVX_Temperature"
+      Pressure: "SB_CTD_UVSVX_Pressure"
+      Depth: "SB_CTD_UVSVX_Depth"
+      Salinity: "SB_CTD_UVSVX_Salinity"
+      SoundVelocity: "SB_CTD_UVSVX_SoundVelocity"
+
+  ######################################
+  sb_hightemp_pt100:
+    category: "device"
+    device_type: "Hightemp_PT100"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      WaterTemp: "SB_Hightemp_Temp"
+
+  ######################################
+  sb_mechs:
+    category: "device"
+    device_type: "Mechs"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Comp_1: "SB_Mech_Comps_Main"
+      Comp_2: "SB_Mech_Comps_Thruster"
+      Comp_3: "SB_Mech_Comps_Term"
+      Comp_4: "SB_Mech_Comps_Submotor"
+      Comp_5: "SB_Mech_Comps_Electrical"
+      Comp_6: "SB_Mech_Comps_Manip"
+      Port_1: "SB_Mech_Valves_Port_1"
+      Port_2: "SB_Mech_Valves_Port_2"
+      Port_3: "SB_Mech_Valves_Port_3"
+      Port_4: "SB_Mech_Valves_Port_4"
+      Port_5: "SB_Mech_Valves_Port_5"
+      Port_6: "SB_Mech_Valves_Port_6"
+      Port_7: "SB_Mech_Valves_Port_7"
+      Port_8: "SB_Mech_Valves_Port_8"
+      Stbd_1: "SB_Mech_Valves_Stbd_1"
+      Stbd_2: "SB_Mech_Valves_Stbd_2"
+      Stbd_3: "SB_Mech_Valves_Stbd_3"
+      Stbd_4: "SB_Mech_Valves_Stbd_4"
+      Stbd_5: "SB_Mech_Valves_Stbd_5"
+      Stbd_6: "SB_Mech_Valves_Stbd_6"
+      Stbd_7: "SB_Mech_Valves_Stbd_7"
+      Stbd_8: "SB_Mech_Valves_Stbd_8"
+      Thust_1A: "SB_Mech_Valves_Thust_1A"
+      Thust_1B: "SB_Mech_Valves_Thust_1B"
+      Thust_2A: "SB_Mech_Valves_Thust_2A"
+      Thust_2B: "SB_Mech_Valves_Thust_2B"
+      Thust_3A: "SB_Mech_Valves_Thust_3A"
+      Thust_3B: "SB_Mech_Valves_Thust_3B"
+      Thust_4A: "SB_Mech_Valves_Thust_4A"
+      Thust_4B: "SB_Mech_Valves_Thust_4B"
+      Thust_5A: "SB_Mech_Valves_Thust_5A"
+      Thust_5B: "SB_Mech_Valves_Thust_5B"
+      Thust_6A: "SB_Mech_Valves_Thust_6A"
+      Thust_6B: "SB_Mech_Valves_Thust_6B"
+      Thust_7A: "SB_Mech_Valves_Thust_7A"
+      Thust_7B: "SB_Mech_Valves_Thust_7B"
+      Thust_8A: "SB_Mech_Valves_Thust_8A"
+      Thust_8B: "SB_Mech_Valves_Thust_8B"
+
+  ######################################
+  sb_oxygen:
+    category: "device"
+    device_type: "Oxygen"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Concentration: "SB_Oxygen_Concentration"
+      Saturation: "SB_Oxygen_Saturation"
+      Temperature: "SB_Oxygen_Temperature"
+      Measurement_1: "SB_Oxygen_Measurement_1"
+      Measurement_2: "SB_Oxygen_Measurement_2"
+      CalPhase: "SB_Oxygen_CalPhase"
+      TCPhase: "SB_Oxygen_TCPhase"
+      C1_RPH: "SB_Oxygen_C1_RPH"
+      C2_RPH: "SB_Oxygen_C2_RPH"
+      C1_AMP: "SB_Oxygen_C1_AMP"
+      C2_AMP: "SB_Oxygen_C2_AMP"
+
+  #######################################
+  # pt_uaf_oxygen:
+  #   category: "device"
+  #   device_type: "Oxygen"
+  #   serial_number: "unknown"
+  #   description: ""
+
+  #   fields:
+  #     Concentration: "PT_SB_Oxygen_Concentration"
+  #     Saturation: "PT_SB_Oxygen_Saturation"
+  #     Temperature: "PT_SB_Oxygen_Temperature"
+  
+  
+  
+  ######################################
+  sb_paro:
+    category: "device"
+    device_type: "Paro"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Depth_xducer_m: "SB_Paro_Depth_xducer_m"
+      Xducer_offset_m: "SB_Paro_Xducer_offset_m"
+      Pressure_psi: "SB_Paro_Pressure_psi"
+
+  ######################################
+  sb_sprint:
+    category: "device"
+    device_type: "Sprint"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Roll: "SB_Sprint_Roll"
+      Pitch: "SB_Sprint_Pitch"
+      HeadingTrue: "SB_Sprint_HeadingTrue"
+      OrientStatus: "SB_Sprint_OrientStatus"
+      Latitude: "SB_Sprint_Latitude"
+      Longitude: "SB_Sprint_Longitude"
+      PositionStatus: "SB_Sprint_PositionStatus"
+      Velocity_Fwd: "SB_Sprint_Velocity_Fwd"
+      Velocity_Stbd: "SB_Sprint_Velocity_Stbd"
+      Velocity_Down: "SB_Sprint_Velocity_Down"
+      Altitude_m: "SB_Sprint_Altitude_m"
+      Altitude_Status: "SB_Sprint_Altitude_Status"
+      Depth_m: "SB_Sprint_Depth_m"
+      Depth_Used: "SB_Sprint_Depth_Used"
+      Status1: "SB_Sprint_Diag_Status1"
+      Status2: "SB_Sprint_Diag_Status2"
+      Status3: "SB_Sprint_Diag_Status3"
+      Status4: "SB_Sprint_Diag_Status4"
+      Status5: "SB_Sprint_Diag_Status5"
+      Value1: "SB_Sprint_Diag_Value1"
+      Value2: "SB_Sprint_Diag_Value2"
+      Value3: "SB_Sprint_Diag_Value3"
+      Value4: "SB_Sprint_Diag_Value4"
+      Value5: "SB_Sprint_Diag_Value5"
+
+  ######################################
+  sb_sprint_hf:
+    category: "device"
+    device_type: "SprintHF"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      GPSTime: "SB_Sprint_PSONNAV_GPSTime"
+      Latitude: "SB_Sprint_PSONNAV_Latitude"
+      Longitude: "SB_Sprint_PSONNAV_Longitude"
+      PEE_Major: "SB_Sprint_PSONNAV_PEEMajor"
+      PEE_Minor: "SB_Sprint_PSONNAV_PEEMinor"
+      PEE_Dir: "SB_Sprint_PSONNAV_PEEDir"
+      PositionStatus: "SB_Sprint_PSONNAV_PositionStatus"
+      Depth_m: "SB_Sprint_PSONNAV_Depth_m"
+      Depth_stddev: "SB_Sprint_PSONNAV_Depth_stddev"
+      Roll: "SB_Sprint_PSONNAV_Roll"
+      Pitch: "SB_Sprint_PSONNAV_Pitch"
+      Heading: "SB_Sprint_PSONNAV_Heading"
+      Heading_stddev: "SB_Sprint_PSONNAV_HeadingStatus"
+      OrientStatus: "SB_Sprint_PSONNAV_OrientStatus"
+      SensorStatus: "SB_Sprint_PSONNAV_SensorStatus"
+  
+  
+  
+  
+  
+  ######################################
+  sb_winch:
+    category: "device"
+    device_type: "Winch"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Timestamp: "SB_Winch_Timestamp"
+      WinchID: "SB_Winch_WinchID"
+      Tension: "SB_Winch_Tension"
+      Rate: "SB_Winch_Rate"
+      Payout: "SB_Winch_Payout"
+

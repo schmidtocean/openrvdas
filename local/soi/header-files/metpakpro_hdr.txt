@@ -1,0 +1,1 @@
+Timestamp,NodeLetter,WindDir_deg,WindSpd_m/s,AirPres_hPa,Humidity_%,AirTemp_C,DewPoint,PRT,AnI/P1,AnI/P2,DigI/P,SupplyVoltage,SupplyCode,CheckSum

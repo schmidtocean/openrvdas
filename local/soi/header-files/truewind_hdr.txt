@@ -1,0 +1,1 @@
+Timestamp, WindDir_degrees, WindSpd_m/s
