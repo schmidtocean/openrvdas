@@ -34,6 +34,12 @@ class Reader:
     def __init__(self, output_format=formats.Unknown,
                  encoding='utf-8', encoding_errors='ignore'):
         self.output_format(output_format)
+        # make sure '' behaves the same as None, which is what all the
+        # docstrings say, and would be logical... but then certain things treat
+        # them differently (e.g., file.open(mode='ab', encoding='') throws
+        # ValueError: binary mode doesn't take an encoding argument)
+        if encoding == '':
+            encoding = None
         self.encoding = encoding
         self.encoding_errors = encoding_errors
 
@@ -49,10 +55,10 @@ class Reader:
         return encoded.decode('unicode_escape')
 
     ############################
-    def _encode_str(self, the_str, unescape=True):
-        """Encode a string to bytes, unescaping things like \n and \r. Unescaping
-        requires ugly convolutions of encoding, then decoding while we escape things,
-        then encoding a second time.
+    def _encode_str(self, the_str, unescape=False):
+        """Encode a string to bytes, optionally unescaping things like \n and \r.
+        Unescaping requires ugly convolutions of encoding, then decoding while we
+        escape things, then encoding a second time.
         """
         if not self.encoding:
             return the_str
@@ -68,6 +74,15 @@ class Reader:
 
         if not self.encoding:
             return record
+
+        if self.encoding == 'hex':
+            try:
+                r = record.hex()
+                return r
+            except Exception as e:
+                logging.warning('Error decoding string "%s" from encoding "%s": %s',
+                                record, self.encoding, str(e))
+                return None
 
         try:
             return record.decode(encoding=self.encoding,

@@ -3,9 +3,9 @@
 # OpenRVDAS is available as open source under the MIT License at
 #   https:/github.com/oceandatatools/openrvdas
 #
-# This script installs and configures OpenRVDAS to run on CentOS7.  It
+# This script installs and configures OpenRVDAS to run.  It
 # is designed to be run as root. It should take a (relatively) clean
-# CentOS 7 installation and install and configure all the components
+# Linux/MacOS installation and install and configure all the components
 # to run the full OpenRVDAS system.
 #
 # It should be re-run whenever the code has been refresh. Preferably
@@ -18,14 +18,13 @@
 #
 # If you have selected "yes" to running OpenRVDAS as a service then,
 # once this script has completed, you should be able to point a
-# browser to http://[hostname]:8000 and see the OpenRVDAS control
+# browser to http://[hostname] and see the OpenRVDAS control
 # console.
 #
 # If you selected "no" when asked whether to run OpenRVDAS as a
 # service on boot, you will need to manually start the servers:
 #
-#   supervisorctl start web:*        # start NGINX and UWSGI
-#   supervisorctl start openrvdas:*  # start logger_manager and data server
+#   supervisorctl start all
 #
 # Regardless, running
 #
@@ -33,14 +32,15 @@
 #
 # should show you which services are running.
 #
-#
-# This script is somewhat rudimentary and has not been extensively
-# tested. If it fails on some part of the installation, there is no
-# guarantee that fixing the specific issue and simply re-running will
-# produce the desired result.  Bug reports, and even better, bug
+# This script has been tested on a variety of architectures and operating
+# systems, but not exhaustively. Bug reports, and even better, bug
 # fixes, will be greatly appreciated.
 
 PREFERENCES_FILE='.install_openrvdas_preferences'
+
+# Define this here, even though it's just for MacOS, so that it's defined
+# when it's referenced down in install_packages, and doesn't have to
+# be defined twice.
 
 ###########################################################################
 ###########################################################################
@@ -83,17 +83,24 @@ yes_no() {
 function get_os_type {
     if [[ `uname -s` == 'Darwin' ]];then
         OS_TYPE=MacOS
-        if [[ `uname -p` == 'arm' ]];then
+        OS_VERSION=`uname -p`
+        if [[ $HARDWARE_VERSION == 'arm' ]];then
             echo
-            echo "WARNING: As of 11/20/2020, Homebrew did not yet support ARM architecture on"
-            echo "MacOS. If installation fails, please try installing using the built-in Rosetta"
-            echo "interpreter: Make a copy of /Applications/Terminal.app (e.g. RTerminal.app)."
-            echo "Select it in the Finder and open its information pane (Clover-I). Select "
-            echo "'Open using Rosetta', and use this copy of Terminal when installing OpenRVDAS."
+            echo "WARNING: detected MacOS ARM architecture. Will install Rosetta emulator and"
+            echo "rerun this script emulating X86 architecture."
             echo
-            read -p "Hit return to continue. " DUMMY_VAR
+            read -p "Hit return to continue or Ctrl-C to exit. " DUMMY_VAR
             echo
+            softwareupdate --install-rosetta --agree-to-license
+
+            # Recursively run this script, but now as X86_64
+            THIS_SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+            arch -x86_64 /bin/bash $THIS_SCRIPT_PATH
+
+            # Exit quietly after recursive run
+            return -1 2> /dev/null || exit -1  # exit correctly if sourced/bashed
         fi
+
     elif [[ `uname -s` == 'Linux' ]];then
         if [[ ! -z `grep "NAME=\"Ubuntu\"" /etc/os-release` ]];then
             OS_TYPE=Ubuntu
@@ -101,6 +108,12 @@ function get_os_type {
                 OS_VERSION=18
             elif [[ ! -z `grep "VERSION_ID=\"20" /etc/os-release` ]];then
                 OS_VERSION=20
+            elif [[ ! -z `grep "VERSION_ID=\"21" /etc/os-release` ]];then
+                OS_VERSION=21
+            elif [[ ! -z `grep "VERSION_ID=\"22" /etc/os-release` ]];then
+                OS_VERSION=22
+            elif [[ ! -z `grep "VERSION_ID=\"23" /etc/os-release` ]];then
+                OS_VERSION=23
             else
                 echo "Sorry - unknown Ubuntu OS Version! - exiting."
                 exit_gracefully
@@ -114,18 +127,29 @@ function get_os_type {
                 OS_VERSION=18
             elif [[ ! -z `grep "VERSION_ID=\"11" /etc/os-release` ]];then
                 OS_VERSION=20
+            elif [[ ! -z `grep "VERSION_ID=\"12" /etc/os-release` ]];then
+                OS_VERSION=22
             else
                 echo "Sorry - unknown Debian OS Version! - exiting."
                 exit_gracefully
             fi
 
         # CentOS/RHEL
-        elif [[ ! -z `grep "NAME=\"CentOS Linux\"" /etc/os-release` ]] || [[ ! -z `grep "NAME=\"Red Hat Enterprise Linux Server\"" /etc/os-release` ]]  || [[ ! -z `grep "NAME=\"Red Hat Enterprise Linux Workstation\"" /etc/os-release` ]];then
+        elif [[ ! -z `grep "NAME=\"CentOS Stream\"" /etc/os-release` ]] || [[ ! -z `grep "NAME=\"CentOS Linux\"" /etc/os-release` ]] || [[ ! -z `grep "NAME=\"Red Hat Enterprise Linux\"" /etc/os-release` ]]  || [[ ! -z `grep "NAME=\"Rocky Linux\"" /etc/os-release` ]];then
             OS_TYPE=CentOS
             if [[ ! -z `grep "VERSION_ID=\"7" /etc/os-release` ]];then
                 OS_VERSION=7
             elif [[ ! -z `grep "VERSION_ID=\"8" /etc/os-release` ]];then
                 OS_VERSION=8
+            elif [[ ! -z `grep "VERSION_ID=\"9" /etc/os-release` ]];then
+                OS_VERSION=9
+            # Rocky Linux uses different format in /etc/os-release
+            elif [[ ! -z `grep "VERSION=\"7" /etc/os-release` ]];then
+                OS_VERSION=7
+            elif [[ ! -z `grep "VERSION=\"8" /etc/os-release` ]];then
+                OS_VERSION=8
+            elif [[ ! -z `grep "VERSION=\"9" /etc/os-release` ]];then
+                OS_VERSION=9
             else
                 echo "Sorry - unknown CentOS/RHEL Version! - exiting."
                 exit_gracefully
@@ -138,7 +162,6 @@ function get_os_type {
         echo Unknown OS type: `uname -s`
         exit_gracefully
     fi
-    echo Recognizing OS type as $OS_TYPE
 }
 
 ###########################################################################
@@ -165,19 +188,25 @@ function set_default_variables {
 
     DEFAULT_RVDAS_USER=rvdas
 
-    DEFAULT_INSTALL_MYSQL=no
     DEFAULT_INSTALL_FIREWALLD=no
     DEFAULT_OPENRVDAS_AUTOSTART=yes
+
+    DEFAULT_INSTALL_SIMULATE_NBP=no
+    DEFAULT_RUN_SIMULATE_NBP=no
+
+    DEFAULT_INSTALL_GUI=yes
 
     DEFAULT_SUPERVISORD_WEBINTERFACE=no
     DEFAULT_SUPERVISORD_WEBINTERFACE_AUTH=no
     DEFAULT_SUPERVISORD_WEBINTERFACE_PORT=9001
 
+    DEFAULT_INSTALL_DOC_MARKDOWN=no
+
     # Read in the preferences file, if it exists, to overwrite the defaults.
     if [ -e $PREFERENCES_FILE ]; then
+        echo "#####################################################################"
         echo Reading pre-saved defaults from "$PREFERENCES_FILE"
         source $PREFERENCES_FILE
-        echo branch $DEFAULT_OPENRVDAS_BRANCH
     fi
 }
 
@@ -186,7 +215,7 @@ function set_default_variables {
 # Save defaults in a preferences file for the next time we run.
 function save_default_variables {
     cat > $PREFERENCES_FILE <<EOF
-# Defaults written by/to be read by build_openrvdas_centos7.sh
+# Defaults written by/to be read by install_openrvdas.sh
 
 DEFAULT_HOSTNAME=$HOSTNAME
 DEFAULT_INSTALL_ROOT=$INSTALL_ROOT
@@ -207,14 +236,19 @@ DEFAULT_SSL_KEY_LOCATION=$SSL_KEY_LOCATION
 
 DEFAULT_RVDAS_USER=$RVDAS_USER
 
-DEFAULT_INSTALL_MYSQL=$INSTALL_MYSQL
 DEFAULT_INSTALL_FIREWALLD=$INSTALL_FIREWALLD
 DEFAULT_OPENRVDAS_AUTOSTART=$OPENRVDAS_AUTOSTART
+
+DEFAULT_INSTALL_GUI=$INSTALL_GUI
+
+DEFAULT_INSTALL_SIMULATE_NBP=$INSTALL_SIMULATE_NBP
+DEFAULT_RUN_SIMULATE_NBP=$RUN_SIMULATE_NBP
 
 DEFAULT_SUPERVISORD_WEBINTERFACE=$SUPERVISORD_WEBINTERFACE
 DEFAULT_SUPERVISORD_WEBINTERFACE_AUTH=$SUPERVISORD_WEBINTERFACE_AUTH
 DEFAULT_SUPERVISORD_WEBINTERFACE_PORT=$SUPERVISORD_WEBINTERFACE_PORT
 
+DEFAULT_INSTALL_DOC_MARKDOWN=$INSTALL_DOC_MARKDOWN
 EOF
 }
 
@@ -234,20 +268,21 @@ function set_hostname {
 
     # If we're on CentOS/RHEL
     elif [ $OS_TYPE == 'CentOS' ]; then
-        hostnamectl set-hostname $HOSTNAME
-        echo "HOSTNAME=$HOSTNAME" > /etc/sysconfig/network
+        sudo hostnamectl set-hostname $HOSTNAME
+        sudo echo "HOSTNAME=$HOSTNAME" > /etc/sysconfig/network  || echo "Unable to update /etc/sysconfig/network"
 
     # Ubuntu/Debian
     elif [ $OS_TYPE == 'Ubuntu' ]; then
-        hostnamectl set-hostname $HOSTNAME
-        echo $HOSTNAME > /etc/hostname
+        sudo hostnamectl set-hostname $HOSTNAME
+        sudo echo $HOSTNAME > /etc/hostname
     fi
 
     ETC_HOSTS_LINE="127.0.1.1	$HOSTNAME"
     if grep -q "$ETC_HOSTS_LINE" /etc/hosts ; then
         echo Hostname already in /etc/hosts
     else
-        echo "$ETC_HOSTS_LINE" >> /etc/hosts
+        echo Skipping adding to /etc/hosts
+        sudo echo "$ETC_HOSTS_LINE" >> /etc/hosts || echo "Unable to update /etc/hosts"
     fi
 }
 
@@ -260,30 +295,37 @@ function create_user {
     echo Checking if user $RVDAS_USER exists yet
     if id -u $RVDAS_USER > /dev/null; then
         echo User "$RVDAS_USER" exists
-        return
+    else
+        # MacOS
+        if [ $OS_TYPE == 'MacOS' ]; then
+          echo No such pre-existing user: $RVDAS.
+          echo On MacOS, must install for pre-existing user. Exiting.
+          exit_gracefully
+
+        # CentOS/RHEL
+        elif [ $OS_TYPE == 'CentOS' ]; then
+            echo Creating $RVDAS_USER
+            sudo adduser $RVDAS_USER
+            sudo passwd $RVDAS_USER
+
+        # Ubuntu/Debian
+        elif [ $OS_TYPE == 'Ubuntu' ]; then
+              echo Creating $RVDAS_USER
+              sudo adduser --gecos "" $RVDAS_USER
+        fi
     fi
 
-    # MacOS
-    if [ $OS_TYPE == 'MacOS' ]; then
-      echo No such pre-existing user: $RVDAS.
-      echo On MacOS, must install for pre-existing user. Exiting.
-      exit_gracefully
-
-    # CentOS/RHEL
-    elif [ $OS_TYPE == 'CentOS' ]; then
-        echo Creating $RVDAS_USER
-        adduser $RVDAS_USER
-        passwd $RVDAS_USER
-        usermod -a -G tty $RVDAS_USER
-        usermod -a -G wheel $RVDAS_USER
+    # Set up user permissions, whether or not pre-existing.
+    # For MacOS we don't change anything
+    if [ $OS_TYPE == 'CentOS' ]; then
+        sudo usermod -a -G tty $RVDAS_USER
+        sudo usermod -a -G wheel $RVDAS_USER
 
     # Ubuntu/Debian
     elif [ $OS_TYPE == 'Ubuntu' ]; then
-          echo Creating $RVDAS_USER
-          adduser --gecos "" $RVDAS_USER
-          #passwd $RVDAS_USER
-          usermod -a -G tty $RVDAS_USER
-          usermod -a -G sudo $RVDAS_USER
+          sudo usermod -a -G tty $RVDAS_USER
+          sudo usermod -a -G dialout $RVDAS_USER
+          sudo usermod -a -G sudo $RVDAS_USER
     fi
 }
 
@@ -294,36 +336,37 @@ function install_packages {
 
     # MacOS
     if [ $OS_TYPE == 'MacOS' ]; then
-        # Install homebrew:
-        echo Checking for homebrew
-        [ -e /usr/local/bin/brew ] || echo Installing homebrew
-        [ -e /usr/local/bin/brew ] || ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        # Install Homebrew - note: reinstalling is idempotent
+        echo 'Installing XCode Tools'
+        xcode-select --install || echo "XCode Tools already installed"
+        pushd /tmp
+        HOMEBREW_VERSION=4.1.21
+        HOMEBREW_TARGET=Homebrew-${HOMEBREW_VERSION}.pkg
+        HOMEBREW_PATH=https://github.com/Homebrew/brew/releases/download/${HOMEBREW_VERSION}/${HOMEBREW_TARGET}
 
-        # Install git:
-        echo Looking for/installing git
-        [ -e /usr/local/bin/git ] || brew install git
+        curl -O -L ${HOMEBREW_PATH}
 
-        # Install system packages we need
-        echo Installing python and supporting packages
-        [ -e /usr/local/bin/python3 ] || brew install python
-        [ -e /usr/local/bin/ssh ]    || brew install openssh
-        [ -e /usr/local/bin/nginx ]  || brew install nginx
-        [ -e /usr/local/bin/supervisorctl ] || brew install supervisor
+        # The -target / specifies that the package should be installed on the root volume.
+        sudo installer -pkg ${HOMEBREW_TARGET} -target /
+        popd
 
-        brew upgrade openssh nginx supervisor || echo Upgraded packages
-        brew link --overwrite python || echo Linking Python
+        brew install python git nginx supervisor
+
+        #brew upgrade openssh nginx supervisor || echo Upgraded packages
+        #brew link --overwrite python || echo Linking Python
 
     # CentOS/RHEL
     elif [ $OS_TYPE == 'CentOS' ]; then
         if [ $OS_VERSION == '7' ]; then
-            yum install -y deltarpm
+            sudo yum install -y deltarpm
         fi
-        yum install -y epel-release
-        yum -y update
+        sudo yum install -y epel-release
+        sudo yum -y update
 
         echo Installing required packages
-        yum install -y wget git nginx gcc supervisor \
-            zlib-devel openssl-devel readline-devel libffi-devel
+        sudo yum install -y wget git nginx gcc supervisor \
+            zlib-devel openssl-devel readline-devel libffi-devel \
+            sqlite libsqlite3x-devel
 
             #sqlite-devel \
             #python3 python3-devel python3-pip
@@ -335,19 +378,26 @@ function install_packages {
         export LD_LIBRARY_PATH=/usr/local/lib
         export LD_RUN_PATH=/usr/local/lib
 
-        # Fetch and build SQLite3
+        # Check if correct SQLite3 is installed
         SQLITE_VERSION=3320300
-        if [ `/usr/local/bin/sqlite3 --version |  cut -f1 -d' '` == '3.32.3' ]; then
-            echo Already have appropriate version of sqlite3
-        else
-            cd /var/tmp
-            SQLITE_BASE=sqlite-autoconf-${SQLITE_VERSION}
-            SQLITE_TGZ=${SQLITE_BASE}.tar.gz
-            [ -e $SQLITE_TGZ ] || wget https://www.sqlite.org/2020/${SQLITE_TGZ}
-            tar xzf ${SQLITE_TGZ}
-            cd ${SQLITE_BASE}
-            sh ./configure
-            make && make install
+        #required_version="3.32.3"
+
+        if ! command -v sqlite3 &> /dev/null
+        then
+            echo "SQLite3 is not installed. Installing ..."
+            sudo yum install -y sqlite sqlite-devel
+#        else
+#            # Get the current version of SQLite3
+#            current_version=$(sqlite3 --version | awk '{print $1}')
+#
+#            # Compare the current version with the required version
+#            if [[ "$current_version" != "$required_version" ]]
+#            then
+#                echo "SQLite3 version $required_version is required, but version $current_version is installed. Installing version $required_version..."
+#                sudo yum install -y sqlite-$required_version sqlite-devel
+#            else
+#                echo "SQLite3 version $required_version is already installed."
+#            fi
         fi
 
         if [ $OS_VERSION == '7' ]; then
@@ -363,253 +413,25 @@ function install_packages {
                 tar xvf ${PYTHON_TGZ}
                 cd ${PYTHON_BASE}
                 sh ./configure # --enable-optimizations
-                make altinstall
+                sudo make altinstall
 
-                ln -s -f /usr/local/bin/python3.8 /usr/local/bin/python3
-                ln -s -f /usr/local/bin/pip3.8 /usr/local/bin/pip3
+                sudo ln -s -f /usr/local/bin/python3.8 /usr/local/bin/python3
+                sudo ln -s -f /usr/local/bin/pip3.8 /usr/local/bin/pip3
             fi
-        elif [ $OS_VERSION == '8' ]; then
-            yum install -y python3 python3-devel
+        elif [ $OS_VERSION == '8' ] || [ $OS_VERSION == '9' ]; then
+            sudo yum install -y python3 python3-devel
         else
             echo "Install error: unknown OS_VERSION should have been caught earlier?!?"
+            echo "OS_VERSION = \"$OS_VERSION\""
             exit_gracefully
         fi
 
     # Ubuntu/Debian
     elif [ $OS_TYPE == 'Ubuntu' ]; then
-        apt-get update
-        apt install -y git nginx libreadline-dev \
+        sudo apt-get update
+        sudo apt install -y git nginx libreadline-dev \
             python3-dev python3-pip python3-venv libsqlite3-dev \
             openssh-server supervisor libssl-dev
-    fi
-}
-
-###########################################################################
-###########################################################################
-function install_mysql_macos {
-    echo "#####################################################################"
-    echo "Installing and enabling MySQL..."
-    [ -e /usr/local/bin/mysql ]  || brew install mysql
-    brew upgrade mysql || echo Upgraded database package
-    brew tap homebrew/services
-    brew services restart mysql
-
-    echo "#####################################################################"
-    echo "Setting up database tables and permissions"
-    # Verify current root password for mysql
-    while true; do
-        # Check whether they're right about the current password; need
-        # a special case if the password is empty.
-        PASS=TRUE
-        [ ! -z $CURRENT_ROOT_DATABASE_PASSWORD ] || (mysql -u root  < /dev/null) || PASS=FALSE
-        [ -z $CURRENT_ROOT_DATABASE_PASSWORD ] || (mysql -u root -p$CURRENT_ROOT_DATABASE_PASSWORD < /dev/null) || PASS=FALSE
-        case $PASS in
-            TRUE ) break;;
-            * ) echo "Database root password failed";read -p "Current database password for root? (if one exists - hit return if not) " CURRENT_ROOT_DATABASE_PASSWORD;;
-        esac
-    done
-
-    # Set the new root password
-    cat > /tmp/set_pwd <<EOF
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$NEW_ROOT_DATABASE_PASSWORD';
-FLUSH PRIVILEGES;
-EOF
-
-    # If there's a current root password
-    [ -z $CURRENT_ROOT_DATABASE_PASSWORD ] || mysql -u root -p$CURRENT_ROOT_DATABASE_PASSWORD < /tmp/set_pwd
-
-    # If there's no current root password
-    [ ! -z $CURRENT_ROOT_DATABASE_PASSWORD ] || mysql -u root < /tmp/set_pwd
-    rm -f /tmp/set_pwd
-
-    # Now do the rest of the 'mysql_safe_installation' stuff
-    mysql -u root -p$NEW_ROOT_DATABASE_PASSWORD <<EOF
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-DELETE FROM mysql.user WHERE User='';
-DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';
-FLUSH PRIVILEGES;
-EOF
-
-    echo "#####################################################################"
-    echo "Setting up database users"
-    mysql -u root -p$NEW_ROOT_DATABASE_PASSWORD <<EOF
-drop user if exists 'test'@'localhost';
-create user 'test'@'localhost' identified by 'test';
-
-drop user if exists '$RVDAS_USER'@'localhost';
-create user '$RVDAS_USER'@'localhost' identified by '$RVDAS_DATABASE_PASSWORD';
-
-create database if not exists data character set utf8;
-GRANT ALL PRIVILEGES ON data.* TO '$RVDAS_USER'@'localhost';
-
-create database if not exists test character set utf8;
-GRANT ALL PRIVILEGES ON test.* TO '$RVDAS_USER'@'localhost';
-GRANT ALL PRIVILEGES ON test.* TO 'test'@'localhost';
-
-flush privileges;
-\q
-EOF
-    echo Done setting up database
-}
-
-###########################################################################
-###########################################################################
-function install_mysql_centos {
-    echo "#####################################################################"
-    echo "Installing and enabling Mariadb (MySQL replacement in CentOS 7)..."
-
-    yum install -y  mariadb-server mariadb-devel
-    if [ $OS_VERSION == '7' ]; then
-        yum install -y mariadb-libs
-    fi
-    systemctl restart mariadb              # to manually start db server
-    systemctl enable mariadb               # to make it start on boot
-
-    echo "#####################################################################"
-    echo "Setting up database tables and permissions"
-    # Verify current root password for mysql
-    while true; do
-        # Check whether they're right about the current password; need
-        # a special case if the password is empty.
-        PASS=TRUE
-        [ ! -z $CURRENT_ROOT_DATABASE_PASSWORD ] || (mysql -u root  < /dev/null) || PASS=FALSE
-        [ -z $CURRENT_ROOT_DATABASE_PASSWORD ] || (mysql -u root -p$CURRENT_ROOT_DATABASE_PASSWORD < /dev/null) || PASS=FALSE
-        case $PASS in
-            TRUE ) break;;
-            * ) echo "Database root password failed";read -p "Current database password for root? (if one exists - hit return if not) " CURRENT_ROOT_DATABASE_PASSWORD;;
-        esac
-    done
-
-    # Set the new root password
-    cat > /tmp/set_pwd <<EOF
-UPDATE mysql.user SET Password=PASSWORD('$NEW_ROOT_DATABASE_PASSWORD') WHERE User='root';
-FLUSH PRIVILEGES;
-EOF
-
-    # If there's a current root password
-    [ -z $CURRENT_ROOT_DATABASE_PASSWORD ] || mysql -u root -p$CURRENT_ROOT_DATABASE_PASSWORD < /tmp/set_pwd
-
-    # If there's no current root password
-    [ ! -z $CURRENT_ROOT_DATABASE_PASSWORD ] || mysql -u root < /tmp/set_pwd
-    rm -f /tmp/set_pwd
-
-    # Now do the rest of the 'mysql_safe_installation' stuff
-    mysql -u root -p$NEW_ROOT_DATABASE_PASSWORD <<EOF
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-DELETE FROM mysql.user WHERE User='';
-DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';
-FLUSH PRIVILEGES;
-EOF
-
-    # Try creating databases. Command will fail if they exist, so we need
-    # to do one at a time and trap any possible errors.
-    mysql -u root -p$NEW_ROOT_DATABASE_PASSWORD <<EOF > /dev/null || echo "table \"data\" appears to already exist - no problem"
-create database data character set utf8;
-EOF
-
-    mysql -u root -p$NEW_ROOT_DATABASE_PASSWORD <<EOF
-GRANT ALL PRIVILEGES ON data.* TO $RVDAS_USER@localhost IDENTIFIED BY '$RVDAS_DATABASE_PASSWORD' WITH GRANT OPTION;
-
-GRANT ALL PRIVILEGES ON test.* TO $RVDAS_USER@localhost IDENTIFIED BY '$RVDAS_DATABASE_PASSWORD' WITH GRANT OPTION;
-GRANT ALL PRIVILEGES ON test.* TO test@localhost IDENTIFIED BY 'test' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
-EOF
-    echo "Done setting up MariaDB"
-}
-
-###########################################################################
-###########################################################################
-function install_mysql_ubuntu {
-    echo "#####################################################################"
-    echo "Installing and enabling MySQL..."
-
-    apt install -y mysql-server mysql-common mysql-client libmysqlclient-dev
-    systemctl restart mysql    # to manually start db server
-    systemctl enable mysql     # to make it start on boot
-
-    echo "#####################################################################"
-    echo "Setting up database tables and permissions"
-    # Verify current root password for mysql
-    while true; do
-        # Check whether they're right about the current password; need
-        # a special case if the password is empty.
-        PASS=TRUE
-        [ ! -z $CURRENT_ROOT_DATABASE_PASSWORD ] || (mysql -u root  < /dev/null) || PASS=FALSE
-        [ -z $CURRENT_ROOT_DATABASE_PASSWORD ] || (mysql -u root -p$CURRENT_ROOT_DATABASE_PASSWORD < /dev/null) || PASS=FALSE
-        case $PASS in
-            TRUE ) break;;
-            * ) echo "Database root password failed";read -p "Current database password for root? (if one exists - hit return if not) " CURRENT_ROOT_DATABASE_PASSWORD;;
-        esac
-    done
-
-    # Set the new root password
-    cat > /tmp/set_pwd <<EOF
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$NEW_ROOT_DATABASE_PASSWORD';
-FLUSH PRIVILEGES;
-EOF
-
-    # If there's a current root password
-    [ -z $CURRENT_ROOT_DATABASE_PASSWORD ] || mysql -u root -p$CURRENT_ROOT_DATABASE_PASSWORD < /tmp/set_pwd
-
-    # If there's no current root password
-    [ ! -z $CURRENT_ROOT_DATABASE_PASSWORD ] || mysql -u root < /tmp/set_pwd
-    rm -f /tmp/set_pwd
-
-    # Now do the rest of the 'mysql_safe_installation' stuff
-    mysql -u root -p$NEW_ROOT_DATABASE_PASSWORD <<EOF
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-DELETE FROM mysql.user WHERE User='';
-DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';
-FLUSH PRIVILEGES;
-EOF
-
-    # Start mysql to start up as a service
-    update-rc.d mysql defaults
-
-    echo "#####################################################################"
-    echo "Setting up database users"
-    mysql -u root -p$NEW_ROOT_DATABASE_PASSWORD <<EOF
-drop user if exists 'test'@'localhost';
-create user 'test'@'localhost' identified by 'test';
-
-drop user if exists 'rvdas'@'localhost';
-create user '$RVDAS_USER'@'localhost' identified by '$RVDAS_DATABASE_PASSWORD';
-
-create database if not exists data character set utf8;
-GRANT ALL PRIVILEGES ON data.* TO '$RVDAS_USER'@'localhost';
-
-create database if not exists test character set utf8;
-GRANT ALL PRIVILEGES ON test.* TO '$RVDAS_USER'@'localhost';
-GRANT ALL PRIVILEGES ON test.* TO 'test'@'localhost';
-
-flush privileges;
-\q
-EOF
-    echo "Done setting up MySQL"
-
-}
-
-###########################################################################
-###########################################################################
-# Install and configure database
-function install_mysql {
-    # Expect the following shell variables to be appropriately set:
-    # RVDAS_USER - valid userid
-    # RVDAS_DATABASE_PASSWORD - current rvdas user MySQL database password
-    # NEW_ROOT_DATABASE_PASSWORD - new root password to use for MySQL
-    # CURRENT_ROOT_DATABASE_PASSWORD - current root password for MySQL
-
-    # MacOS
-    if [ $OS_TYPE == 'MacOS' ]; then
-        install_mysql_macos
-
-    # CentOS/RHEL
-    elif [ $OS_TYPE == 'CentOS' ]; then
-        install_mysql_centos
-
-    # Ubuntu/Debian
-    elif [ $OS_TYPE == 'Ubuntu' ]; then
-         install_mysql_ubuntu
     fi
 }
 
@@ -669,7 +491,6 @@ function install_openrvdas {
 function setup_python_packages {
     # Expect the following shell variables to be appropriately set:
     # INSTALL_ROOT - path where openrvdas/ is
-    # INSTALL_MYSQL - set if MySQL is to be installed, unset otherwise
 
     # Set up virtual environment
     VENV_PATH=$INSTALL_ROOT/openrvdas/venv
@@ -684,23 +505,33 @@ function setup_python_packages {
     #    mv $VENV_PATH ${VENV_PATH}.bak.$$
     #fi
 
+    #if [ -e '${HOMEBREW_BASE}/bin/python3' ];then
+    #    eval "$(${HOMEBREW_BASE}/bin/brew shellenv)"
+    #    PYTHON_PATH=${HOMEBREW_BASE}/bin/python3
+    #elif [ -e '/usr/local/bin/python3' ];then
+    #    PYTHON_PATH=/usr/local/bin/python3
+    #elif [ -e '/usr/bin/python3' ];then
+    #    PYTHON_PATH=/usr/bin/python3
+    #else
+    #    echo 'No python3 found?!?'
+    #    exit_gracefully
+    #fi
+
+    echo "Creating virtual environment"
+    cd $INSTALL_ROOT/openrvdas
     python3 -m venv $VENV_PATH
     source $VENV_PATH/bin/activate  # activate virtual environment
 
-    pip install \
+    echo "Installing Python packages - please enter sudo password if prompted."
+    # For some reason, locked down RHEL8 boxes require sudo here, and require
+    # us to execute pip via python. Lord love a duck...
+    venv/bin/python venv/bin/pip3 install \
       --trusted-host pypi.org --trusted-host files.pythonhosted.org \
       --upgrade pip
-    pip install \
+    venv/bin/python venv/bin/pip3 install \
       --trusted-host pypi.org --trusted-host files.pythonhosted.org \
-      wheel  # To help with the rest of the installations
-
-    pip install -r utils/requirements.txt
-
-    # If we're installing database, then also install relevant
-    # Python clients.
-    if [ $INSTALL_MYSQL == 'yes' ]; then
-      pip install -r utils/requirements_mysql.txt
-    fi
+      wheel
+    venv/bin/python venv/bin/pip3 install -r utils/requirements.txt
 }
 
 ###########################################################################
@@ -724,7 +555,13 @@ function setup_nginx {
 
     fi
 
-    # Put the nginx conf file in place and link it up
+    if [ $INSTALL_DOC_MARKDOWN == 'yes' ];then
+        MARKDOWN_COMMENT='' # We uncomment the Strapdown-related lines in conf
+    else
+        MARKDOWN_COMMENT='#'
+    fi
+
+    # Now create the nginx conf file in place and link it up
     cat > $INSTALL_ROOT/openrvdas/django_gui/openrvdas_nginx.conf<<EOF
 # openrvdas_nginx.conf
 
@@ -785,16 +622,23 @@ http {
             alias /${INSTALL_ROOT}/openrvdas/display/css; # display pages
             default_type text/css;
         }
-
         location /static {
             alias ${INSTALL_ROOT}/openrvdas/static; # project static files
             autoindex on;
         }
-
         location /docs {
             alias ${INSTALL_ROOT}/openrvdas/docs; # project doc files
             autoindex on;
         }
+        # Added by KPed so Markdown renders in the browser
+        # See https://gist.github.com/shukebeta/b7435d02892cb2ad2b9c8d56572adb2b
+        ${MARKDOWN_COMMENT}location ~ /.*\.md {
+        ${MARKDOWN_COMMENT}    root /opt/openrvdas;
+        ${MARKDOWN_COMMENT}    default_type text/html;
+        ${MARKDOWN_COMMENT}    charset UTF-8;
+        ${MARKDOWN_COMMENT}    add_before_body /static/StrapDown.js/prepend;
+        ${MARKDOWN_COMMENT}    add_after_body /static/StrapDown.js/postpend;
+        ${MARKDOWN_COMMENT}}
 
         # Internally, Cached Data Server operates on port 8766; we proxy
         # it externally, serve cached data server at $SERVER_PORT/cds-ws
@@ -839,6 +683,7 @@ function setup_django {
     # RVDAS_DATABASE_PASSWORD - string to use for Django password
 
     cd ${INSTALL_ROOT}/openrvdas
+    source ${INSTALL_ROOT}/openrvdas/venv/bin/activate
     cp django_gui/settings.py.dist django_gui/settings.py
     sed -i -e "s/WEBSOCKET_PROTOCOL = 'ws'/WEBSOCKET_PROTOCOL = '${WEBSOCKET_PROTOCOL}'/g" django_gui/settings.py
     sed -i -e "s/WEBSOCKET_PORT = 80/WEBSOCKET_PORT = ${SERVER_PORT}/g" django_gui/settings.py
@@ -847,10 +692,10 @@ function setup_django {
 
     # NOTE: we're still inside virtualenv, so we're getting the python
     # that was installed under it.
-    python manage.py makemigrations django_gui
-    python manage.py migrate
+    python3 manage.py makemigrations django_gui
+    python3 manage.py migrate
     rm -rf static
-    python manage.py collectstatic --no-input --clear --link -v 0
+    python3 manage.py collectstatic --no-input --clear --link -v 0
     chmod -R og+rX static
 
     # A temporary hack to allow the display/ pages to be accessed by Django
@@ -859,7 +704,7 @@ function setup_django {
 
     # Bass-ackwards way of creating superuser $RVDAS_USER, as the
     # createsuperuser command won't work from a script
-    python manage.py shell <<EOF
+    python3 manage.py shell <<EOF
 from django.contrib.auth.models import User
 try:
   User.objects.get(username='${RVDAS_USER}').delete()
@@ -931,11 +776,30 @@ function setup_supervisor {
     # INSTALL_ROOT - path where openrvdas/ is found
     # OPENRVDAS_AUTOSTART - 'true' if we're to autostart, else 'false'
 
+    # If we're not installing the web GUI, comment out those bits of
+    # the supervisor config that run them.
+    if [[ "$INSTALL_GUI" == "yes" ]];then
+        GUI_COMMENT=''
+    else
+        GUI_COMMENT=';'
+    fi
+
     VENV_BIN=${INSTALL_ROOT}/openrvdas/venv/bin
     if [ $OPENRVDAS_AUTOSTART = 'yes' ]; then
         AUTOSTART=true
     else
         AUTOSTART=false
+    fi
+
+    # Whether the simulation script is commented out, and if not,
+    # whether it should autorun on boot
+    SIMULATE_NBP_COMMENT=';'
+    AUTOSTART_SIMULATE_NBP='false'
+    if [ $INSTALL_SIMULATE_NBP = 'yes' ]; then
+        SIMULATE_NBP_COMMENT=''
+    fi
+    if [ $RUN_SIMULATE_NBP = 'yes' ]; then
+        AUTOSTART_SIMULATE_NBP='true'
     fi
 
     # MacOS
@@ -944,7 +808,7 @@ function setup_supervisor {
         HTTP_HOST=127.0.0.1
         NGINX_BIN=/usr/local/bin/nginx
         SUPERVISOR_DIR=/usr/local/etc/supervisor.d/
-        SUPERVISOR_FILE=$SUPERVISOR_DIR/openrvdas.ini
+        SUPERVISOR_SUFFIX='ini'
         SUPERVISOR_SOCK=/usr/local/var/run/supervisor.sock
         COMMENT_SOCK_OWNER=';'
 
@@ -954,7 +818,7 @@ function setup_supervisor {
         HTTP_HOST='*'
         NGINX_BIN=/usr/sbin/nginx
         SUPERVISOR_DIR=/etc/supervisord.d
-        SUPERVISOR_FILE=$SUPERVISOR_DIR/openrvdas.ini
+        SUPERVISOR_SUFFIX='ini'
         SUPERVISOR_SOCK=/var/run/supervisor/supervisor.sock
         COMMENT_SOCK_OWNER=''
 
@@ -964,77 +828,51 @@ function setup_supervisor {
         HTTP_HOST='*'
         NGINX_BIN=/usr/sbin/nginx
         SUPERVISOR_DIR=/etc/supervisor/conf.d
-        SUPERVISOR_FILE=$SUPERVISOR_DIR/openrvdas.conf
+        SUPERVISOR_SUFFIX='conf'
         SUPERVISOR_SOCK=/var/run/supervisor.sock
         COMMENT_SOCK_OWNER=''
-
     fi
 
-    # Write out supervisor file, filling in variables
-    cat > /tmp/openrvdas.ini <<EOF
+    SUPERVISOR_FILE=$SUPERVISOR_DIR/openrvdas.${SUPERVISOR_SUFFIX}
+    LOGGER_MANAGER_FILE=$SUPERVISOR_DIR/openrvdas_logger_manager.${SUPERVISOR_SUFFIX}
+    CACHED_DATA_FILE=$SUPERVISOR_DIR/openrvdas_cached_data.${SUPERVISOR_SUFFIX}
+    DJANGO_FILE=$SUPERVISOR_DIR/openrvdas_django.${SUPERVISOR_SUFFIX}
+    SIMULATE_FILE=$SUPERVISOR_DIR/openrvdas_simulate.${SUPERVISOR_SUFFIX}
+
+    sudo mkdir -p $SUPERVISOR_DIR
+
+    #######################################################
+    # Write out the overall supervisor file, filling in variables
+    TEMP_FILE=/tmp/openrvdas_tmp.ini
+    cat > $TEMP_FILE <<EOF
 ; First, override the default socket permissions to allow user
 ; $RVDAS_USER to run supervisorctl
 [unix_http_server]
 file=$SUPERVISOR_SOCK   ; (the path to the socket file)
 chmod=0770              ; socket file mode (default 0700)
-${COMMENT_SOCK_OWNER}chown=nobody:${RVDAS_USER}
+${COMMENT_SOCK_OWNER}chown=nobody:${RVDAS_GROUP}
 EOF
 
     if [ $SUPERVISORD_WEBINTERFACE == 'yes' ]; then
-        cat >> /tmp/openrvdas.ini <<EOF
+        cat >> $TEMP_FILE <<EOF
 
 [inet_http_server]
 port=${SUPERVISORD_WEBINTERFACE_PORT}
 EOF
         if [ $SUPERVISORD_WEBINTERFACE_AUTH == 'yes' ]; then
             SUPERVISORD_WEBINTERFACE_HASH=`echo -n ${SUPERVISORD_WEBINTERFACE_PASS} | sha1sum | awk '{printf("{SHA}%s",$1)}'`
-            cat >> /tmp/openrvdas.ini <<EOF
+            cat >> $TEMP_FILE <<EOF
 username=${SUPERVISORD_WEBINTERFACE_USER}
 password=${SUPERVISORD_WEBINTERFACE_HASH} ; echo -n "<password>" | sha1sum | awk '{printf("{SHA}%s",\$1)}'
 EOF
         fi
     fi
+    sudo mv $TEMP_FILE $SUPERVISOR_FILE
 
-    cat >> /tmp/openrvdas.ini <<EOF
-
-; The scripts we're going to run
-[program:nginx]
-command=${NGINX_BIN} -g 'daemon off;' -c ${INSTALL_ROOT}/openrvdas/django_gui/openrvdas_nginx.conf
-directory=${INSTALL_ROOT}/openrvdas
-autostart=$AUTOSTART
-autorestart=true
-startretries=3
-killasgroup=true
-stderr_logfile=/var/log/openrvdas/nginx.stderr
-stderr_logfile_maxbytes=10000000 ; 10M
-stderr_logfile_maxbackups=100
-;user=$RVDAS_USER
-
-[program:uwsgi]
-command=${VENV_BIN}/uwsgi ${INSTALL_ROOT}/openrvdas/django_gui/openrvdas_uwsgi.ini --thunder-lock --enable-threads
-stopsignal=INT
-directory=${INSTALL_ROOT}/openrvdas
-autostart=$AUTOSTART
-autorestart=true
-startretries=3
-killasgroup=true
-stderr_logfile=/var/log/openrvdas/uwsgi.stderr
-stderr_logfile_maxbytes=10000000 ; 10M
-stderr_logfile_maxbackups=100
-user=$RVDAS_USER
-
-[program:cached_data_server]
-command=${VENV_BIN}/python server/cached_data_server.py --port 8766 --disk_cache /var/tmp/openrvdas/disk_cache --max_records 8640 -v
-directory=${INSTALL_ROOT}/openrvdas
-autostart=$AUTOSTART
-autorestart=true
-startretries=3
-killasgroup=true
-stderr_logfile=/var/log/openrvdas/cached_data_server.stderr
-stderr_logfile_maxbytes=10000000 ; 10M
-stderr_logfile_maxbackups=100
-user=$RVDAS_USER
-
+    #######################################################
+    # Write out the Logger Manager file
+    cat > $TEMP_FILE <<EOF
+; Supervisor configurations for LoggerManager
 [program:logger_manager]
 command=${VENV_BIN}/python server/logger_manager.py --database django --data_server_websocket :8766 -v -V --no-console
 environment=PATH="${VENV_BIN}:/usr/bin:/usr/local/bin"
@@ -1047,32 +885,82 @@ stderr_logfile=/var/log/openrvdas/logger_manager.stderr
 stderr_logfile_maxbytes=10000000 ; 10M
 stderr_logfile_maxbackups=100
 user=$RVDAS_USER
+EOF
+    sudo mv $TEMP_FILE $LOGGER_MANAGER_FILE
 
-[program:simulate_nbp]
-command=${VENV_BIN}/python logger/utils/simulate_data.py --config test/NBP1406/simulate_NBP1406.yaml
+    #######################################################
+    # Write out the Cached Data Server file
+    cat > $TEMP_FILE <<EOF
+; Supervisor configurations for LoggerManager and CachedDataServer
+[program:cached_data_server]
+command=${VENV_BIN}/python server/cached_data_server.py --port 8766 --disk_cache /var/tmp/openrvdas/disk_cache --max_records 8640 -v
 directory=${INSTALL_ROOT}/openrvdas
-autostart=false
+autostart=$AUTOSTART
 autorestart=true
 startretries=3
 killasgroup=true
-stderr_logfile=/var/log/openrvdas/simulate_nbp.stderr
+stderr_logfile=/var/log/openrvdas/cached_data_server.stderr
 stderr_logfile_maxbytes=10000000 ; 10M
 stderr_logfile_maxbackups=100
 user=$RVDAS_USER
-
-[group:web]
-programs=nginx,uwsgi
-
-[group:openrvdas]
-programs=logger_manager,cached_data_server
-
-[group:simulate]
-programs=simulate_nbp
 EOF
+    sudo mv $TEMP_FILE $CACHED_DATA_FILE
 
-    # Copy supervisor file into place
-    sudo mkdir -p $SUPERVISOR_DIR
-    sudo cp /tmp/openrvdas.ini $SUPERVISOR_FILE
+
+    #######################################################
+    # Write out the Django GUI files, filling in variables
+    cat > $TEMP_FILE <<EOF
+; Supervisor configurations for Django GUI
+${GUI_COMMENT}[program:nginx]
+${GUI_COMMENT}command=${NGINX_BIN} -g 'daemon off;' -c ${INSTALL_ROOT}/openrvdas/django_gui/openrvdas_nginx.conf
+${GUI_COMMENT}directory=${INSTALL_ROOT}/openrvdas
+${GUI_COMMENT}autostart=$AUTOSTART
+${GUI_COMMENT}autorestart=true
+${GUI_COMMENT}startretries=3
+${GUI_COMMENT}killasgroup=true
+${GUI_COMMENT}stderr_logfile=/var/log/openrvdas/nginx.stderr
+${GUI_COMMENT}stderr_logfile_maxbytes=10000000 ; 10M
+${GUI_COMMENT}stderr_logfile_maxbackups=100
+${GUI_COMMENT};user=$RVDAS_USER
+
+${GUI_COMMENT}[program:uwsgi]
+${GUI_COMMENT}command=${VENV_BIN}/uwsgi ${INSTALL_ROOT}/openrvdas/django_gui/openrvdas_uwsgi.ini --thunder-lock --enable-threads
+${GUI_COMMENT}stopsignal=INT
+${GUI_COMMENT}directory=${INSTALL_ROOT}/openrvdas
+${GUI_COMMENT}autostart=$AUTOSTART
+${GUI_COMMENT}autorestart=true
+${GUI_COMMENT}startretries=3
+${GUI_COMMENT}killasgroup=true
+${GUI_COMMENT}stderr_logfile=/var/log/openrvdas/uwsgi.stderr
+${GUI_COMMENT}stderr_logfile_maxbytes=10000000 ; 10M
+${GUI_COMMENT}stderr_logfile_maxbackups=100
+${GUI_COMMENT}user=$RVDAS_USER
+
+${GUI_COMMENT}[group:django]
+${GUI_COMMENT}programs=nginx,uwsgi
+EOF
+    sudo mv $TEMP_FILE $DJANGO_FILE
+
+    #######################################################
+    # Write out the simulator commands, filling in variables
+    cat > $TEMP_FILE <<EOF
+; Supervisor configurations for OpenRVDAS data simulator
+${SIMULATE_NBP_COMMENT}[program:simulate_nbp]
+${SIMULATE_NBP_COMMENT}command=${VENV_BIN}/python logger/utils/simulate_data.py --config test/NBP1406/simulate_NBP1406.yaml
+${SIMULATE_NBP_COMMENT}directory=${INSTALL_ROOT}/openrvdas
+${SIMULATE_NBP_COMMENT}autostart=${AUTOSTART_SIMULATE_NBP}
+${SIMULATE_NBP_COMMENT}autorestart=true
+${SIMULATE_NBP_COMMENT}startretries=3
+${SIMULATE_NBP_COMMENT}killasgroup=true
+${SIMULATE_NBP_COMMENT}stderr_logfile=/var/log/openrvdas/simulate_nbp.stderr
+${SIMULATE_NBP_COMMENT}stderr_logfile_maxbytes=10000000 ; 10M
+${SIMULATE_NBP_COMMENT}stderr_logfile_maxbackups=100
+${SIMULATE_NBP_COMMENT}user=$RVDAS_USER
+
+${SIMULATE_NBP_COMMENT}[group:simulate]
+${SIMULATE_NBP_COMMENT}programs=simulate_nbp
+EOF
+    sudo cp $TEMP_FILE $SIMULATE_FILE
 }
 
 ###########################################################################
@@ -1153,6 +1041,27 @@ function setup_firewall {
     echo "Done setting SELINUX permissions"
 }
 
+
+###########################################################################
+###########################################################################
+# Download and install js script to render .md documents
+function setup_markdown {
+   # Get the Strapdown.js package that will render .md files
+    STRAPDOWN_PATH=${INSTALL_ROOT}/openrvdas/static
+    git clone https://github.com/Naereen/StrapDown.js.git $STRAPDOWN_PATH/Strapdown.js
+    cat > ${STRAPDOWN_PATH}/Strapdown.js/prepend <<EOF
+<!DOCTYPE html>
+<html>
+<xmp theme='cyborg' style='display:none;'t>
+EOF
+    cat > ${STRAPDOWN_PATH}/Strapdown.js/postpend <<EOF
+<!DOCTYPE html>
+</xmp>
+<script src='/static/StrapDown.js/strapdown.js'></script>
+</html>
+EOF
+}
+
 ###########################################################################
 ###########################################################################
 ###########################################################################
@@ -1161,26 +1070,18 @@ function setup_firewall {
 ###########################################################################
 ###########################################################################
 
+echo
+echo "OpenRVDAS configuration script"
+
 # Read from the preferences file in $PREFERENCES_FILE, if it exists
 set_default_variables
 
 # Set OS_TYPE to either MacOS, CentOS or Ubuntu
 get_os_type
 
-# If we're on Linux, should run as root
-if [ $OS_TYPE == 'CentOS' ] || [ $OS_TYPE == 'Ubuntu' ]; then
-    if [ "$(whoami)" != "root" ]; then
-        echo "ERROR: installation script must be run as root."
-        exit_gracefully
-    fi
-fi
-
 # Set creation mask so that everything we install is, by default,
 # world readable/executable.
 umask 022
-
-echo "#####################################################################"
-echo "OpenRVDAS configuration script"
 
 echo "#####################################################################"
 # We don't set hostname on MacOS
@@ -1300,34 +1201,6 @@ fi
 
 #########################################################################
 #########################################################################
-# Do they want to install/configure MySQL for use by DatabaseWriter, etc?
-echo
-echo "#####################################################################"
-echo "MySQL or MariaDB, the CentOS replacement for MySQL, can be installed and"
-echo "configured so that DatabaseWriter and DatabaseReader have something to"
-echo "write to and read from."
-echo
-yes_no "Install and configure MySQL database? " $DEFAULT_INSTALL_MYSQL
-INSTALL_MYSQL=$YES_NO_RESULT
-
-if [ $INSTALL_MYSQL == 'yes' ]; then
-    echo Will install/configure MySQL
-    # Get current and new passwords for database
-    echo "Root database password will be empty on initial installation. If this"
-    echo "is the initial installation, hit "return" when prompted for root"
-    echo "database password, otherwise enter the password you used during the"
-    echo "initial installation."
-    echo
-    echo "Current database password for root \(hit return if this is the"
-    read -p "initial installation)? " CURRENT_ROOT_DATABASE_PASSWORD
-    read -p "New database password for root? ($CURRENT_ROOT_DATABASE_PASSWORD) " NEW_ROOT_DATABASE_PASSWORD
-    NEW_ROOT_DATABASE_PASSWORD=${NEW_ROOT_DATABASE_PASSWORD:-$CURRENT_ROOT_DATABASE_PASSWORD}
-else
-    echo "Skipping MySQL installation/configuration"
-fi
-
-#########################################################################
-#########################################################################
 # CentOS/RHEL only: do they want to install/configure firewalld?
 INSTALL_FIREWALLD=no
 if [ $OS_TYPE == 'CentOS' ]; then
@@ -1365,6 +1238,37 @@ echo
 yes_no "Start the OpenRVDAS server on boot? " $DEFAULT_OPENRVDAS_AUTOSTART
 OPENRVDAS_AUTOSTART=$YES_NO_RESULT
 
+# Set up simulate_nbp script?
+echo
+echo "#####################################################################"
+echo "For test installations, OpenRVDAS can configure simulated inputs from"
+echo "stored data, which will allow you to run the \"NBP1406_cruise.yaml\""
+echo "configuration out of the box. This script will be configured to run"
+echo "under supervisord as \"simulate:simulate_nbp\"."
+echo
+yes_no "Do you want to install this script?" $DEFAULT_INSTALL_SIMULATE_NBP
+INSTALL_SIMULATE_NBP=$YES_NO_RESULT
+
+if [ $INSTALL_SIMULATE_NBP == 'yes' ]; then
+  yes_no "Run simulate:simulate_nbp on boot?" $DEFAULT_RUN_SIMULATE_NBP
+  RUN_SIMULATE_NBP=$YES_NO_RESULT
+else
+  RUN_SIMULATE_NBP=no
+fi
+
+
+#########################################################################
+# Install web console programs - nginx and uwsgi?
+echo
+echo "#####################################################################"
+echo "The full OpenRVDAS installation includes a web-based console for loading"
+echo "and controlling loggers, but a slimmed-down version of the code may be"
+echo "installed and run without it if desired for portability or computational"
+echo "reasons."
+echo
+yes_no "Install OpenRVDAS web console GUI? " $DEFAULT_INSTALL_GUI
+INSTALL_GUI=$YES_NO_RESULT
+
 #########################################################################
 # Enable Supervisor web-interface?
 echo
@@ -1394,6 +1298,14 @@ if [ $SUPERVISORD_WEBINTERFACE == 'yes' ]; then
         SUPERVISORD_WEBINTERFACE_PASS=${SUPERVISORD_WEBINTERFACE_PASS:-$RVDAS_USER}
     fi
 fi
+echo
+echo "#####################################################################"
+echo "This script can install Strapdown.js so that the .md files in"
+echo "the /docs directory are rendered properly."
+echo "under supervisord as \"simulate:simulate_nbp\"."
+echo
+yes_no "Do you want to install Strapdown.js?" $DEFAULT_INSTALL_DOC_MARKDOWN
+INSTALL_DOC_MARKDOWN=$YES_NO_RESULT
 
 #########################################################################
 #########################################################################
@@ -1406,22 +1318,6 @@ save_default_variables
 echo "#####################################################################"
 echo "Installing required packages from repository..."
 install_packages
-
-#########################################################################
-#########################################################################
-# If we're installing MySQL/MariaDB
-echo "#####################################################################"
-if [ $INSTALL_MYSQL == 'yes' ]; then
-    echo "Installing/configuring database"
-    # Expect the following shell variables to be appropriately set:
-    # RVDAS_USER - valid userid
-    # RVDAS_DATABASE_PASSWORD - current rvdas user MySQL database password
-    # NEW_ROOT_DATABASE_PASSWORD - new root password to use for MySQL
-    # CURRENT_ROOT_DATABASE_PASSWORD - current root password for MySQL
-    install_mysql
-else
-    echo "Skipping database setup"
-fi
 
 #########################################################################
 #########################################################################
@@ -1442,15 +1338,16 @@ echo "#####################################################################"
 echo "Installing virtual environment for Django, uWSGI and other Python-dependent packages."
 # Expect the following shell variables to be appropriately set:
 # INSTALL_ROOT - path where openrvdas/ is
-# INSTALL_MYSQL - set if MySQL is to be installed, unset otherwise
 setup_python_packages
 
 #########################################################################
 #########################################################################
 # Set up nginx
-echo "#####################################################################"
-echo "Setting up NGINX"
-setup_nginx
+if [[ "$INSTALL_GUI" == "yes" ]];then
+    echo "#####################################################################"
+    echo "Setting up NGINX"
+    setup_nginx
+fi
 
 #########################################################################
 #########################################################################
@@ -1465,13 +1362,15 @@ fi
 #########################################################################
 #########################################################################
 # Set up uwsgi
-echo
-echo "#####################################################################"
-echo "Setting up UWSGI"
-# Expect the following shell variables to be appropriately set:
-# HOSTNAME - name of host
-# INSTALL_ROOT - path where openrvdas/ is
-setup_uwsgi
+if [[ "$INSTALL_GUI" == "yes" ]];then
+    echo
+    echo "#####################################################################"
+    echo "Setting up UWSGI"
+    # Expect the following shell variables to be appropriately set:
+    # HOSTNAME - name of host
+    # INSTALL_ROOT - path where openrvdas/ is
+    setup_uwsgi
+fi
 
 #########################################################################
 #########################################################################
@@ -1490,9 +1389,9 @@ echo "#####################################################################"
 echo "Creating OpenRVDAS-specific uWSGI files"
 
 # Make everything accessible to nginx
-chmod 755 ${INSTALL_ROOT}/openrvdas
-chown -R ${RVDAS_USER} ${INSTALL_ROOT}/openrvdas
-chgrp -R ${RVDAS_GROUP} ${INSTALL_ROOT}/openrvdas
+sudo chmod 755 ${INSTALL_ROOT}/openrvdas
+sudo chown -R ${RVDAS_USER} ${INSTALL_ROOT}/openrvdas
+sudo chgrp -R ${RVDAS_GROUP} ${INSTALL_ROOT}/openrvdas
 
 # Create openrvdas log and tmp directories
 sudo mkdir -p /var/log/openrvdas /var/tmp/openrvdas
@@ -1515,6 +1414,13 @@ if [ $INSTALL_FIREWALLD == 'yes' ]; then
     setup_firewall
 fi
 
+###########################################################################
+###########################################################################
+# Download and install js script to render .md documents
+if [ $INSTALL_DOC_MARKDOWN == 'yes' ]; then
+    setup_markdown
+fi
+
 echo
 echo "#########################################################################"
 echo "Restarting services: supervisor"
@@ -1523,8 +1429,13 @@ echo "Restarting services: supervisor"
         sudo mkdir -p /usr/local/var/run/
         sudo chown $RVDAS_USER /usr/local/var/run
         sudo chgrp $RVDAS_GROUP /usr/local/var/run
-        brew tap homebrew/services
-        brew services restart supervisor
+
+        echo "NOTE: on MacOS, supervisord will not be started automatically."
+        echo "To run it, try"
+        echo "    sudo /opt/openrvdas/venv/bin/supervisord \\"
+        echo "       -c /usr/local/etc/supervisord.conf"
+        echo
+        read -p "Hit return to continue. " DUMMY_VAR
 
     # Linux
     elif [ $OS_TYPE == 'CentOS' ] || [ $OS_TYPE == 'Ubuntu' ]; then
@@ -1533,22 +1444,23 @@ echo "Restarting services: supervisor"
 
         # CentOS/RHEL
         if [ $OS_TYPE == 'CentOS' ]; then
-            systemctl enable supervisord
-            systemctl restart supervisord
+            sudo systemctl enable supervisord
+            sudo systemctl restart supervisord
         else # Ubuntu/Debian
-            systemctl enable supervisor
-            systemctl restart supervisor
+            sudo systemctl enable supervisor
+            sudo systemctl restart supervisor
         fi
 
-        # Previous installations used nginx and uwsgi as a service. We need to
-        # disable them if they're running.
-        echo Disabling legacy services
-        systemctl stop nginx 2> /dev/null || echo "nginx not running"
-        systemctl disable nginx 2> /dev/null || echo "nginx disabled"
-        systemctl stop uwsgi 2> /dev/null || echo "uwsgi not running"
-        systemctl disable uwsgi 2> /dev/null || echo "uwsgi disabled"
+        if [[ "$INSTALL_GUI" == "yes" ]];then
+            # Previous installations used nginx and uwsgi as a service. We need to
+            # disable them if they're running.
+            echo Disabling legacy services
+            sudo systemctl stop nginx 2> /dev/null || echo "nginx not running"
+            sudo systemctl disable nginx 2> /dev/null || echo "nginx disabled"
+            sudo systemctl stop uwsgi 2> /dev/null || echo "uwsgi not running"
+            sudo systemctl disable uwsgi 2> /dev/null || echo "uwsgi disabled"
+        fi
     fi
-
 
 # Deactivate the virtual environment - we'll be calling all relevant
 # binaries using their venv paths, so don't need it.

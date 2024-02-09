@@ -71,6 +71,9 @@ DEFAULT_HTTP_PROXY=$http_proxy
 DEFAULT_INFLUXDB_USER=rvdas
 DEFAULT_INFLUXDB_PASSWORD=rvdasrvdas
 
+DEFAULT_INFLUXDB_ORGANIZATION=openrvdas
+DEFAULT_INFLUXDB_BUCKET=openrvdas
+
 DEFAULT_INSTALL_INFLUXDB=yes
 DEFAULT_INSTALL_GRAFANA=yes
 DEFAULT_INSTALL_TELEGRAF=yes
@@ -79,8 +82,10 @@ DEFAULT_RUN_INFLUXDB=no
 DEFAULT_RUN_GRAFANA=no
 DEFAULT_RUN_TELEGRAF=no
 
-# Organization to be used by OpenRVDAS and Telegraf when writing to InfluxDB
-ORGANIZATION=openrvdas
+DEFAULT_USE_SSL=no
+DEFAULT_HAVE_SSL_CERTIFICATE=no
+DEFAULT_SSL_CRT_LOCATION=
+DEFAULT_SSL_KEY_LOCATION=
 
 # Bucket Telegraf should write its data to
 TELEGRAF_BUCKET=_monitoring
@@ -105,8 +110,26 @@ function get_os_type {
     elif [[ `uname -s` == 'Linux' ]];then
         if [[ ! -z `grep "NAME=\"Ubuntu\"" /etc/os-release` ]] || [[ ! -z `grep "NAME=\"Debian" /etc/os-release` ]] || [[ ! -z `grep "NAME=\"Raspbian" /etc/os-release` ]];then
             OS_TYPE=Ubuntu
-        elif [[ ! -z `grep "NAME=\"CentOS Linux\"" /etc/os-release` ]] || [[ ! -z `grep "NAME=\"Red Hat Enterprise Linux Server\"" /etc/os-release` ]] || [[ ! -z `grep "NAME=\"Red Hat Enterprise Linux Workstation\"" /etc/os-release` ]];then
+        # CentOS/RHEL
+        elif [[ ! -z `grep "NAME=\"CentOS Stream\"" /etc/os-release` ]] || [[ ! -z `grep "NAME=\"CentOS Linux\"" /etc/os-release` ]] || [[ ! -z `grep "NAME=\"Red Hat Enterprise Linux\"" /etc/os-release` ]]  || [[ ! -z `grep "NAME=\"Rocky Linux\"" /etc/os-release` ]];then
             OS_TYPE=CentOS
+            if [[ ! -z `grep "VERSION_ID=\"7" /etc/os-release` ]];then
+                OS_VERSION=7
+            elif [[ ! -z `grep "VERSION_ID=\"8" /etc/os-release` ]];then
+                OS_VERSION=8
+            elif [[ ! -z `grep "VERSION_ID=\"9" /etc/os-release` ]];then
+                OS_VERSION=9
+            # Rocky Linux uses different format in /etc/os-release
+            elif [[ ! -z `grep "VERSION=\"7" /etc/os-release` ]];then
+                OS_VERSION=7
+            elif [[ ! -z `grep "VERSION=\"8" /etc/os-release` ]];then
+                OS_VERSION=8
+            elif [[ ! -z `grep "VERSION=\"9" /etc/os-release` ]];then
+                OS_VERSION=9
+            else
+                echo "Sorry - unknown CentOS/RHEL Version! - exiting."
+                exit_gracefully
+            fi
         else
             echo Unknown Linux variant!
             exit_gracefully
@@ -140,7 +163,10 @@ DEFAULT_INSTALL_ROOT=$INSTALL_ROOT  # path where openrvdas is found
 #DEFAULT_HTTP_PROXY=proxy.lmg.usap.gov:3128 #$HTTP_PROXY
 DEFAULT_HTTP_PROXY=$HTTP_PROXY
 
+DEFAULT_INFLUXDB_USER=$INFLUXDB_USER
 DEFAULT_INFLUXDB_PASSWORD=$INFLUXDB_PASSWORD
+DEFAULT_INFLUXDB_ORGANIZATION=$INFLUXDB_ORGANIZATION
+DEFAULT_INFLUXDB_BUCKET=$INFLUXDB_BUCKET
 
 DEFAULT_INSTALL_INFLUXDB=$INSTALL_INFLUXDB
 DEFAULT_INSTALL_GRAFANA=$INSTALL_GRAFANA
@@ -149,7 +175,25 @@ DEFAULT_INSTALL_TELEGRAF=$INSTALL_TELEGRAF
 DEFAULT_RUN_INFLUXDB=$RUN_INFLUXDB
 DEFAULT_RUN_GRAFANA=$RUN_GRAFANA
 DEFAULT_RUN_TELEGRAF=$RUN_TELEGRAF
+
+DEFAULT_USE_SSL=$USE_SSL
+DEFAULT_HAVE_SSL_CERTIFICATE=$HAVE_SSL_CERTIFICATE
+DEFAULT_SSL_CRT_LOCATION=$SSL_CRT_LOCATION
+DEFAULT_SSL_KEY_LOCATION=$SSL_KEY_LOCATION
 EOF
+}
+
+###########################################################################
+###########################################################################
+# Set up certificate files, if requested
+function setup_ssl_certificate {
+    echo "Certificate will be placed in ${SSL_CRT_LOCATION}"
+    echo "Key will be placed in ${SSL_KEY_LOCATION}"
+    echo "Please answer the following prompts to continue:"
+    echo
+    openssl req \
+       -newkey rsa:2048 -nodes -keyout ${SSL_KEY_LOCATION} \
+       -x509 -days 365 -out ${SSL_CRT_LOCATION}
 }
 
 #########################################################################
@@ -205,12 +249,21 @@ function fix_database_settings {
     SETTINGS=$INSTALL_ROOT/openrvdas/database/influxdb/settings.py
     cp ${SETTINGS}.dist $SETTINGS
 
-    sed -i -e "s/INFLUXDB_ORG = '.*'/INFLUXDB_ORG = '$ORGANIZATION'/" $SETTINGS
+    sed -i -e "s/INFLUXDB_ORG = '.*'/INFLUXDB_ORG = '$INFLUXDB_ORGANIZATION'/" $SETTINGS
+    sed -i -e "s/INFLUXDB_BUCKET = '.*'/INFLUXDB_BUCKET = '$INFLUXDB_BUCKET'/" $SETTINGS
     sed -i -e "s/INFLUXDB_AUTH_TOKEN = '.*'/INFLUXDB_AUTH_TOKEN = '$INFLUXDB_AUTH_TOKEN'/" $SETTINGS
 
     # If they've run this with an old installation of OpenRVDAS,
     # database/settings.py may have the old/wrong port number for InfluxDB
     sed -i -e "s/INFLUXDB_URL = 'http:\/\/localhost:9999'/INFLUXDB_URL = 'http:\/\/localhost:8086'/" $SETTINGS
+
+    # If we're using SSL, change any "http" reference to "https"; if not
+    # do vice versa.
+    if [[ $USE_SSL == 'yes' ]];then
+        sed -i -e "s/http:/https:/" $SETTINGS
+    else
+        sed -i -e "s/https:/http:/" $SETTINGS
+    fi
 }
 
 ###########################################################################
@@ -241,6 +294,19 @@ function install_influxdb {
     echo "#####################################################################"
     echo Installing InfluxDB...
 
+
+    # If we're on MacOS
+    if [ $OS_TYPE == 'MacOS' ]; then
+        INFLUX_PATH=/usr/local/bin
+    # If we're on Linux
+    elif [ $OS_TYPE == 'CentOS' ]; then
+        INFLUX_PATH=/usr/bin
+    elif [ $OS_TYPE == 'Ubuntu' ]; then
+        INFLUX_PATH=/usr/bin
+    else
+        exit_gracefully
+    fi
+
     # Is there already an installation?
     if [ -d ~/.influxdbv2 ];then
         echo
@@ -257,50 +323,68 @@ function install_influxdb {
     # Clear out any old setup directories.
     rm -rf ~/.influxdbv2
 
+    # From https://docs.influxdata.com/influxdb/v2.2/install/?t=CLI+Setup
+
     # If we're on MacOS
     if [ $OS_TYPE == 'MacOS' ]; then
-        INFLUXDB_PACKAGE=${INFLUXDB_RELEASE}-darwin-amd64 # for MacOS
+        brew update
+        brew upgrade
+        brew install --overwrite influxdb influxdb-cli
+
     # If we're on Linux
-    elif [ $OS_TYPE == 'CentOS' ] || [ $OS_TYPE == 'Ubuntu' ]; then
-        INFLUXDB_PACKAGE=${INFLUXDB_RELEASE}-linux-amd64 # for Linux
+    elif [ $OS_TYPE == 'CentOS' ]; then
+        # Remove old repo, if it's lying around
+        if [ -e /etc/yum.repos.d/influxdb.repo ]; then
+            sudo rm /etc/yum.repos.d/influxdb.repo
+        fi
+        # From https://portal.influxdata.com/downloads/
+        # influxdata-archive_compat.key GPG fingerprint:
+        #     9D53 9D90 D332 8DC7 D6C8 D3B9 D8FF 8E1F 7DF8 B07E
+        cat <<EOF | sudo tee /etc/yum.repos.d/influxdata.repo
+[influxdata]
+name = InfluxData Repository - Stable
+baseurl = https://repos.influxdata.com/stable/\$basearch/main
+enabled = 1
+gpgcheck = 1
+gpgkey = https://repos.influxdata.com/influxdata-archive_compat.key
+EOF
+        if [ $OS_VERSION == '7' ]; then
+            sudo yum install -y influxdb2 influxdb2-cli
+        else
+            sudo yum install -y --nobest influxdb2 influxdb2-cli
+        fi
+    elif [ $OS_TYPE == 'Ubuntu' ]; then
+        # influxdata-archive_compat.key GPG Fingerprint: 9D539D90D3328DC7D6C8D3B9D8FF8E1F7DF8B07E
+        wget -q https://repos.influxdata.com/influxdata-archive_compat.key
+        echo '393e8779c89ac8d958f81f942f9ad7fb82a25e133faddaf92e15b16e6ac9ce4c influxdata-archive_compat.key' | sha256sum -c && cat influxdata-archive_compat.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg > /dev/null
+        echo 'deb [signed-by=/etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg] https://repos.influxdata.com/debian stable main' | sudo tee /etc/apt/sources.list.d/influxdata.list
+        sudo apt-get update || echo "Failed to update all packages"
+
+        sudo apt-get install -y influxdb2
     else
         echo "ERROR: No InfluxDB binary found for architecture \"`uname -s`\"."
         exit_gracefully
     fi
-    INFLUXDB_URL=https://${INFLUXDB_REPO}/${INFLUXDB_PACKAGE}.tar.gz
-
-    # Grab, uncompress and copy into place
-    pushd /tmp >> /dev/null
-    if [ -e ${INFLUXDB_PACKAGE}.tar.gz ]; then
-        echo Already have archive locally: /tmp/${INFLUXDB_PACKAGE}.tar.gz
-    else
-        echo Fetching binaries
-        wget $INFLUXDB_URL
-    fi
-    if [ -d ${INFLUXDB_PACKAGE} ]; then
-        echo Already have uncompressed release locally: /tmp/${INFLUXDB_PACKAGE}
-    else
-        echo Uncompressing...
-        tar xzf ${INFLUXDB_PACKAGE}.tar.gz
-    fi
-    echo Copying into place...
-    sudo cp -f  ${INFLUXDB_PACKAGE}/influx ${INFLUXDB_PACKAGE}/influxd /usr/local/bin
-    popd >> /dev/null
 
     # Run setup
     echo "#################################################################"
     echo Running InfluxDB setup - killing all currently-running instances
-    pkill -x influxd || echo No processes killed
+    sudo pkill -x influxd || echo No processes killed
     echo Running server in background
-    /usr/local/bin/influxd --reporting-disabled > /dev/null &
+    ${INFLUX_PATH}/influxd --reporting-disabled > /dev/null &
     echo Sleeping to give server time to start up
     sleep 20  # if script crashes at next step, increase this number a smidge
     echo Running influx setup
-    /usr/local/bin/influx setup \
+    ${INFLUX_PATH}/influx setup \
         --username $INFLUXDB_USER --password $INFLUXDB_PASSWORD \
-        --org openrvdas --bucket openrvdas --retention 0 --force # > /dev/null
-    echo Killing the InfluxDB instance we started
-    pkill -x influxd || echo No processes killed
+        --org $INFLUXDB_ORGANIZATION --bucket $INFLUXDB_BUCKET --retention 0 --force # > /dev/null
+
+    #    echo Killing the InfluxDB instance we started
+    sudo pkill -x influxd || echo No processes killed
+
+    # We're going to run Influx from supervisorctl, so disable automatic service
+    sudo systemctl stop influxd || echo influxd not loaded as a service, so nothing to stop
+    sudo systemctl disable influxd || echo influxd not loaded as a service, so nothing to disable
 
     # Set the values in database/settings.py so that InfluxDBWriter
     # has correct default organization and token.
@@ -322,57 +406,73 @@ function install_influxdb {
 function install_grafana {
     echo "#####################################################################"
     echo Installing Grafana...
-    GRAFANA_RELEASE=grafana-8.1.2
-    GRAFANA_REPO=dl.grafana.com/oss/release
 
-    # If we're on MacOS
     if [ $OS_TYPE == 'MacOS' ]; then
-        GRAFANA_PACKAGE=${GRAFANA_RELEASE}.darwin-amd64 # for MacOS
-    # If we're on Linux
-    elif [ $OS_TYPE == 'CentOS' ] || [ $OS_TYPE == 'Ubuntu' ]; then
-        GRAFANA_PACKAGE=${GRAFANA_RELEASE}.linux-amd64 # for Linux
-    else
-        echo "ERROR: No Grafana binary found for architecture \"`uname -s`\"."
-        exit_gracefully
-    fi
-    GRAFANA_URL=https://${GRAFANA_REPO}/${GRAFANA_PACKAGE}.tar.gz
+        GRAFANA_PATH=/usr/local/bin
+        GRAFANA_HOMEPATH=/usr/local/share/grafana
+        GRAFANA_CONFIG=/usr/local/share/grafana/conf/defaults.ini
 
-    # Grab, uncompress and copy into place
-    pushd /tmp >> /dev/null
-    if [ -e ${GRAFANA_PACKAGE}.tar.gz ]; then
-        echo Already have archive locally: /tmp/${GRAFANA_PACKAGE}.tar.gz
-    else
-        echo Fetching binaries
-        wget $GRAFANA_URL
-    fi
-    if [ -d ${GRAFANA_RELEASE} ]; then
-        echo Already have uncompressed release locally: /tmp/${GRAFANA_RELEASE}
-    else
-        echo Uncompressing...
-        tar xzf ${GRAFANA_PACKAGE}.tar.gz
+        brew update
+        brew upgrade
+        brew install --overwrite grafana
+
+    # If we're on CentOS
+    elif [ $OS_TYPE == 'CentOS' ]; then
+        GRAFANA_PATH=/usr/sbin
+        GRAFANA_HOMEPATH=/usr/share/grafana
+        GRAFANA_CONFIG=/usr/share/grafana/conf/defaults.ini
+
+        cat <<EOF | sudo tee /etc/yum.repos.d/grafana.repo
+[grafana]
+name=grafana
+baseurl=https://packages.grafana.com/oss/rpm
+repo_gpgcheck=1
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.grafana.com/gpg.key
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+EOF
+        sudo yum install -y grafana
+
+    # If we're on Ubuntu
+    elif [ $OS_TYPE == 'Ubuntu' ]; then
+        GRAFANA_PATH=/usr/sbin
+        GRAFANA_HOMEPATH=/usr/share/grafana
+        GRAFANA_CONFIG=/usr/share/grafana/conf/defaults.ini
+
+        sudo apt-get install -y apt-transport-https
+        sudo apt-get install -y software-properties-common wget
+        sudo apt-get install -y software-properties-common wget
+        wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+        echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+        sudo apt-get update
+        sudo apt-get install -y grafana
+
     fi
 
-    echo Copying into place...
-    if [ $OS_TYPE == 'MacOS' ]; then
-        cp -rf ${GRAFANA_RELEASE} /usr/local/etc/grafana
-        ln -fs /usr/local/etc/grafana/bin/grafana-server /usr/local/bin
-        ln -fs /usr/local/etc/grafana/bin/grafana-cli /usr/local/bin
-    # If we're on Linux
-    elif [ $OS_TYPE == 'CentOS' ] || [ $OS_TYPE == 'Ubuntu' ]; then
-        CURRENT_USER=$USER
-        sudo cp -rf ${GRAFANA_RELEASE} /usr/local/etc/grafana
-        sudo ln -fs /usr/local/etc/grafana/bin/grafana-server /usr/local/bin
-        sudo ln -fs /usr/local/etc/grafana/bin/grafana-cli /usr/local/bin
-        sudo chown -R $CURRENT_USER /usr/local/etc/grafana
-    fi
-    popd >> /dev/null
+    pushd $GRAFANA_HOMEPATH
+    sudo ${GRAFANA_PATH}/grafana-cli admin reset-admin-password $INFLUXDB_PASSWORD
 
-    grafana-cli --homepath /usr/local/etc/grafana admin reset-admin-password $INFLUXDB_PASSWORD
-
-    PLUGINS_DIR=/usr/local/etc/grafana/data/plugins
     echo Downloading plugins
-    /usr/local/bin/grafana-cli --pluginsDir $PLUGINS_DIR plugins install grafana-influxdb-flux-datasource
-    /usr/local/bin/grafana-cli --pluginsDir $PLUGINS_DIR plugins install briangann-gauge-panel
+    sudo ${GRAFANA_PATH}/grafana-cli plugins install grafana-influxdb-flux-datasource
+    sudo ${GRAFANA_PATH}/grafana-cli plugins install briangann-gauge-panel
+    popd
+
+    # If we're using SSL, change any "http" reference to "https"; if not
+    # do vice versa.
+    if [[ $USE_SSL == 'yes' ]];then
+        sudo sed -i -e "s/protocol = http.*/protocol = https/" $GRAFANA_CONFIG
+        sudo sed -i -e "s/ssl_mode =.*/ssl_mode = skip-verify/" $GRAFANA_CONFIG
+        # Filepath contains '/', so use '#' for sed delimiter
+        sudo sed -i -e "s#cert_file =.*#cert_file = $SSL_CRT_LOCATION#" $GRAFANA_CONFIG
+        sudo sed -i -e "s#cert_key =.*#cert_key = $SSL_KEY_LOCATION#" $GRAFANA_CONFIG
+    else
+        sudo sed -i -e "s/protocol = http.*/protocol = http/" $GRAFANA_CONFIG
+        sudo sed -i -e "s/ssl_mode =.*/ssl_mode = disable/" $GRAFANA_CONFIG
+        sudo sed -i -e "s/cert_file =.*/cert_file =/" $GRAFANA_CONFIG
+        sudo sed -i -e "s/cert_key =.*/cert_key =/" $GRAFANA_CONFIG
+    fi
 
     echo Done setting up Grafana!
 }
@@ -382,67 +482,71 @@ function install_grafana {
 function install_telegraf {
     echo "#####################################################################"
     echo Installing Telegraf...
-    TELEGRAF_RELEASE=telegraf-1.19.3
-    TELEGRAF_REPO=dl.influxdata.com/telegraf/releases
 
-    # NOTE: in 1.13.3, the tgz file uncompresses to a directory that
-    # doesn't include the release number, so just 'telegraf'
-    TELEGRAF_UNCOMPRESSED=$TELEGRAF_RELEASE
-    #TELEGRAF_UNCOMPRESSED='telegraf'  #
-
-    # If we're on MacOS
     if [ $OS_TYPE == 'MacOS' ]; then
-        TELEGRAF_PACKAGE=${TELEGRAF_RELEASE}_darwin_amd64 # for MacOS
-    # If we're on Linux
-    elif [ $OS_TYPE == 'CentOS' ] || [ $OS_TYPE == 'Ubuntu' ]; then
-        TELEGRAF_PACKAGE=${TELEGRAF_RELEASE}_linux_amd64 # for Linux
-    else
-        echo "ERROR: No Telegraf binary found for architecture \"`uname -s`\"."
-        exit_gracefully
-    fi
-    TELEGRAF_URL=https://${TELEGRAF_REPO}/${TELEGRAF_PACKAGE}.tar.gz
+        TELEGRAF_CONF_FILE=telegraf.conf
+        TELEGRAF_CONF_DIR=/usr/local/etc/
+        TELEGRAF_BIN=/usr/local/bin/telegraf
 
-    # Grab, uncompress and copy into place. We need to make a subdir
-    # under /tmp because there's something strange with (at least the
-    # current version of) the tar file which makes it try to change
-    # the ctime of the directory it's in.
-    mkdir -p /tmp/telegraf  #
-    pushd /tmp/telegraf >> /dev/null
-    if [ -e ${TELEGRAF_PACKAGE}.tar.gz ]; then
-        echo Already have archive locally: /tmp/${TELEGRAF_PACKAGE}.tar.gz
-    else
-        echo Fetching binaries
-        wget $TELEGRAF_URL
-    fi
-    if [ -d ${TELEGRAF_UNCOMPRESSED} ]; then
-        echo Already have uncompressed release locally: /tmp/${TELEGRAF_RELEASE}
-    else
-        echo Uncompressing...
-        tar xzf ${TELEGRAF_PACKAGE}.tar.gz
-    fi
+        brew update
+        brew upgrade
+        brew install --overwrite telegraf
 
-    echo Copying into place...
-    if [ $OS_TYPE == 'MacOS' ]; then
-        cp -rf ${TELEGRAF_UNCOMPRESSED} /usr/local/etc/telegraf
-        ln -fs /usr/local/etc/telegraf/usr/bin/telegraf /usr/local/bin
-    # If we're on Linux
-    elif [ $OS_TYPE == 'CentOS' ] || [ $OS_TYPE == 'Ubuntu' ]; then
-        CURRENT_USER=$USER
-        sudo cp -rf ${TELEGRAF_UNCOMPRESSED} /usr/local/etc/telegraf
-        sudo ln -fs /usr/local/etc/telegraf/usr/bin/telegraf /usr/local/bin
-        sudo chown -R $CURRENT_USER /usr/local/etc/telegraf
-    fi
-    popd >> /dev/null
+    # If we're on CentOS
+    elif [ $OS_TYPE == 'CentOS' ]; then
+        TELEGRAF_CONF_FILE=openrvdas.conf
+        TELEGRAF_CONF_DIR=/etc/telegraf/telegraf.d
+        TELEGRAF_BIN=/usr/bin/telegraf
 
-    echo Configuring Telegraf
-    TELEGRAF_CONF=/usr/local/etc/telegraf/etc/telegraf/telegraf.conf
+        # Remove old repo, if it's lying around
+        if [ -e /etc/yum.repos.d/influxdb.repo ]; then
+            sudo rm /etc/yum.repos.d/influxdb.repo
+        fi
+        # From: https://portal.influxdata.com/downloads/
+        # influxdata-archive_compat.key GPG fingerprint:
+        #     9D53 9D90 D332 8DC7 D6C8 D3B9 D8FF 8E1F 7DF8 B07E
+        cat <<EOF | sudo tee /etc/yum.repos.d/influxdata.repo
+[influxdata]
+name = InfluxData Repository - Stable
+baseurl = https://repos.influxdata.com/stable/\$basearch/main
+enabled = 1
+gpgcheck = 1
+gpgkey = https://repos.influxdata.com/influxdata-archive_compat.key
+EOF
+        sudo yum install -y telegraf
+
+    # If we're on Ubuntu
+    elif [ $OS_TYPE == 'Ubuntu' ]; then
+        TELEGRAF_CONF_FILE=openrvdas.conf
+        TELEGRAF_CONF_DIR=/etc/telegraf/telegraf.d
+        TELEGRAF_BIN=/usr/bin/telegraf
+
+        wget -q https://repos.influxdata.com/influxdata-archive_compat.key
+        echo '23a1c8836f0afc5ed24e0486339d7cc8f6790b83886c4c96995b88a061c5bb5d influxdata-archive_compat.key' | sha256sum -c && cat influxdata-archive_compat.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/influxdb.gpg > /dev/null
+        echo 'deb [signed-by=/etc/apt/trusted.gpg.d/influxdb.gpg] https://repos.influxdata.com/debian stable main' | sudo tee /etc/apt/sources.list.d/influxdata.list
+
+        sudo apt-get update
+        sudo apt-get install telegraf
+    fi
 
     # Make sure we've got an InfluxDB auth token
     get_influxdb_auth_token
 
-    # Overwrite the default telegraf.conf with a minimal one that includes
-    # our InfluxDB auth tokens.
-    cat > $TELEGRAF_CONF <<EOF
+    # Create conf in /tmp, then move into place, to get around permission quirk
+    echo Configuring Telegraf
+
+    TELEGRAF_CONF=$TELEGRAF_CONF_DIR/$TELEGRAF_CONF_FILE
+
+    # For now, don't verify certificates
+    if [[ $USE_SSL == 'yes' ]];then
+        TELEGRAF_PROTOCOL='https'
+        INSECURE_SKIP_VERIFY='insecure_skip_verify = true'
+    else
+        TELEGRAF_PROTOCOL='http'
+        INSECURE_SKIP_VERIFY=''
+    fi
+
+    sudo cat > /tmp/$TELEGRAF_CONF_FILE <<EOF
 # Minimal Telegraf configuration
 [global_tags]
 [agent]
@@ -466,17 +570,20 @@ function install_telegraf {
 [[inputs.diskio]]
 [[inputs.kernel]]
 [[inputs.mem]]
+[[inputs.net]]
 [[inputs.processes]]
 [[inputs.swap]]
 [[inputs.system]]
 
 [[outputs.influxdb_v2]]
-   urls = ["http://127.0.0.1:8086"]
+   urls = ["$TELEGRAF_PROTOCOL://127.0.0.1:8086"]
    token = "$INFLUXDB_AUTH_TOKEN"  # Token for authentication.
-   organization = "$ORGANIZATION"  # InfluxDB organization to write to
+   organization = "$INFLUXDB_ORGANIZATION"  # InfluxDB organization to write to
    bucket = "_monitoring"  # Destination bucket to write into.
+   $INSECURE_SKIP_VERIFY
 EOF
 
+    sudo cp /tmp/$TELEGRAF_CONF_FILE $TELEGRAF_CONF
     echo Done setting up Telegraf!
 }
 
@@ -510,7 +617,7 @@ EOF
 
     ##########
     # If InfluxDB is installed, create an entry for it
-    if [[ -e /usr/local/bin/influxd ]]; then
+    if [[ $INSTALL_INFLUXDB == 'yes' ]]; then
         INSTALLED_PROGRAMS=influxdb
 
         if [[ $RUN_INFLUXDB == 'yes' ]];then
@@ -518,12 +625,18 @@ EOF
         else
             AUTOSTART_INFLUXDB=false
         fi
-        cat >> $TMP_SUPERVISOR_FILE <<EOF
 
+        if [[ $USE_SSL == 'yes' ]];then
+            INFLUX_SSL_OPTIONS="--tls-cert=\"$SSL_CRT_LOCATION\" --tls-key=\"$SSL_KEY_LOCATION\""
+        else
+            INFLUX_SSL_OPTIONS=""
+        fi
+        cat >> $TMP_SUPERVISOR_FILE <<EOF
 ; Run InfluxDB
 [program:influxdb]
-command=/usr/local/bin/influxd --reporting-disabled
-directory=/opt/openrvdas
+command=${INFLUX_PATH}/influxd --reporting-disabled $INFLUX_SSL_OPTIONS
+directory=${INSTALL_ROOT}/openrvdas
+;environment=INFLUXD_CONFIG_PATH=/etc/influxdb
 autostart=$AUTOSTART_INFLUXDB
 autorestart=true
 startretries=3
@@ -536,44 +649,41 @@ EOF
     # If Grafana is installed, create an entry for it. Grafana
     # requires all sorts of command line help, and the locations of
     # the files it needs depend on the system, so hunt around.
-    if [[ -e /usr/local/bin/grafana-server ]]; then
+    if [[  $INSTALL_GRAFANA == 'yes' ]]; then
         if [[ -z "$INSTALLED_PROGRAMS" ]];then
             INSTALLED_PROGRAMS=grafana
         else
             INSTALLED_PROGRAMS=${INSTALLED_PROGRAMS},grafana
         fi
 
-        GRAFANA_HOMEPATH=/usr/local/etc/grafana
-
         if [[ $RUN_GRAFANA == 'yes' ]];then
             AUTOSTART_GRAFANA=true
         else
             AUTOSTART_GRAFANA=false
         fi
+
         cat >> $TMP_SUPERVISOR_FILE <<EOF
 
 ; Run Grafana
 [program:grafana]
-command=/usr/local/bin/grafana-server --homepath $GRAFANA_HOMEPATH
-directory=/opt/openrvdas
+command=${GRAFANA_PATH}/grafana-server --homepath $GRAFANA_HOMEPATH
+directory=$GRAFANA_HOMEPATH
 autostart=$AUTOSTART_GRAFANA
 autorestart=true
 startretries=3
 stderr_logfile=/var/log/openrvdas/grafana.stderr
-user=$USER
+;user=$USER
 EOF
     fi
 
     ##########
     # If Telegraf is installed, create an entry for it.
-    if [[ -e /usr/local/bin/telegraf ]]; then
+    if [[  $INSTALL_TELEGRAF == 'yes' ]]; then
         if [[ -z "$INSTALLED_PROGRAMS" ]];then
             INSTALLED_PROGRAMS=telegraf
         else
             INSTALLED_PROGRAMS=${INSTALLED_PROGRAMS},telegraf
         fi
-
-        TELEGRAF_CONF=/usr/local/etc/telegraf/etc/telegraf/telegraf.conf
 
         if [[ $RUN_TELEGRAF == 'yes' ]];then
             AUTOSTART_TELEGRAF=true
@@ -584,8 +694,8 @@ EOF
 
 ; Run Telegraf
 [program:telegraf]
-command=/usr/local/bin/telegraf --config=${TELEGRAF_CONF}
-directory=/opt/openrvdas
+command=${TELEGRAF_BIN} --config=${TELEGRAF_CONF}
+directory=${INSTALL_ROOT}/openrvdas
 autostart=$AUTOSTART_TELEGRAF
 autorestart=true
 startretries=3
@@ -602,7 +712,7 @@ EOF
     sudo cp -f $TMP_SUPERVISOR_FILE $SUPERVISOR_FILE
 
     echo Done setting up supervisor files. Reloading...
-    supervisorctl reload
+    sudo supervisorctl reload
 }
 
 ###########################################################################
@@ -636,6 +746,48 @@ read -p "Path to openrvdas directory? ($DEFAULT_INSTALL_ROOT) " INSTALL_ROOT
 INSTALL_ROOT=${INSTALL_ROOT:-$DEFAULT_INSTALL_ROOT}
 echo "Activating virtual environment in '${INSTALL_ROOT}/openrvdas'"
 source $INSTALL_ROOT/openrvdas/venv/bin/activate
+echo
+echo "#####################################################################"
+echo "InfluxDB and Grafana can use SSL via secure websockets for off-server"
+echo "access to web console and display widgets. If you enable SSL, you will"
+echo "need to either have or create SSL .key and .crt files."
+echo
+echo "If you create a self-signed certificate, users may need to take additional"
+echo "steps to connect to the web console and display widgets from their machines'"
+echo "browsers. For guidance on this, please see the secure_websockets.md doc in"
+echo "this project's docs subdirectory."
+echo
+yes_no "Use SSL and secure websockets? " $DEFAULT_USE_SSL
+USE_SSL=$YES_NO_RESULT
+
+if [ "$USE_SSL" == "yes" ]; then
+    # Get or create SSL keys
+    echo
+    echo "#####################################################################"
+    echo "The OpenRVDAS console, cached data server and display widgets use HTTPS"
+    echo "and WSS \(secure websockets\) for communication and require an SSL"
+    echo "certificate in the form of .key and .crt files. If you already have such"
+    echo "keys on your machine that you wish to use, answer "yes" to the question"
+    echo "below, and you will be prompted for their locations. Otherwise answer \"no\""
+    echo "and you will be prompted to create a self-signed certificate."
+    echo
+    yes_no "Do you already have a .key and a .crt file to use for this server? " $DEFAULT_HAVE_SSL_CERTIFICATE
+    HAVE_SSL_CERTIFICATE=$YES_NO_RESULT
+    if [ $HAVE_SSL_CERTIFICATE == 'yes' ]; then
+        read -p "Location of .crt file? ($DEFAULT_SSL_CRT_LOCATION) " SSL_CRT_LOCATION
+        read -p "Location of .key file? ($DEFAULT_SSL_KEY_LOCATION) " SSL_KEY_LOCATION
+    else
+        read -p "Where to create .crt file? ($DEFAULT_SSL_CRT_LOCATION) " SSL_CRT_LOCATION
+        read -p "Where to create .key file? ($DEFAULT_SSL_KEY_LOCATION) " SSL_KEY_LOCATION
+    fi
+    SSL_CRT_LOCATION=${SSL_CRT_LOCATION:-$DEFAULT_SSL_CRT_LOCATION}
+    SSL_KEY_LOCATION=${SSL_KEY_LOCATION:-$DEFAULT_SSL_KEY_LOCATION}
+else
+    # Propagate unused variables so they're saved in defaults
+    HAVE_SSL_CERTIFICATE=$DEFAULT_HAVE_SSL_CERTIFICATE
+    SSL_CRT_LOCATION=$DEFAULT_SSL_CRT_LOCATION
+    SSL_KEY_LOCATION=$DEFAULT_SSL_KEY_LOCATION
+fi
 
 yes_no "Install InfluxDB?" $DEFAULT_INSTALL_INFLUXDB
 INSTALL_INFLUXDB=$YES_NO_RESULT
@@ -664,6 +816,16 @@ else
   RUN_TELEGRAF=no
 fi
 
+#########################################################################
+#########################################################################
+# Create new self-signed SSL certificate, if that's what they want
+if [ $USE_SSL == "yes" ] && [ $HAVE_SSL_CERTIFICATE == 'no' ]; then
+    echo
+    echo "#####################################################################"
+    echo "Ready to set up new self-signed SSL certificate."
+    setup_ssl_certificate
+fi
+
 echo "#####################################################################"
 echo "This script will create an InfluxDB user and set its password as you"
 echo "specify. It will also set the password for Grafana's 'admin' account"
@@ -686,6 +848,13 @@ while true; do
     fi
 done
 
+echo
+read -p "'Organization' to use for InfluxDB OpenRVDAS data? ($DEFAULT_INFLUXDB_ORGANIZATION) " INFLUXDB_ORGANIZATION
+INFLUXDB_ORGANIZATION=${INFLUXDB_ORGANIZATION:-$DEFAULT_INFLUXDB_ORGANIZATION}
+echo
+read -p "Bucket to use for InfluxDB OpenRVDAS data? ($DEFAULT_INFLUXDB_BUCKET) " INFLUXDB_BUCKET
+INFLUXDB_BUCKET=${INFLUXDB_BUCKET:-$DEFAULT_INFLUXDB_BUCKET}
+
 read -p "HTTP/HTTPS proxy to use ($DEFAULT_HTTP_PROXY)? " HTTP_PROXY
 HTTP_PROXY=${HTTP_PROXY:-$DEFAULT_HTTP_PROXY}
 
@@ -701,7 +870,7 @@ save_default_variables
 
 # Don't want existing installations to be running while we do this
 echo Stopping supervisor prior to installation.
-supervisorctl stop all
+sudo supervisorctl stop all || echo "Supervisor not running."
 
 # Let's get to installing things!
 if [ $INSTALL_INFLUXDB == 'yes' ];then

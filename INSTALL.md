@@ -1,32 +1,20 @@
 # OpenRVDAS Installation Guide
-At the time of this writing OpenRVDAS has been built and tested against MacOS X, CentOS 7, CentOS 8, Ubuntu 18, Ubuntu 20 and Raspbian
-operating systems. It may be possible to build against other Linux-based operating systems, and guides will be added
-here as they are verified and documented.
+At the time of this writing OpenRVDAS has been built and tested against MacOS X, CentOS 7-9, Rocky 8-9, Ubuntu 18-23
+and Raspbian operating systems. It may be possible to build against other Linux-based operating systems, and guides
+will be added here as they are verified and documented.
 
-*Note that OpenRVDAS is still very much under development and subject to unannounced changes.*
-
-To begin installation, grab the script from github:
-
+You will need to be able to run the ``sudo`` command. To begin installation, grab the script from github and run from the command line:
 ```
 OPENRVDAS_REPO=raw.githubusercontent.com/oceandatatools/openrvdas
-
-BRANCH=master  # stable master branch
-#BRANCH=dev    # development branch with latest changes
-
-wget https://$OPENRVDAS_REPO/$BRANCH/utils/install_openrvdas.sh
-```
-
-Now run the script. On LINUX, it should be run as root:
-
-```
+BRANCH=master
+curl -O -L https://$OPENRVDAS_REPO/$BRANCH/utils/install_openrvdas.sh
+chmod +x install_openrvdas.sh
 sudo ./install_openrvdas.sh
 ```
-On MacOS, it should be run as a user that has sudo permissions (the script will prompt several times
- for the sudo password when needed):
+selecting ``master``, ``dev`` or other branch of the repo if your project has one.
 
-```
-./install_openrvdas.sh
-``` 
+On MacOS, it should be run as a user that has sudo permissions (the script will prompt several times
+for the sudo password when needed):
 
 _The script will ask a lot of questions and provide default answers in parens that will be filled in if you hit "return"; without any other input:_
 
@@ -139,3 +127,31 @@ If you are planning to run the test cruise definition in ``test/NBP1406/NBP1406_
 
 You may also use broader acting commands with supervisorctl, such as
 ``start all``, ``stop all`` and ``restart all``.
+
+## Manually running scripts
+
+In addition to controlling the scripts through the ``supervisor`` daemon, all OpenRVDAS scripts can be run
+from the command line. To do so, you will need to activate the virtual environment that they were configured to run
+under, or some of the Python packages they depend on may not be available.
+
+The OpenRVDAS virtual environment may be activated for a shell by running
+
+```source venv/bin/activate```
+
+from the OpenRVDAS home directory. The primary effect of this activation is to modify the default path searched for binaries
+so that invoking ``python`` uses the version at ``venv/bin/python`` rather than the default system path. Once activated,
+OpenRVDAS scripts may be run by invoking their location, e.g.:
+```
+logger/listener/listen.py --udp 6204 --write_file /var/log/udp_6204.txt
+```
+To deactivate the virtual environment, run the ``deactivate`` command.
+
+OpenRVDAS scripts may be run outside the virtual environment by specifying the path to the executable to be use on the
+command line. E.g.
+
+```
+venv/bin/python logger/listener/listen.py --udp 6204 --write_file /var/log/udp_6204.txt
+```
+This latter method is how the servers are configured to run inside the supervisor's config file at
+``/etc/supervisor.d/openrvdas.ini`` (Ubuntu: ``/etc/supervisor/conf.d/openrvdas.conf``,
+MacOS: ``/usr/local/etc/supervisor.d/openrvdas.ini``).
