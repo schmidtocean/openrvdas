@@ -1,0 +1,1 @@
+Timestamp,CableLength_m:-11.4,CableSpeed_m/s,CableTension_m/min

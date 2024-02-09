@@ -1,0 +1,912 @@
+################################################################################
+# Device definitions for the R/V Falkor (too)
+#
+# See README.md in this directory
+
+includes:
+  - local/soi/devices/*.yaml
+
+devices:
+  ######################################
+  bridgedata:
+    category: "device"
+    device_type: "BridgeData"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      AntennaHeight: "BridgeData_AntennaHeight"
+      CourseMag: "BridgeData_CourseMag"
+      CourseTrue: "BridgeData_CourseTrue"
+      DGPSStationID: "BridgeData_DGPSStationID"
+      FixQuality: "BridgeData_FixQuality"
+      GeoidHeight: "BridgeData_GeoidHeight"
+      GPSDate: "BridgeData_GPSDate"
+      GPSDay: "BridgeData_GPSDay"
+      GPSMonth: "BridgeData_GPSMonth"
+      GPSTime: "BridgeData_GPSTime"
+      GPSYear: "BridgeData_GPSYear"
+      HDOP: "BridgeData_HDOP"
+      HeadingTrue: "BridgeData_HeadingTrue"
+      LastDGPSUpdate: "BridgeData_LastDGPSUpdate"
+      Latitude: "BridgeData_Latitude"
+      LocalHours: "BridgeData_LocalHours"
+      LocalZone: "BridgeData_LocalZone"
+      Longitude: "BridgeData_Longitude"
+      Mode: "BridgeData_Mode"
+      NumSats: "BridgeData_NumSats"
+      RateOfTurn: "BridgeData_RateOfTurn"
+      SpeedKm: "BridgeData_SpeedKm"
+      SpeedKt: "BridgeData_SpeedKt"
+
+  ######################################
+  ctd_sbe911:
+    category: "device"
+    device_type: "CTD_SBE911"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Depth: "CTD_SBE911_Depth"
+      Pressure: "CTD_SBE911_Pressure"
+      Temperature: "CTD_SBE911_Temperature"
+      Temperature2: "CTD_SBE911_Temperature2"
+      Conductivity: "CTD_SBE911_Conductivity"
+      Conductivity2: "CTD_SBE911_Conductivity2"
+      Salinity: "CTD_SBE911_Salinity"
+      Density: "CTD_SBE911_Density"
+      Oxygen: "CTD_SBE911_Oxygen"
+      Oxygen1: "CTD_SBE911_Oxygen2"
+      BeamTransmission: "CTD_SBE911_BeamTransmission"
+      BeamAttenuattion: "CTD_SBE911_BeamAttenuation"
+      # OxidationReductionPotential: "CTD_SBE911_OxidationReductionPotential"
+      Fluorescence: "CTD_SBE911_Fluorescence"
+      Turbidity: "CTD_SBE911_Turbidity"
+      BottlesFired: "CTD_SBE911_BottlesFired"
+      # Salinity2: "CTD_SBE911_Salinity2"
+      # SoundVelocity: "CTD_SBE911_SoundVelocity"
+      # SoundVelocity2: "CTD_SBE911_SoundVelocity2"
+
+  ######################################
+  cnav3050:
+    category: "device"
+    device_type: "CNAV3050"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      AntennaHeight: "CNAV3050_AntennaHeight"
+      CourseMag: "CNAV3050_CourseMag"
+      CourseTrue: "CNAV3050_CourseTrue"
+      DGPSStationID: "CNAV3050_DGPSStationID"
+      FixQuality: "CNAV3050_FixQuality"
+      GeoidHeight: "CNAV3050_GeoidHeight"
+      GPSDate: "CNAV3050_GPSDate"
+      GPSDay: "CNAV3050_GPSDay"
+      GPSMonth: "CNAV3050_GPSMonth"
+      GPSTime: "CNAV3050_GPSTime"
+      GPSYear: "CNAV3050_GPSYear"
+      HDOP: "CNAV3050_HDOP"
+      LastDGPSUpdate: "CNAV3050_LastDGPSUpdate"
+      Latitude: "CNAV3050_Latitude"
+      LocalHours: "CNAV3050_LocalHours"
+      LocalZone: "CNAV3050_LocalZone"
+      Longitude: "CNAV3050_Longitude"
+      MagneticVar: "CNAV3050_MagneticVar"
+      MagneticVarEorW: "CNAV3050_MagneticVarEorW"
+      Mode: "CNAV3050_Mode"
+      NumSats: "CNAV3050_NumSats"
+      SpeedKm: "CNAV3050_SpeedKm"
+      SpeedKt: "CNAV3050_SpeedKt"
+
+  ######################################
+  dps122:
+    category: "device"
+    device_type: "DPS122"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      AntennaHeight: "DPS122_AntennaHeight"
+      CourseMag: "DPS122_CourseMag"
+      CourseTrue: "DPS122_CourseTrue"
+      DGPSStationID: "DPS122_DGPSStationID"
+      FixQuality: "DPS122_FixQuality"
+      GeoidHeight: "DPS122_GeoidHeight"
+      GPSDate: "DPS122_GPSDate"
+      GPSDay: "DPS122_GPSDay"
+      GPSMonth: "DPS122_GPSMonth"
+      GPSTime: "DPS122_GPSTime"
+      GPSYear: "DPS122_GPSYear"
+      GyroCal: "DPS122_GyroCal"
+      GyroOffset: "DPS122_GyroOffset"
+      HDOP: "DPS122_HDOP"
+      HeadingQual: "DPS122_HeadingQual"
+      HeadingTrue: "DPS122_HeadingTrue"
+      Heave: "DPS122_Heave"
+      HeightQual: "DPS122_HeightQual"
+      HorizQual: "DPS122_HorizQual"
+      LastDGPSUpdate: "DPS122_LastDGPSUpdate"
+      Latitude: "DPS122_Latitude"
+      LocalHours: "DPS122_LocalHours"
+      LocalZone: "DPS122_LocalZone"
+      Longitude: "DPS122_Longitude"
+      MagneticVar: "DPS122_MagVar"
+      MagneticVarEorW: "DPS122_MagVarEorW"
+      Mode: "DPS122_Mode"
+      NumSats: "DPS122_NumSats"
+      Pitch: "DPS122_Pitch"
+      RateOfTurn: "DPS122_RateOfTurn"
+      Roll: "DPS122_Roll"
+      RollPitchQual: "DPS122_RollPitchQual"
+      SpeedKm: "DPS122_SpeedKm"
+      SpeedKt: "DPS122_SpeedKt"
+
+  ######################################
+  draft:
+    category: "device"
+    device_type: "Draft"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      DraftFwd: "Draft_DraftFwd"
+      DraftAft: "Draft_DraftAft"
+      CRC: "Draft_CRC"
+
+  ######################################
+  ea640:
+    category: "device"
+    device_type: "EA_Singlebeam"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Depth_f: "EA640_Depth_f"
+      Depth_F: "EA640_Depth_F"
+      Depth_m: "EA640_Depth_m"
+      Depth_xducer_f: "EA640_Depth_xducer_f"
+      Depth_xducer_F: "EA640_Depth_xducer_F"
+      Depth_xducer_m: "EA640_Depth_xducer_m"
+      MaxRange_m: "EA640_MaxRange_m"
+      Xducer_offset_m: "EA640_Xducer_offset_m"
+
+  ######################################
+  ek80:
+    category: "device"
+    device_type: "EK_Splitbeam"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Depth_f: "EK80_Depth_f"
+      Depth_F: "EK80_Depth_F"
+      Depth_m: "EK80_Depth_m"
+      Depth_xducer_f: "EK80_Depth_xducer_f"
+      Depth_xducer_F: "EK80_Depth_xducer_F"
+      Depth_xducer_m: "EK80_Depth_xducer_m"
+      MaxRange_m: "EK80_MaxRange_m"
+      Xducer_offset_m: "EK80_Xducer_offset_m"
+
+  ######################################
+  em124:
+    category: "device"
+    device_type: "EM_Multibeam"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Depth_f: "EM124_Depth_f"
+      Depth_F: "EM124_Depth_F"
+      Depth_m: "EM124_Depth_m"
+      Depth_xducer_f: "EM124_Depth_xducer_f"
+      Depth_xducer_F: "EM124_Depth_xducer_F"
+      Depth_xducer_m: "EM124_Depth_xducer_m"
+      MaxRange_m: "EM124_MaxRange_m"
+      Xducer_offset_m: "EM124_Xducer_offset_m"
+
+  ######################################
+  em2040:
+    category: "device"
+    device_type: "EM_Multibeam"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Depth_f: "EM2040_Depth_f"
+      Depth_F: "EM2040_Depth_F"
+      Depth_m: "EM2040_Depth_m"
+      Depth_xducer_f: "EM2040_Depth_xducer_f"
+      Depth_xducer_F: "EM2040_Depth_xducer_F"
+      Depth_xducer_m: "EM2040_Depth_xducer_m"
+      MaxRange_m: "EM2040_MaxRange_m"
+      Xducer_offset_m: "EM2040_Xducer_offset_m"
+
+  ######################################
+  em712:
+    category: "device"
+    device_type: "EM_Multibeam"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Depth_f: "EM712_Depth_f"
+      Depth_F: "EM712_Depth_F"
+      Depth_m: "EM712_Depth_m"
+      Depth_xducer_f: "EM712_Depth_xducer_f"
+      Depth_xducer_F: "EM712_Depth_xducer_F"
+      Depth_xducer_m: "EM712_Depth_xducer_m"
+      MaxRange_m: "EM712_MaxRange_m"
+      Xducer_offset_m: "EM712_Xducer_offset_m"
+
+  ######################################
+  eml224:
+    category: "device"
+    device_type: "EML_SpeedLog"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      VvelSOW: "EML224_VvelSOW"
+      UvelSOW: "EML224_UvelSOW"
+      StatusSOW: "EML224_StatusSOW"
+      VvelSOG: "EML224_VvelSOG"
+      UvelSOG: "EML224_UvelSOG"
+      StatusSOG: "EML224_StatusSOG"
+      SternSOW: "EML224_SternSOW"
+      StatusSternSOW: "EML224_StatusSternSOW"
+      SternSOG: "EML224_SternSOG"
+      StatusSternSOG: "EML224_StatusSternSOG"
+
+  ######################################
+  flowrate_aft:
+    category: "device"
+    device_type: "Flowmeter"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Flowrate: "Aft_Flowrate"
+
+  ######################################
+  flowrate_fwd:
+    category: "device"
+    device_type: "Flowmeter"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Flowrate: "Fwd_Flowrate"
+
+  ######################################
+  fluorometer_1:
+    category: "device"
+    device_type: "Fluorometer"
+    serial_number: "7473"
+    description: ""
+
+    fields:
+      ChlSig: "Fluoro_1_ChlSig"
+      NU: "Fluoro_1_NU"
+      Therm: "Fluoro_1_Therm"
+      ChlSigRaw: "Fluoro_1_ChlSigRaw"
+
+  ######################################
+  fluorometer_2:
+    category: "device"
+    device_type: "Fluorometer"
+    serial_number: "7493"
+    description: ""
+
+    fields:
+      ChlSig: "Fluoro_2_ChlSig"
+      NU: "Fluoro_2_NU"
+      Therm: "Fluoro_2_Therm"
+      ChlSigRaw: "Fluoro_2_ChlSigRaw"
+
+  ######################################
+  gyro_1:
+    category: "device"
+    device_type: "Gyro"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      HeadingMag: "Gyro1_HeadingMag"
+      HeadingTrue: "Gyro1_HeadingTrue"
+      RateOfTurn: "Gyro1_RateOfTurn"
+
+  ######################################
+  gyro_2:
+    category: "device"
+    device_type: "Gyro"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      HeadingMag: "Gyro2_HeadingMag"
+      HeadingTrue: "Gyro2_HeadingTrue"
+      RateOfTurn: "Gyro2_RateOfTurn"
+
+  ######################################
+  gyro_3:
+    category: "device"
+    device_type: "Gyro"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      HeadingMag: "Gyro3_HeadingMag"
+      HeadingTrue: "Gyro3_HeadingTrue"
+      RateOfTurn: "Gyro3_RateOfTurn"
+
+  ######################################
+  met4_fm:
+    category: "device"
+    device_type: "MET4"
+    serial_number: ""
+    description: "MET4 - fwd mast"
+
+    fields:
+      AirPres: "MET4_FM_AirPres"
+      AirTemp: "MET4_FM_AirTemp"
+      Humidity: "MET4_FM_Humidity"
+
+  ######################################
+  moxa_ioLogik_1:
+    category: "device"
+    device_type: "MOXA_ioLogik_EL12xx"
+    serial_number: ""
+    description: "MOXA ioLogik EL12xx #1"
+
+    fields:
+      aiValueRaw0: "MOXA_ioLogik_1_aiValueRaw0"
+      aiValueScaled0: "MOXA_ioLogik_1_aiValueScaled0"
+      aiValueRaw1: "MOXA_ioLogik_1_aiValueRaw1"
+      aiValueScaled1: "MOXA_ioLogik_1_aiValueScaled1"
+      aiValueRaw2: "MOXA_ioLogik_1_aiValueRaw2"
+      aiValueScaled2: "MOXA_ioLogik_1_aiValueScaled2"
+      aiValueRaw3: "MOXA_ioLogik_1_aiValueRaw3"
+      aiValueScaled3: "MOXA_ioLogik_1_aiValueScaled3"
+
+  ######################################
+  mpp_fm:
+    category: "device"
+    device_type: "MetPakPro"
+    serial_number: ""
+    description: "MetPakPro - Fwd Mast"
+
+    fields:
+      NodeLetter: "MPP_FM_NodeLetter"
+      WindDir: "MPP_FM_WindDir"
+      WindSpd: "MPP_FM_WindSpd"
+      AirPres: "MPP_FM_AirPres"
+      Humidity: "MPP_FM_Humidity"
+      AirTemp: "MPP_FM_AirTemp"
+      DewPoint: "MPP_FM_DewPoint"
+      SupplyVoltage: "MPP_FM_SupplyVoltage"
+      SupplyCode: "MPP_FM_SupplyCode"
+
+  ######################################
+  mpp_wh_port:
+    category: "device"
+    device_type: "MetPakPro"
+    serial_number: ""
+    description: "MetPakPro - Wheelhouse - Port side"
+
+    fields:
+      NodeLetter: "MPP_WH_Port_NodeLetter"
+      WindDir: "MPP_WH_Port_WindDir"
+      WindSpd: "MPP_WH_Port_WindSpd"
+      AirPres: "MPP_WH_Port_AirPres"
+      Humidity: "MPP_WH_Port_Humidity"
+      AirTemp: "MPP_WH_Port_AirTemp"
+      DewPoint: "MPP_WH_Port_DewPoint"
+      SupplyVoltage: "MPP_WH_Port_SupplyVoltage"
+      SupplyCode: "MPP_WH_Port_SupplyCode"
+
+  ######################################
+  mpp_wh_stb:
+    category: "device"
+    device_type: "MetPakPro"
+    serial_number: ""
+    description: "MetPakPro - Wheelhouse - Starboard side"
+
+    fields:
+      NodeLetter: "MPP_WH_Stb_NodeLetter"
+      WindDir: "MPP_WH_Stb_WindDir"
+      WindSpd: "MPP_WH_Stb_WindSpd"
+      AirPres: "MPP_WH_Stb_AirPres"
+      Humidity: "MPP_WH_Stb_Humidity"
+      AirTemp: "MPP_WH_Stb_AirTemp"
+      DewPoint: "MPP_WH_Stb_DewPoint"
+      SupplyVoltage: "MPP_WH_Stb_SupplyVoltage"
+      SupplyCode: "MPP_WH_Stb_SupplyCode"
+
+  ######################################
+  mpp_mm_aft:
+    category: "device"
+    device_type: "MetPakPro"
+    serial_number: ""
+    description: "MetPakPro - Main Mast - Aft"
+
+    fields:
+      NodeLetter: "MPP_MM_Aft_NodeLetter"
+      WindDir: "MPP_MM_Aft_WindDir"
+      WindSpd: "MPP_MM_Aft_WindSpd"
+      AirPres: "MPP_MM_Aft_AirPres"
+      Humidity: "MPP_MM_Aft_Humidity"
+      AirTemp: "MPP_MM_Aft_AirTemp"
+      DewPoint: "MPP_MM_Aft_DewPoint"
+      SupplyVoltage: "MPP_MM_Aft_SupplyVoltage"
+      SupplyCode: "MPP_MM_Aft_SupplyCode"
+
+  ######################################
+  minisvs_aft:
+    category: "device"
+    device_type: "MiniSVS"
+    serial_number: "44486"
+    description: ""
+
+    fields:
+      SoundVelocity: "MiniSVS_Aft_SoundVelocity"
+
+  ######################################
+  minisvs_fwd:
+    category: "device"
+    device_type: "MiniSVS"
+    serial_number: "35821"
+    description: ""
+
+    fields:
+      SoundVelocity: "MiniSVS_Fwd_SoundVelocity"
+
+  ######################################
+  par:
+    category: "device"
+    device_type: "Par"
+    serial_number: ""
+    description: ""
+
+    fields:
+      Voltage1: "Par_Voltage1"
+      Voltage2: "Par_Voltage2"
+      Irradiance1: "Par_Irradiance1"
+      Irradiance2: "Par_Irradiance2"
+      
+
+  ######################################
+  par_biospherical:
+    category: "device"
+    device_type: "ParBiospherical"
+    serial_number: ""
+    description: ""
+
+    fields:
+      Voltage: "Par_Voltage"
+
+
+  ######################################
+  pH_sunburst_1:
+    category: "device"
+    device_type: "sunburst_pH"
+    serial_number: "AP0036 SN0123"
+    description: ""
+
+    fields:
+      InstrumentYearDay: "pH_sunburst_1_InstrumentYearDay"
+      Temperature: "pH_sunburst_1_Temperature"
+      SalinityConstant: "pH_sunburst_1_SalinityConstant"
+      pH: "pH_sunburst_1_pH"
+      BatteryVoltage: "pH_sunburst_1_BatteryVoltage"
+      InstrumentDate: "pH_sunburst_1_InstrumentDate"
+      InstrumentTime: "pH_sunburst_1_InstrumentTime"
+
+  ######################################
+  pH_sunburst_2:
+    category: "device"
+    device_type: "sunburst_pH"
+    serial_number: "AP0013 SN0505"
+    description: ""
+
+    fields:
+      InstrumentYearDay: "pH_sunburst_2_InstrumentYearDay"
+      Temperature: "pH_sunburst_2_Temperature"
+      SalinityConstant: "pH_sunburst_2_SalinityConstant"
+      pH: "pH_sunburst_2_pH"
+      BatteryVoltage: "pH_sunburst_2_BatteryVoltage"
+      InstrumentDate: "pH_sunburst_2_InstrumentDate"
+      InstrumentTime: "pH_sunburst_2_InstrumentTime"
+
+  ######################################
+  posmv:
+    category: "device"
+    device_type: "POSMV"
+    serial_number: "14/00110"
+    description: ""
+
+    fields:
+      AntennaHeight: "POSMV_AntennaHeight"
+      CourseMag: "POSMV_CourseMag"
+      CourseTrue: "POSMV_CourseTrue"
+      DGPSStationID: "POSMV_DGPSStationID"
+      FixQuality: "POSMV_FixQuality"
+      GeoidHeight: "POSMV_GeoidHeight"
+      GPSDate: "POSMV_GPSDate"
+      GPSDay: "POSMV_GPSDay"
+      GPSMonth: "POSMV_GPSMonth"
+      GPSTime: "POSMV_GPSTime"
+      GPSYear: "POSMV_GPSYear"
+      GyroCal: "POSMV_GyroCal"
+      GyroOffset: "POSMV_GyroOffset"
+      HDOP: "POSMV_HDOP"
+      HeadingAccuracy: "POSMV_HeadingAccuracy"
+      HeadingQual: "POSMV_HeadingQual"
+      HeadingTrue: "POSMV_HeadingTrue"
+      Heave: "POSMV_Heave"
+      HeightQual: "POSMV_HeightQual"
+      HorizQual: "POSMV_HorizQual"
+      IMUStatus: "POSMV_IMUStatus"
+      LastDGPSUpdate: "POSMV_LastDGPSUpdate"
+      Latitude: "POSMV_Latitude"
+      LocalHours: "POSMV_LocalHours"
+      LocalZone: "POSMV_LocalZone"
+      Longitude: "POSMV_Longitude"
+      MagneticVar: "POSMV_MagneticVar"
+      MagneticVarEorW: "POSMV_MagneticVarEorW"
+      Mode: "POSMV_Mode"
+      NumSats: "POSMV_NumSats"
+      Pitch: "POSMV_Pitch"
+      PitchAccuracy: "POSMV_PitchAccuracy"
+      RateOfTurn: "POSMV_RateOfTurn"
+      Roll: "POSMV_Roll"
+      RollAccuracy: "POSMV_RollAccuracy"
+      RollPitchQual: "POSMV_RollPitchQual"
+      SpeedKm: "POSMV_SpeedKm"
+      SpeedKt: "POSMV_SpeedKt"
+
+  ######################################
+  rad_fm_port:
+    category: "device"
+    device_type: "Rad"
+    serial_number: ""
+    description: "Rad - Fwd Mast - Port"
+
+    fields:
+      InstrumentDate: "RAD_FM_Port_InstrumentDate"
+      InstrumentTime: "RAD_FM_Port_InstrumentTime"
+      Samples: "RAD_FM_Port_Samples"
+      PIR: "RAD_FM_Port_PIR"
+      LW: "RAD_FM_Port_LW"
+      CaseTemp: "RAD_FM_Port_CaseTemp"  
+      DomeTemp: "RAD_FM_Port_DomeTemp"
+      SW: "RAD_FM_Port_SW"
+      BoardTemp: "RAD_FM_Port_BoardTemp"
+      BattVoltage: "RAD_FM_Port_BattVoltage"
+
+  ######################################
+  rad_fm_stb:
+    category: "device"
+    device_type: "Rad"
+    serial_number: ""
+    description: "Rad - Fwd Mast - Starboard"
+
+    fields:
+      InstrumentDate: "RAD_FM_Stb_InstrumentDate"
+      InstrumentTime: "RAD_FM_Stb_InstrumentTime"
+      Samples: "RAD_FM_Stb_Samples"
+      PIR: "RAD_FM_Stb_PIR"
+      LW: "RAD_FM_Stb_LW"
+      CaseTemp: "RAD_FM_Stb_CaseTemp"  
+      DomeTemp: "RAD_FM_Stb_DomeTemp"
+      SW: "RAD_FM_Stb_SW"
+      BoardTemp: "RAD_FM_Stb_BoardTemp"
+      BattVoltage: "RAD_FM_Stb_BattVoltage"
+
+  ######################################
+  sbp29:
+    category: "device"
+    device_type: "SBP29"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Depth_f: "SBP29_Depth_f"
+      Depth_F: "SBP29_Depth_F"
+      Depth_m: "SBP29_Depth_m"
+      Depth_xducer_f: "SBP29_Depth_xducer_f"
+      Depth_xducer_F: "SBP29_Depth_xducer_F"
+      Depth_xducer_m: "SBP29_Depth_xducer_m"
+      MaxRange_m: "SBP29_MaxRange_m"
+      Xducer_offset_m: "SBP29_Xducer_offset_m"
+
+  ######################################
+  seapath330:
+    category: "device"
+    device_type: "Seapath"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      AntennaHeight: "Seapath_AntennaHeight"
+      CourseMag: "Seapath_CourseMag"
+      CourseTrue: "Seapath_CourseTrue"
+      DGPSStationID: "Seapath_DGPSStationID"
+      FixQuality: "Seapath_FixQuality"
+      GeoidHeight: "Seapath_GeoidHeight"
+      GPSDate: "Seapath_GPSDate"
+      GPSDay: "Seapath_GPSDay"
+      GPSMonth: "Seapath_GPSMonth"
+      GPSTime: "Seapath_GPSTime"
+      GPSYear: "Seapath_GPSYear"
+      GyroCal: "Seapath_GyroCal"
+      GyroOffset: "Seapath_GyroOffset"
+      HDOP: "Seapath_HDOP"
+      HeadingQual: "Seapath_HeadingQual"
+      HeadingTrue: "Seapath_HeadingTrue"
+      Heave: "Seapath_Heave"
+      HeightQual: "Seapath_HeightQual"
+      HorizQual: "Seapath_HorizQual"
+      LastDGPSUpdate: "Seapath_LastDGPSUpdate"
+      Latitude: "Seapath_Latitude"
+      LocalHours: "Seapath_LocalHours"
+      LocalZone: "Seapath_LocalZone"
+      Longitude: "Seapath_Longitude"
+      MagneticVar: "Seapath_MagVar"
+      MagneticVarEorW: "Seapath_MagVarEorW"
+      Mode: "Seapath_Mode"
+      NumSats: "Seapath_NumSats"
+      Pitch: "Seapath_Pitch"
+      RateOfTurn: "Seapath_RateOfTurn"
+      Roll: "Seapath_Roll"
+      RollPitchQual: "Seapath_RollPitchQual"
+      SpeedKm: "Seapath_SpeedKm"
+      SpeedKt: "Seapath_SpeedKt"
+
+  ######################################
+  transmissometer_1:
+    category: "device"
+    device_type: "SBE_CST"
+    serial_number: "1476"
+    description: ""
+
+    fields:
+      SN: "SBE_CST_1_SN"
+      RefCount: "SBE_CST_1_RefCount"
+      SigCount: "SBE_CST_1_SigCount"
+      CorrSigCount: "SBE_CST_1_CorrSigCount"
+      CalcBeams: "SBE_CST_1_CalcBeams"
+      Therm: "SBE_CST_1_Therm"
+
+  ######################################
+  transmissometer_2:
+    category: "device"
+    device_type: "SBE_CST"
+    serial_number: "1817"
+    description: ""
+
+    fields:
+      SN: "SBE_CST_2_SN"
+      RefCount: "SBE_CST_2_RefCount"
+      SigCount: "SBE_CST_2_SigCount"
+      CorrSigCount: "SBE_CST_2_CorrSigCount"
+      CalcBeams: "SBE_CST_2_CalcBeams"
+      Therm: "SBE_CST_2_Therm"
+
+  ######################################
+  tsg_sbe45_1:
+    category: "device"
+    device_type: "TSG_SBE45"
+    serial_number: "SBE45: 0421, SBE38: 1302"
+    description: ""
+
+    fields:
+      Conductivity: "TSG_SBE45_1_Conductivity"
+      Salinity: "TSG_SBE45_1_Salinity"
+      SoundVelocity: "TSG_SBE45_1_SoundVelocity"
+      Temperature1: "TSG_SBE45_1_Temperature"
+      Temperature2: "TSG_SBE45_1_SBE38_Temperature"
+
+  ######################################
+  tsg_sbe45_2:
+    category: "device"
+    device_type: "TSG_SBE45"
+    serial_number: "SBE45: 0401, SBE38: 1301"
+    description: ""
+
+    fields:
+      Conductivity: "TSG_SBE45_2_Conductivity"
+      Salinity: "TSG_SBE45_2_Salinity"
+      SoundVelocity: "TSG_SBE45_2_SoundVelocity"
+      Temperature1: "TSG_SBE45_2_Temperature"
+      Temperature2: "TSG_SBE45_2_SBE38_Temperature"
+
+  ######################################
+  speedlog_uhdas_1:
+    category: "device"
+    device_type: "UHDAS"
+    serial_number: "unknown"
+    description: "wh300"
+
+    fields:
+      VvelSOW: "UHDAS_1_VvelSOW"
+      UvelSOW: "UHDAS_1_UvelSOW"
+      StatusSOW: "UHDAS_1_StatusSOW"
+      VvelSOG: "UHDAS_1_VvelSOG"
+      UvelSOG: "UHDAS_1_UvelSOG"
+      StatusSOG: "UHDAS_1_StatusSOG"
+      CheckSum: "UHDAS_1_CheckSum"
+      # SternSOW: "UHDAS_1_SternSOW"
+      # StatusSternSOW: "UHDAS_1_StatusSternSOW"
+      # SternSOG: "UHDAS_1_SternSOG"
+      # StatusSternSOG: "UHDAS_1_StatusSternSOG"
+
+  ######################################
+  speedlog_uhdas_2:
+    category: "device"
+    device_type: "UHDAS"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      VvelSOW: "UHDAS_2_VvelSOW"
+      UvelSOW: "UHDAS_2_UvelSOW"
+      StatusSOW: "UHDAS_2_StatusSOW"
+      VvelSOG: "UHDAS_2_VvelSOG"
+      UvelSOG: "UHDAS_2_UvelSOG"
+      StatusSOG: "UHDAS_2_StatusSOG"
+      SternSOW: "UHDAS_2_SternSOW"
+      StatusSternSOW: "UHDAS_2_StatusSternSOW"
+      SternSOG: "UHDAS_2_SternSOG"
+      StatusSternSOG: "UHDAS_2_StatusSternSOG"
+
+  ######################################
+  hipap_port_1:
+    category: "device"
+    device_type: "HiPAP"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      GPSTime: "HiPAP_Port_1_GPSTime"
+      BeaconID: "HiPAP_Port_1_BeaconID"
+      ErrorCode: "HiPAP_Port_1_ErrorCode"
+      Latitude: "HiPAP_Port_1_Latitude"
+      Longitude: "HiPAP_Port_1_Longitude"
+      Depth: "HiPAP_Port_1_Depth"
+      Altitude: "HiPAP_Port_1_Altitude"
+      FixQuality: "HiPAP_Port_1_FixQuality"
+      NumSats: "HiPAP_Port_1_NumSats"
+      HDOP: "HiPAP_Port_1_HDOP"
+      AntennaHeight: "HiPAP_Port_1_AntennaHeight"
+      GeoidHeight: "HiPAP_Port_1_GeoidHeight"
+      LastDGPSUpdate: "HiPAP_Port_1_LastDGPSUpdate"
+      DGPSStationID: "HiPAP_Port_1_DGPSStationID"
+
+  ######################################
+  hipap_stb_2:
+    category: "device"
+    device_type: "HiPAP"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      GPSTime: "HiPAP_Stb_2_GPSTime"
+      BeaconID: "HiPAP_Stb_2_BeaconID"
+      ErrorCode: "HiPAP_Stb_2_ErrorCode"
+      Latitude: "HiPAP_Stb_2_Latitude"
+      Longitude: "HiPAP_Stb_2_Longitude"
+      Depth: "HiPAP_Stb_2_Depth"
+      Altitude: "HiPAP_Stb_2_Altitude"
+      FixQuality: "HiPAP_Stb_2_FixQuality"
+      NumSats: "HiPAP_Stb_2_NumSats"
+      HDOP: "HiPAP_Stb_2_HDOP"
+      AntennaHeight: "HiPAP_Stb_2_AntennaHeight"
+      GeoidHeight: "HiPAP_Stb_2_GeoidHeight"
+      LastDGPSUpdate: "HiPAP_Stb_2_LastDGPSUpdate"
+      DGPSStationID: "HiPAP_Stb_2_DGPSStationID"
+
+######################################
+  usbl:
+    category: "device"
+    device_type: "Sonardyne"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      GPSTime: "USBL_GPSTime"
+      Latitude_ALPHA: "USBL_Latitude_ALPHA"
+      Longitude_ALPHA: "USBL_Longitude_ALPHA"
+      XCoord_ALPHA: "USBL_XCoord_ALPHA"
+      YCoord_ALPHA: "USBL_YCoord_ALPHA"
+      Depth_ALPHA: "USBL_Depth_ALPHA"
+      Latitude_BRAVO: "USBL_Latitude_BRAVO"
+      Longitude_BRAVO: "USBL_Longitude_BRAVO"
+      XCoord_BRAVO: "USBL_XCoord_BRAVO"
+      YCoord_BRAVO: "USBL_YCoord_BRAVO"
+      Depth_BRAVO: "USBL_Depth_BRAVO"
+      Latitude_CHARLIE: "USBL_Latitude_CHARLIE"
+      Longitude_CHARLIE: "USBL_Longitude_CHARLIE"
+      XCoord_CHARLIE: "USBL_XCoord_CHARLIE"
+      YCoord_CHARLIE: "USBL_YCoord_CHARLIE"
+      Depth_CHARLIE: "USBL_Depth_CHARLIE"
+      Latitude_DELTA: "USBL_Latitude_DELTA"
+      Longitude_DELTA: "USBL_Longitude_DELTA"
+      XCoord_DELTA: "USBL_XCoord_DELTA"
+      YCoord_DELTA: "USBL_YCoord_DELTA"
+      Depth_DELTA: "USBL_Depth_DELTA"
+      Latitude_ECHO: "USBL_Latitude_ECHO"
+      Longitude_ECHO: "USBL_Longitude_ECHO"
+      XCoord_ECHO: "USBL_XCoord_ECHO"
+      YCoord_ECHO: "USBL_YCoord_ECHO"
+      Depth_ECHO: "USBL_Depth_ECHO"
+      Latitude_FOXTROT: "USBL_Latitude_FOXTROT"
+      Longitude_FOXTROT: "USBL_Longitude_FOXTROT"
+      XCoord_FOXTROT: "USBL_XCoord_FOXTROT"
+      YCoord_FOXTROT: "USBL_YCoord_FOXTROT"
+      Depth_FOXTROT: "USBL_Depth_FOXTROT"
+      Latitude_GOLF: "USBL_Latitude_GOLF"
+      Longitude_GOLF: "USBL_Longitude_GOLF"
+      XCoord_GOLF: "USBL_XCoord_GOLF"
+      YCoord_GOLF: "USBL_YCoord_GOLF"
+      Depth_GOLF: "USBL_Depth_GOLF"
+      Latitude_HOTEL: "USBL_Latitude_HOTEL"
+      Longitude_HOTEL: "USBL_Longitude_HOTEL"
+      XCoord_HOTEL: "USBL_XCoord_HOTEL"
+      YCoord_HOTEL: "USBL_YCoord_HOTEL"
+      Depth_HOTEL: "USBL_Depth_HOTEL"
+      Latitude_INDIGO: "USBL_Latitude_INDIGO"
+      Longitude_INDIGO: "USBL_Longitude_INDIGO"
+      XCoord_INDIGO: "USBL_XCoord_INDIGO"
+      YCoord_INDIGO: "USBL_YCoord_INDIGO"
+      Depth_INDIGO: "USBL_Depth_INDIGO"
+      Latitude_JULIET: "USBL_Latitude_JULIET"
+      Longitude_JULIET: "USBL_Longitude_JULIET"
+      XCoord_JULIET: "USBL_XCoord_JULIET"
+      YCoord_JULIET: "USBL_YCoord_JULIET"
+      Depth_JULIET: "USBL_Depth_JULIET"
+      Latitude_KILO: "USBL_Latitude_KILO"
+      Longitude_KILO: "USBL_Longitude_KILO"
+      XCoord_KILO: "USBL_XCoord_KILO"
+      YCoord_KILO: "USBL_YCoord_KILO"
+      Depth_KILO: "USBL_Depth_KILO"
+      Latitude_LIMA: "USBL_Latitude_LIMA"
+      Longitude_LIMA: "USBL_Longitude_LIMA"
+      XCoord_LIMA: "USBL_XCoord_LIMA"
+      YCoord_LIMA: "USBL_YCoord_LIMA"
+      Depth_LIMA: "USBL_Depth_LIMA"
+      Latitude_MIKE: "USBL_Latitude_MIKE"
+      Longitude_MIKE: "USBL_Longitude_MIKE"
+      XCoord_MIKE: "USBL_XCoord_MIKE"
+      YCoord_MIKE: "USBL_YCoord_MIKE"
+      Depth_MIKE: "USBL_Depth_MIKE"
+      Latitude_NOVEMBER: "USBL_Latitude_NOVEMBER"
+      Longitude_NOVEMBER: "USBL_Longitude_NOVEMBER"
+      XCoord_NOVEMBER: "USBL_XCoord_NOVEMBER"
+      YCoord_NOVEMBER: "USBL_YCoord_NOVEMBER"
+      Depth_NOVEMBER: "USBL_Depth_NOVEMBER"
+  
+  ######################################
+  winch_mash10:
+    category: "device"
+    device_type: "Winch"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Timestamp: "Winch_Mash10_Timestamp"
+      WinchID: "Winch_Mash10_WinchID"
+      Tension: "Winch_Mash10_Tension"
+      Rate: "Winch_Mash10_Rate"
+      Payout: "Winch_Mash10_Payout"
+
+  ######################################
+  windsonic_fm:
+    category: "device"
+    device_type: "Windsonic"
+    serial_number: ""
+    description: "Windsonic - Fwd mast"
+
+    fields:
+      WindDir: "Windsonic_WindDir"
+      WindSpd: "Windsonic_WindSpd"

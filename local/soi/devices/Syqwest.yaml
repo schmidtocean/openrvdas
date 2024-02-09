@@ -1,0 +1,35 @@
+######################################
+SBP29:
+  category: "device_type"
+  description: "Syqwest 29 Sub-bottom Profiler"
+
+  format:
+    DBS: "${:.2}DBS,{Depth_f:g},f,{Depth_m:g},m,{Depth_F:g},F*{CheckSum:x}"
+    DBT: "${:.2}DBT,{Depth_xducer_f:g},f,{Depth_xducer_m:g},m,{Depth_xducer_F:g},F*{CheckSum:x}"
+    DPT: "${:.2}DPT,{Depth_xducer_m:g},{Xducer_offset_m:g},{MaxRange_m:g}*{CheckSum:x}"
+
+  fields:
+    Depth_xducer_f:
+      units: "'"
+      description: "Depth at xducer in feet"
+    Depth_xducer_m:
+      units: "m"
+      description: "Depth at xducer in meters"
+    Depth_xducer_F:
+      units: "fathoms"
+      description: "Depth at xducer in fathoms"
+    Xducer_offset_m:
+      units: "m"
+      description: "Distance to waterline from transducer in meters"
+    MaxRange_m:
+      units: "m"
+      description: "Maximum depth range in meters"
+    Depth_f:
+      units: "'"
+      description: "Depth at surface in feet"
+    Depth_m:
+      units: "m"
+      description: "Depth at surface in meters"
+    Depth_F:
+      units: "fathoms"
+      description: "Depth at surface in fathoms"
