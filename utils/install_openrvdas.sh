@@ -177,8 +177,8 @@ function set_default_variables {
     #DEFAULT_HTTP_PROXY=proxy.lmg.usap.gov:3128 #$HTTP_PROXY
     DEFAULT_HTTP_PROXY=$http_proxy
 
-    DEFAULT_OPENRVDAS_REPO=https://github.com/oceandatatools/openrvdas
-    DEFAULT_OPENRVDAS_BRANCH=master
+    DEFAULT_OPENRVDAS_REPO=https://github.com/schmidtocean/openrvdas
+    DEFAULT_OPENRVDAS_BRANCH=master-FKt
 
     DEFAULT_NONSSL_SERVER_PORT=80
     DEFAULT_SSL_SERVER_PORT=443
@@ -188,7 +188,7 @@ function set_default_variables {
     DEFAULT_SSL_CRT_LOCATION=
     DEFAULT_SSL_KEY_LOCATION=
 
-    DEFAULT_RVDAS_USER=rvdas
+    DEFAULT_RVDAS_USER=mt
 
     DEFAULT_INSTALL_FIREWALLD=no
     DEFAULT_OPENRVDAS_AUTOSTART=yes
