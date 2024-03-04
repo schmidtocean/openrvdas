@@ -82,41 +82,48 @@ class MOXAioLogikE12xxReader(Reader):
 
         url = 'http://' + self.address + API_ROOT + '/io/ai'
 
-        # Wait the timeout
-        try:
-            wait_time  = time() - self.last_get_time
-            if wait_time < self.polling_rate:
-                sleep(self.polling_rate - wait_time)
-        
-        except KeyboardInterrupt:
-            logging.warning('Keyboard interrupt recieved, quitting.')
-            return
+        while True:
 
-        except:
-            pass
+            # Wait the timeout or for a keyboard interrupt, whichever comes
+            # first.
+            try:
+                wait_time  = time() - self.last_get_time
+                if wait_time < self.polling_rate:
+                    sleep(self.polling_rate - wait_time)
+            
+            except KeyboardInterrupt:
+                logging.warning('Keyboard interrupt recieved, quitting.')
+                return
 
-        self.last_get_time = time()
-        # Retrieve the data
-        try:
-            res = requests.get(url,
-                               headers=HEADERS,
-                               timeout=self.timeout,
-                              )
+            except:
+                pass
 
-            if res.status_code == 200:
-                # {"slot":0,"io":{"ai":[{"aiIndex":0,"aiMode":0,"aiValueRaw":26,"aiValueScaled":0.003967,"aiValueRawMin":0,"aiValueRawMax":12345,"aiValueScaledMin":0,"aiValueScaledMax":1.883726,"aiResetMinValue":0,"aiResetMaxValue":0,"aiStatus":0,"aiBurnoutValue":2},{"aiIndex":1,"aiMode":0,"aiValueRaw":5516,"aiValueScaled":0.841688,"aiValueRawMin":0,"aiValueRawMax":29519,"aiValueScaledMin":0,"aiValueScaledMax":4.504311,"aiResetMinValue":0,"aiResetMaxValue":0,"aiStatus":0,"aiBurnoutValue":2},{"aiIndex":2,"aiMode":0,"aiValueRaw":525,"aiValueScaled":0.08011,"aiValueRawMin":0,"aiValueRawMax":4487,"aiValueScaledMin":0,"aiValueScaledMax":0.684672,"aiResetMinValue":0,"aiResetMaxValue":0,"aiStatus":0,"aiBurnoutValue":2},{"aiIndex":3,"aiMode":0,"aiValueRaw":133,"aiValueScaled":0.020294,"aiValueRawMin":0,"aiValueRawMax":767,"aiValueScaledMin":0,"aiValueScaledMax":0.117037,"aiResetMinValue":0,"aiResetMaxValue":0,"aiStatus":0,"aiBurnoutValue":2}]}}
-                logging.debug(f'Raw Output: {res.content}')
-                response_json = json.loads(res.content)
+            self.last_get_time = time()
+            # Retrieve the data
+            try:
+                res = requests.get(url,
+                                   headers=HEADERS,
+                                   timeout=self.timeout,
+                                  )
 
-                # cull out the slots we care about
-                return_channels = [response_json['io']['ai'][i] for i in self.analog_channels]
-                logging.debug(f'Returned channels: {return_channels}')
-                # {"aiIndex":0,"aiMode":0,"aiValueRaw":26,"aiValueScaled":0.003967,"aiValueRawMin":0,"aiValueRawMax":12345,"aiValueScaledMin":0,"aiValueScaledMax":1.883726,"aiResetMinValue":0,"aiResetMaxValue":0,"aiStatus":0,"aiBurnoutValue":2}
+                if res.status_code == 200:
+                    # {"slot":0,"io":{"ai":[{"aiIndex":0,"aiMode":0,"aiValueRaw":26,"aiValueScaled":0.003967,"aiValueRawMin":0,"aiValueRawMax":12345,"aiValueScaledMin":0,"aiValueScaledMax":1.883726,"aiResetMinValue":0,"aiResetMaxValue":0,"aiStatus":0,"aiBurnoutValue":2},{"aiIndex":1,"aiMode":0,"aiValueRaw":5516,"aiValueScaled":0.841688,"aiValueRawMin":0,"aiValueRawMax":29519,"aiValueScaledMin":0,"aiValueScaledMax":4.504311,"aiResetMinValue":0,"aiResetMaxValue":0,"aiStatus":0,"aiBurnoutValue":2},{"aiIndex":2,"aiMode":0,"aiValueRaw":525,"aiValueScaled":0.08011,"aiValueRawMin":0,"aiValueRawMax":4487,"aiValueScaledMin":0,"aiValueScaledMax":0.684672,"aiResetMinValue":0,"aiResetMaxValue":0,"aiStatus":0,"aiBurnoutValue":2},{"aiIndex":3,"aiMode":0,"aiValueRaw":133,"aiValueScaled":0.020294,"aiValueRawMin":0,"aiValueRawMax":767,"aiValueScaledMin":0,"aiValueScaledMax":0.117037,"aiResetMinValue":0,"aiResetMaxValue":0,"aiStatus":0,"aiBurnoutValue":2}]}}
+                    logging.debug(f'Raw Output: {res.content}')
+                    response_json = json.loads(res.content)
 
-                # output = [f"{channel['aiIndex']},{channel['aiMode']},{channel['aiValueRaw']},{channel['aiValueScaled']}" for channel in return_channels]
-                return [f"{channel['aiIndex']},{channel['aiMode']},{channel['aiValueRaw']},{channel['aiValueScaled']}" for channel in return_channels]
+                    # cull out the slots we care about
+                    return_channels = [response_json['io']['ai'][i] for i in self.analog_channels]
+                    logging.debug(f'Returned channels: {return_channels}')
+                    # {"aiIndex":0,"aiMode":0,"aiValueRaw":26,"aiValueScaled":0.003967,"aiValueRawMin":0,"aiValueRawMax":12345,"aiValueScaledMin":0,"aiValueScaledMax":1.883726,"aiResetMinValue":0,"aiResetMaxValue":0,"aiStatus":0,"aiBurnoutValue":2}
 
-        except Exception as err:
-            logging.warning('Problem retrieving data from device: %s', self.address)
-            logging.debug("URL: %s", url)
-            logging.debug(str(err))
+                    # output = [f"{channel['aiIndex']},{channel['aiMode']},{channel['aiValueRaw']},{channel['aiValueScaled']}" for channel in return_channels]
+                    return [f"{channel['aiIndex']},{channel['aiMode']},{channel['aiValueRaw']},{channel['aiValueScaled']}" for channel in return_channels]
+
+            except KeyboardInterrupt:
+                logging.warning('Keyboard interrupt recieved, quitting.')
+                return
+
+            except Exception as err:
+                logging.warning('Problem retrieving data from device: %s', self.address)
+                logging.debug("URL: %s", url)
+                logging.debug(str(err))
