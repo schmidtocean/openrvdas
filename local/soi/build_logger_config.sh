@@ -42,12 +42,12 @@ precheck() {
 
   if [[ ! -f "${OPENRVDAS_CONFIG_DEST}/${OPENRVDAS_CONFIG_TEMPLATE_FN}" ]]; then
     echo "ERROR: could not find template file... exiting"
-    return
+    exit 1
   fi
 
   if [[ ! -d "${OPENRVDAS_CONFIG_DEST}" ]]; then
     echo "ERROR: could not find destination directory... exiting"
-    return
+    exit 1
   fi
 
   if [[ ! -d "${OPENRVDAS_CONFIG_BACKUP_DEST}" ]]; then
@@ -59,24 +59,28 @@ precheck() {
   
   if [[ ! -d "${OPENRVDAS_CONFIG_BACKUP_DEST}" ]]; then
     echo "ERROR: could not find backup directory... exiting"
-    return
+    exit 1
   fi
 
 }
 
 query_api() {
 
-  CRUISE_ID=`curl -s "${OPENVDM_SERVER_URL}/api/warehouse/getCruiseID" |
-    python3 -c "import sys, json; print(json.load(sys.stdin)['cruiseID'])"`
+  if output=$(curl --max-time 2 -s "${OPENVDM_SERVER_URL}api/warehouse/getCruiseID"); then
+    echo "$output" | CRUISE_ID=`python3 -c "import sys, json; print(json.load(sys.stdin)['cruiseID'])"`
+  else
+    echo "Unable to communicate with OpenVDM API. Exiting..."
+    exit 1
+  fi
 
   echo "Cruise ID: ${CRUISE_ID}"
 
-  CRUISE_START_DATE=`curl -s "${OPENVDM_SERVER_URL}/api/warehouse/getCruiseStartDate" |
+  CRUISE_START_DATE=`curl --connect-timeout 5 -s "${OPENVDM_SERVER_URL}api/warehouse/getCruiseStartDate" || exit 1 |
     python3 -c "import sys, json; print(json.load(sys.stdin)['cruiseStartDate'].split()[0])" | sed 's?/?-?g'`
 
   echo "Cruise Start Date: ${CRUISE_START_DATE}"
 
-  CRUISE_END_DATE=`curl -s "${OPENVDM_SERVER_URL}/api/warehouse/getCruiseEndDate" |
+  CRUISE_END_DATE=`curl --connect-timeout 5 -s "${OPENVDM_SERVER_URL}api/warehouse/getCruiseEndDate" || exit 1 |
     python3 -c "import sys, json; print(json.load(sys.stdin)['cruiseEndDate'].split()[0])" | sed 's?/?-?g'`
 
   echo "Cruise End Date: ${CRUISE_END_DATE}"
