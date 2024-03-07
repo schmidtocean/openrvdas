@@ -2,6 +2,10 @@
 
 OPENVDM_SERVER_URL="http://10.23.9.20"
 
+if [ $1 == 'devel' ];then
+  OPENVDM_SERVER_URL="http://10.128.0.47"
+fi
+
 OPENRVDAS_CONFIG_DEST="/opt/openrvdas/local/soi"
 OPENRVDAS_CONFIG_FN="logger_config"
 OPENRVDAS_CONFIG_TEMPLATE_FN="logger_config.template"
@@ -9,6 +13,30 @@ OPENRVDAS_CONFIG_BACKUP_DEST=${OPENRVDAS_CONFIG_DEST}/backups
 HDR_DIR="${OPENRVDAS_CONFIG_DEST}/header-files"
 
 PWD=`pwd`
+
+#########################################################################
+#########################################################################
+# Return a normalized yes/no for a value
+yes_no() {
+    QUESTION=$1
+    DEFAULT_ANSWER=$2
+
+    while true; do
+        read -p "$QUESTION ($DEFAULT_ANSWER) " yn
+        case $yn in
+            [Yy]* )
+                YES_NO_RESULT=yes
+                break;;
+            [Nn]* )
+                YES_NO_RESULT=no
+                break;;
+            "" )
+                YES_NO_RESULT=$DEFAULT_ANSWER
+                break;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
+}
 
 precheck() {
 
@@ -22,6 +50,13 @@ precheck() {
     return
   fi
 
+  if [[ ! -d "${OPENRVDAS_CONFIG_BACKUP_DEST}" ]]; then
+    yes_no "ERROR: could not find logger config backup directory ${OPENRVDAS_CONFIG_BACKUP_DEST}... create it? " "yes"
+    if [ $YES_NO_RESULT == "yes" ]; then
+      mkdir -p ${OPENRVDAS_CONFIG_BACKUP_DEST}
+    fi
+  fi
+  
   if [[ ! -d "${OPENRVDAS_CONFIG_BACKUP_DEST}" ]]; then
     echo "ERROR: could not find backup directory... exiting"
     return
