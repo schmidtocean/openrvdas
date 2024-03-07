@@ -3345,7 +3345,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_cnav3050_gga'
+            filebase: '{dataDir}/{cruiseID}_cnav3050_gga'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3358,7 +3358,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gll_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_cnav3050_gll'
+            filebase: '{dataDir}/{cruiseID}_cnav3050_gll'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3371,7 +3371,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rmc_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_cnav3050_rmc'
+            filebase: '{dataDir}/{cruiseID}_cnav3050_rmc'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3384,7 +3384,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_vtg_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_cnav3050_vtg'
+            filebase: '{dataDir}/{cruiseID}_cnav3050_vtg'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3397,7 +3397,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_zda_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_cnav3050_zda'
+            filebase: '{dataDir}/{cruiseID}_cnav3050_zda'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3430,7 +3430,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/ctd_sbe911_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_ctd_sbe911'
+        filebase: '{dataDir}/{cruiseID}_ctd_sbe911'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -3463,7 +3463,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/ctd_svx2_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_ctd_svx2'
+        filebase: '{dataDir}/{cruiseID}_ctd_svx2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -3503,7 +3503,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_dps122_gga'
+            filebase: '{dataDir}/{cruiseID}_dps122_gga'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3516,7 +3516,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_dps122_hdt'
+            filebase: '{dataDir}/{cruiseID}_dps122_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3529,7 +3529,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rot_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_dps122_rot'
+            filebase: '{dataDir}/{cruiseID}_dps122_rot'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3542,7 +3542,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_vtg_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_dps122_vtg'
+            filebase: '{dataDir}/{cruiseID}_dps122_vtg'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3555,7 +3555,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_zda_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_dps122_zda'
+            filebase: '{dataDir}/{cruiseID}_dps122_zda'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3589,7 +3589,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/draft_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_draft'
+        filebase: '{dataDir}/{cruiseID}_draft'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -3629,7 +3629,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_ea640_dpt'
+            filebase: '{dataDir}/{cruiseID}_ea640_dpt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3642,7 +3642,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dbs_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_ea640_dbs'
+            filebase: '{dataDir}/{cruiseID}_ea640_dbs'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3682,7 +3682,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_ek80_200kHz_dpt'
+            filebase: '{dataDir}/{cruiseID}_ek80_200kHz_dpt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3695,7 +3695,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dbs_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_ek80_200kHz_dbs'
+            filebase: '{dataDir}/{cruiseID}_ek80_200kHz_dbs'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3735,7 +3735,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_em124_dpt'
+            filebase: '{dataDir}/{cruiseID}_em124_dpt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3775,7 +3775,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_em2040_dpt'
+            filebase: '{dataDir}/{cruiseID}_em2040_dpt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3815,7 +3815,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_em712_dpt'
+            filebase: '{dataDir}/{cruiseID}_em712_dpt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -3848,7 +3848,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/flowrate_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_flowrate_chilled'
+        filebase: '{dataDir}/{cruiseID}_flowrate_chilled'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -3881,7 +3881,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/flowrate_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_flowrate_inc'
+        filebase: '{dataDir}/{cruiseID}_flowrate_inc'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -3914,7 +3914,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/flowrate_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_flowrate_man_1'
+        filebase: '{dataDir}/{cruiseID}_flowrate_man_1'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -3947,7 +3947,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/flowrate_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_flowrate_man_2'
+        filebase: '{dataDir}/{cruiseID}_flowrate_man_2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -3980,7 +3980,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/flowrate_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_flowrate_unc'
+        filebase: '{dataDir}/{cruiseID}_flowrate_unc'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4013,7 +4013,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/fluorometer_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_fluorometer_1'
+        filebase: '{dataDir}/{cruiseID}_fluorometer_1'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4046,7 +4046,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/fluorometer_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_fluorometer_2'
+        filebase: '{dataDir}/{cruiseID}_fluorometer_2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4086,7 +4086,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_1_hdt'
+            filebase: '{dataDir}/{cruiseID}_gyro_1_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4099,7 +4099,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rot_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_1_rot'
+            filebase: '{dataDir}/{cruiseID}_gyro_1_rot'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4139,7 +4139,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_2_hdt'
+            filebase: '{dataDir}/{cruiseID}_gyro_2_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4152,7 +4152,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rot_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_2_rot'
+            filebase: '{dataDir}/{cruiseID}_gyro_2_rot'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4192,7 +4192,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_3_hdt'
+            filebase: '{dataDir}/{cruiseID}_gyro_3_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4205,7 +4205,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rot_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_3_rot'
+            filebase: '{dataDir}/{cruiseID}_gyro_3_rot'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4245,7 +4245,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gll_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_hipap_1_port_gll'
+            filebase: '{dataDir}/{cruiseID}_hipap_1_port_gll'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4258,7 +4258,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sonardyne_psimssb_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_hipap_1_port_psimssb'
+            filebase: '{dataDir}/{cruiseID}_hipap_1_port_psimssb'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4298,7 +4298,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gll_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_hipap_2_stb_gll'
+            filebase: '{dataDir}/{cruiseID}_hipap_2_stb_gll'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4311,7 +4311,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sonardyne_psimssb_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_hipap_2_stb_psimssb'
+            filebase: '{dataDir}/{cruiseID}_hipap_2_stb_psimssb'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4344,7 +4344,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/magnetometer_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_magnetometer'
+        filebase: '{dataDir}/{cruiseID}_magnetometer'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4377,7 +4377,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/met4_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_met4_fm'
+        filebase: '{dataDir}/{cruiseID}_met4_fm'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4410,7 +4410,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/minisvst_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_minisvs_aft'
+        filebase: '{dataDir}/{cruiseID}_minisvs_aft'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4443,7 +4443,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/minisvs_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_minisvs_fwd'
+        filebase: '{dataDir}/{cruiseID}_minisvs_fwd'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4476,7 +4476,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/metpakpro_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_mpp_fm'
+        filebase: '{dataDir}/{cruiseID}_mpp_fm'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4509,7 +4509,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/metpakpro_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_mpp_mm_aft'
+        filebase: '{dataDir}/{cruiseID}_mpp_mm_aft'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4542,7 +4542,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/metpakpro_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_mpp_wh_port'
+        filebase: '{dataDir}/{cruiseID}_mpp_wh_port'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4575,7 +4575,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/metpakpro_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_mpp_wh_stb'
+        filebase: '{dataDir}/{cruiseID}_mpp_wh_stb'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4608,7 +4608,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/par_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_par_fm_port'
+        filebase: '{dataDir}/{cruiseID}_par_fm_port'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4658,7 +4658,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/par_corrected_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_par_fm_port_corr'
+        filebase: '{dataDir}/{cruiseID}_par_fm_port_corr'
         split_char: ','
         suffix: '.txt'
 
@@ -4678,7 +4678,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/moxa_iologik_el12xx_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_par_fm_stb'
+        filebase: '{dataDir}/{cruiseID}_par_fm_stb'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4724,7 +4724,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/par2_corrected_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_par_fm_stb_corr'
+        filebase: '{dataDir}/{cruiseID}_par_fm_stb_corr'
         split_char: ','
         suffix: '.txt'
 
@@ -4743,7 +4743,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/pH_sunburst_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_pH_sunburst_1'
+        filebase: '{dataDir}/{cruiseID}_pH_sunburst_1'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4776,7 +4776,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/pH_sunburst_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_pH_sunburst_2'
+        filebase: '{dataDir}/{cruiseID}_pH_sunburst_2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -4816,7 +4816,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_pashr_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_pashr'
+            filebase: '{dataDir}/{cruiseID}_posmv_pashr'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4856,7 +4856,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_gga'
+            filebase: '{dataDir}/{cruiseID}_posmv_gga'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4869,7 +4869,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_ggk_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_ggk'
+            filebase: '{dataDir}/{cruiseID}_posmv_ggk'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4882,7 +4882,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gll_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_gll'
+            filebase: '{dataDir}/{cruiseID}_posmv_gll'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4895,7 +4895,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gst_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_gst'
+            filebase: '{dataDir}/{cruiseID}_posmv_gst'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4908,7 +4908,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_hdt'
+            filebase: '{dataDir}/{cruiseID}_posmv_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4921,7 +4921,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_prdid_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_prdid'
+            filebase: '{dataDir}/{cruiseID}_posmv_prdid'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4934,7 +4934,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rmc_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_rmc'
+            filebase: '{dataDir}/{cruiseID}_posmv_rmc'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4947,7 +4947,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_utc_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_utc'
+            filebase: '{dataDir}/{cruiseID}_posmv_utc'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4960,7 +4960,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_vtg_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_vtg'
+            filebase: '{dataDir}/{cruiseID}_posmv_vtg'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -4973,7 +4973,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_zda_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_zda'
+            filebase: '{dataDir}/{cruiseID}_posmv_zda'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -5006,7 +5006,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/pt_pmel_mapr_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_pt_pmel_mapr'
+        filebase: '{dataDir}/{cruiseID}_pt_pmel_mapr'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5039,7 +5039,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/pt_uaf_oxygen_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_pt_uaf_oxygen'
+        filebase: '{dataDir}/{cruiseID}_pt_uaf_oxygen'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5072,7 +5072,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/pt_mag_aps_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_pt_whoi_mag'
+        filebase: '{dataDir}/{cruiseID}_pt_whoi_mag'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5106,7 +5106,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/rad_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_rad_fm_port'
+        filebase: '{dataDir}/{cruiseID}_rad_fm_port'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5139,7 +5139,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/rad_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_rad_fm_stb'
+        filebase: '{dataDir}/{cruiseID}_rad_fm_stb'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5172,7 +5172,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/raingauge_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_raingauge_fm'
+        filebase: '{dataDir}/{cruiseID}_raingauge_fm'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5205,7 +5205,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_alt_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_altimeter'
+        filebase: '{dataDir}/{cruiseID}_sb_altimeter'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5238,7 +5238,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/ctd_sbe49_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_ctd_sbe49'
+        filebase: '{dataDir}/{cruiseID}_sb_ctd_sbe49'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5278,7 +5278,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/depth_corrected_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_ctd_sbe49_depth_corr'
+        filebase: '{dataDir}/{cruiseID}_sb_ctd_sbe49_depth_corr'
         split_char: ','
         suffix: '.txt' 
 
@@ -5297,7 +5297,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_ctd_uvsvx_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_ctd_uvsvx'
+        filebase: '{dataDir}/{cruiseID}_sb_ctd_uvsvx'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5337,7 +5337,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/depth_corrected_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_ctd_uvsvx_depth_corr'
+        filebase: '{dataDir}/{cruiseID}_sb_ctd_uvsvx_depth_corr'
         split_char: ','
         suffix: '.txt'
 
@@ -5363,7 +5363,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/depth_corrected_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_ctd_uvsvx_depth_teos'
+        filebase: '{dataDir}/{cruiseID}_sb_ctd_uvsvx_depth_teos'
         split_char: ','
         suffix: '.txt'  
 
@@ -5382,7 +5382,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_pt100_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_hightemp_pt100'
+        filebase: '{dataDir}/{cruiseID}_sb_hightemp_pt100'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5422,7 +5422,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_mech_comps_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_mech_comps'
+            filebase: '{dataDir}/{cruiseID}_sb_mech_comps'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter  
@@ -5435,7 +5435,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_mech_valves_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_mech_valves'
+            filebase: '{dataDir}/{cruiseID}_sb_mech_valves'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -5472,7 +5472,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_oxygen_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_oxygen'
+        filebase: '{dataDir}/{cruiseID}_sb_oxygen'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5514,7 +5514,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/oxygen_corrected_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_oxygen_corr'
+        filebase: '{dataDir}/{cruiseID}_sb_oxygen_corr'
         split_char: ','
         suffix: '.txt' 
 
@@ -5533,7 +5533,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_paro_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_paro'
+        filebase: '{dataDir}/{cruiseID}_sb_paro'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5573,7 +5573,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_paro_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_paro'
+            filebase: '{dataDir}/{cruiseID}_sb_paro'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -5586,7 +5586,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_paro_dbt'
+            filebase: '{dataDir}/{cruiseID}_sb_paro_dbt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -5626,7 +5626,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/depth_corrected_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_paro_depth_corr'
+        filebase: '{dataDir}/{cruiseID}_sb_paro_depth_corr'
         split_char: ','
         suffix: '.txt' 
 
@@ -5645,7 +5645,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_pco2_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_pco2'
+        filebase: '{dataDir}/{cruiseID}_sb_pco2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5678,7 +5678,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_pH_sunburst_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_ph'
+        filebase: '{dataDir}/{cruiseID}_sb_ph'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5718,7 +5718,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_sprint_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_sprint'
+            filebase: '{dataDir}/{cruiseID}_sb_sprint'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -5731,7 +5731,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_sprint_diag_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_sprint_diag'
+            filebase: '{dataDir}/{cruiseID}_sb_sprint_diag'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -5771,7 +5771,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/depth_corrected_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_sprint_depth_corr'
+        filebase: '{dataDir}/{cruiseID}_sb_sprint_depth_corr'
         split_char: ','
         suffix: '.txt' 
 
@@ -5798,7 +5798,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_sprint_psonnav_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_sprint_psonnav'
+            filebase: '{dataDir}/{cruiseID}_sb_sprint_psonnav'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -5831,7 +5831,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_winch_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_winch'
+        filebase: '{dataDir}/{cruiseID}_sb_winch'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5864,7 +5864,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sbp29_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sbp29'
+        filebase: '{dataDir}/{cruiseID}_sbp29'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -5894,7 +5894,7 @@ configs:
       kwargs:
         mode: 'ab'
         delimiter: null
-        filename: '/data/openrvdas/{cruiseID}_seapath330_motion'
+        filename: '{dataDir}/{cruiseID}_seapath330_motion'
         split_by_time: True
         time_format: '-%Y-%m-%d.bin'
 
@@ -5910,7 +5910,7 @@ configs:
       kwargs:
         mode: 'ab'
         delimiter: null
-        filename: '/data/openrvdas/{cruiseID}_seapath330_heave'
+        filename: '{dataDir}/{cruiseID}_seapath330_heave'
         split_by_time: True
         time_format: '-%Y-%m-%d.bin'
 
@@ -5936,7 +5936,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_gga'
+            filebase: '{dataDir}/{cruiseID}_seapath330_gga'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -5949,7 +5949,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gll_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_gll'
+            filebase: '{dataDir}/{cruiseID}_seapath330_gll'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -5962,7 +5962,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_hdt'
+            filebase: '{dataDir}/{cruiseID}_seapath330_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -5975,7 +5975,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rmc_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_rmc'
+            filebase: '{dataDir}/{cruiseID}_seapath330_rmc'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -5988,7 +5988,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_vtg_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_vtg'
+            filebase: '{dataDir}/{cruiseID}_seapath330_vtg'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6001,7 +6001,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_zda_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_zda'
+            filebase: '{dataDir}/{cruiseID}_seapath330_zda'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6034,7 +6034,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/nmea_vbw_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_speedlog_uhdas_1_vbw'
+        filebase: '{dataDir}/{cruiseID}_speedlog_uhdas_1_vbw'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -6067,7 +6067,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/nmea_vbw_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_speedlog_uhdas_2_vbw'
+        filebase: '{dataDir}/{cruiseID}_speedlog_uhdas_2_vbw'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -6099,7 +6099,7 @@ configs:
     writers:
     - class: LogfileWriter
       kwargs:
-        filebase: '/data/openrvdas/{cruiseID}_temp_chilled'
+        filebase: '{dataDir}/{cruiseID}_temp_chilled'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -6132,7 +6132,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/transmissometer_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_transmissometer_1'
+        filebase: '{dataDir}/{cruiseID}_transmissometer_1'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -6165,7 +6165,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/transmissometer_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_transmissometer_2'
+        filebase: '{dataDir}/{cruiseID}_transmissometer_2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -6215,7 +6215,7 @@ configs:
 #        - class: LogfileWriter
 #          kwargs:
 #            header_file: '{headerDir}/truewind_hdr.txt'
-#            filebase: '/data/openrvdas/{cruiseID}_truewind_stb'
+#            filebase: '{dataDir}/{cruiseID}_truewind_stb'
 #            split_char: ','
 #            suffix: '.txt'
     - class: ComposedWriter
@@ -6233,7 +6233,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_mwd2_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_truewind_fm'
+            filebase: '{dataDir}/{cruiseID}_truewind_fm'
             split_char: ','
             suffix: '.txt'
 
@@ -6252,7 +6252,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/tsg_sbe45_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_tsg_sbe45_1'
+        filebase: '{dataDir}/{cruiseID}_tsg_sbe45_1'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -6285,7 +6285,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/tsg_sbe45_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_tsg_sbe45_2'
+        filebase: '{dataDir}/{cruiseID}_tsg_sbe45_2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -6325,7 +6325,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_alpha
+            filebase: {dataDir}/{cruiseID}_usbl_gga_alpha
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6338,7 +6338,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_bravo
+            filebase: {dataDir}/{cruiseID}_usbl_gga_bravo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6351,7 +6351,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_charlie
+            filebase: {dataDir}/{cruiseID}_usbl_gga_charlie
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6364,7 +6364,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_delta
+            filebase: {dataDir}/{cruiseID}_usbl_gga_delta
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6377,7 +6377,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_echo
+            filebase: {dataDir}/{cruiseID}_usbl_gga_echo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6390,7 +6390,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_foxtrot
+            filebase: {dataDir}/{cruiseID}_usbl_gga_foxtrot
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6403,7 +6403,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_golf
+            filebase: {dataDir}/{cruiseID}_usbl_gga_golf
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6416,7 +6416,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_hotel
+            filebase: {dataDir}/{cruiseID}_usbl_gga_hotel
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6429,7 +6429,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_indigo
+            filebase: {dataDir}/{cruiseID}_usbl_gga_indigo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6442,7 +6442,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_juliet
+            filebase: {dataDir}/{cruiseID}_usbl_gga_juliet
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6455,7 +6455,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_kilo
+            filebase: {dataDir}/{cruiseID}_usbl_gga_kilo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6468,7 +6468,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_lima
+            filebase: {dataDir}/{cruiseID}_usbl_gga_lima
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6481,7 +6481,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_mike
+            filebase: {dataDir}/{cruiseID}_usbl_gga_mike
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6494,7 +6494,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_november
+            filebase: {dataDir}/{cruiseID}_usbl_gga_november
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6534,7 +6534,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_alpha
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_alpha
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6547,7 +6547,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_bravo
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_bravo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6560,7 +6560,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_charlie
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_charlie
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6573,7 +6573,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_delta
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_delta
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6586,7 +6586,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_echo
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_echo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6599,7 +6599,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_foxtrot
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_foxtrot
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6612,7 +6612,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_golf
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_golf
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6625,7 +6625,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_hotel
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_hotel
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6638,7 +6638,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_indigo
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_indigo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6651,7 +6651,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_juliet
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_juliet
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6664,7 +6664,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_kilo
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_kilo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6677,7 +6677,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_lima
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_lima
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6690,7 +6690,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_mike
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_mike
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6703,7 +6703,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_november
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_november
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6736,7 +6736,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/winch_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_winch_mash'
+        filebase: '{dataDir}/{cruiseID}_winch_mash'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -6769,7 +6769,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/winch_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_winch_mermac'
+        filebase: '{dataDir}/{cruiseID}_winch_mermac'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -6802,7 +6802,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/nmea_mwv_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_windsonic_fm_mwv'
+        filebase: '{dataDir}/{cruiseID}_windsonic_fm_mwv'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -6842,7 +6842,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/wind_dir_corrected_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_windsonic_fm_corr'
+        filebase: '{dataDir}/{cruiseID}_windsonic_fm_corr'
         split_char: ','
         suffix: '.txt' 
 
@@ -6873,7 +6873,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_cnav3050_gga'
+            filebase: '{dataDir}/{cruiseID}_cnav3050_gga'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6886,7 +6886,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gll_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_cnav3050_gll'
+            filebase: '{dataDir}/{cruiseID}_cnav3050_gll'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6899,7 +6899,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rmc_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_cnav3050_rmc'
+            filebase: '{dataDir}/{cruiseID}_cnav3050_rmc'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6912,7 +6912,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_vtg_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_cnav3050_vtg'
+            filebase: '{dataDir}/{cruiseID}_cnav3050_vtg'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6925,7 +6925,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_zda_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_cnav3050_zda'
+            filebase: '{dataDir}/{cruiseID}_cnav3050_zda'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -6962,7 +6962,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/ctd_sbe911_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_ctd_sbe911'
+        filebase: '{dataDir}/{cruiseID}_ctd_sbe911'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -6999,7 +6999,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/ctd_svx2_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_ctd_svx2'
+        filebase: '{dataDir}/{cruiseID}_ctd_svx2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -7043,7 +7043,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_dps122_gga'
+            filebase: '{dataDir}/{cruiseID}_dps122_gga'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7056,7 +7056,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_dps122_hdt'
+            filebase: '{dataDir}/{cruiseID}_dps122_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7069,7 +7069,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rot_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_dps122_rot'
+            filebase: '{dataDir}/{cruiseID}_dps122_rot'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7082,7 +7082,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_vtg_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_dps122_vtg'
+            filebase: '{dataDir}/{cruiseID}_dps122_vtg'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7095,7 +7095,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_zda_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_dps122_zda'
+            filebase: '{dataDir}/{cruiseID}_dps122_zda'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7133,7 +7133,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/draft_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_draft'
+        filebase: '{dataDir}/{cruiseID}_draft'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -7177,7 +7177,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_ea640_dpt'
+            filebase: '{dataDir}/{cruiseID}_ea640_dpt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7190,7 +7190,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dbs_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_ea640_dbs'
+            filebase: '{dataDir}/{cruiseID}_ea640_dbs'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7234,7 +7234,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_ek80_200kHz_dpt'
+            filebase: '{dataDir}/{cruiseID}_ek80_200kHz_dpt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7247,7 +7247,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dbs_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_ek80_200kHz_dbs'
+            filebase: '{dataDir}/{cruiseID}_ek80_200kHz_dbs'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7291,7 +7291,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_em124_dpt'
+            filebase: '{dataDir}/{cruiseID}_em124_dpt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7335,7 +7335,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_em2040_dpt'
+            filebase: '{dataDir}/{cruiseID}_em2040_dpt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7379,7 +7379,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_em712_dpt'
+            filebase: '{dataDir}/{cruiseID}_em712_dpt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7416,7 +7416,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/flowrate_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_flowrate_chilled'
+        filebase: '{dataDir}/{cruiseID}_flowrate_chilled'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -7453,7 +7453,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/flowrate_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_flowrate_inc'
+        filebase: '{dataDir}/{cruiseID}_flowrate_inc'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -7490,7 +7490,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/flowrate_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_flowrate_man_1'
+        filebase: '{dataDir}/{cruiseID}_flowrate_man_1'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -7527,7 +7527,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/flowrate_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_flowrate_man_2'
+        filebase: '{dataDir}/{cruiseID}_flowrate_man_2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -7564,7 +7564,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/flowrate_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_flowrate_unc'
+        filebase: '{dataDir}/{cruiseID}_flowrate_unc'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -7601,7 +7601,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/fluorometer_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_fluorometer_1'
+        filebase: '{dataDir}/{cruiseID}_fluorometer_1'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -7638,7 +7638,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/fluorometer_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_fluorometer_2'
+        filebase: '{dataDir}/{cruiseID}_fluorometer_2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -7682,7 +7682,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_1_hdt'
+            filebase: '{dataDir}/{cruiseID}_gyro_1_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7695,7 +7695,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rot_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_1_rot'
+            filebase: '{dataDir}/{cruiseID}_gyro_1_rot'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7739,7 +7739,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_2_hdt'
+            filebase: '{dataDir}/{cruiseID}_gyro_2_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7752,7 +7752,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rot_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_2_rot'
+            filebase: '{dataDir}/{cruiseID}_gyro_2_rot'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7796,7 +7796,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_3_hdt'
+            filebase: '{dataDir}/{cruiseID}_gyro_3_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7809,7 +7809,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rot_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_gyro_3_rot'
+            filebase: '{dataDir}/{cruiseID}_gyro_3_rot'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7853,7 +7853,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gll_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_hipap_1_port_gll'
+            filebase: '{dataDir}/{cruiseID}_hipap_1_port_gll'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7866,7 +7866,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sonardyne_psimssb_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_hipap_1_port_psimssb'
+            filebase: '{dataDir}/{cruiseID}_hipap_1_port_psimssb'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7910,7 +7910,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gll_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_hipap_2_stb_gll'
+            filebase: '{dataDir}/{cruiseID}_hipap_2_stb_gll'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7923,7 +7923,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sonardyne_psimssb_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_hipap_2_stb_psimssb'
+            filebase: '{dataDir}/{cruiseID}_hipap_2_stb_psimssb'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -7960,7 +7960,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/magnetometer_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_magnetometer'
+        filebase: '{dataDir}/{cruiseID}_magnetometer'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -7997,7 +7997,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/met4_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_met4_fm'
+        filebase: '{dataDir}/{cruiseID}_met4_fm'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8034,7 +8034,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/minisvs_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_minisvs_aft'
+        filebase: '{dataDir}/{cruiseID}_minisvs_aft'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8071,7 +8071,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/minisvs_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_minisvs_fwd'
+        filebase: '{dataDir}/{cruiseID}_minisvs_fwd'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8108,7 +8108,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/metpakpro_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_mpp_fm'
+        filebase: '{dataDir}/{cruiseID}_mpp_fm'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8145,7 +8145,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/metpakpro_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_mpp_mm_aft'
+        filebase: '{dataDir}/{cruiseID}_mpp_mm_aft'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8182,7 +8182,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/metpakpro_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_mpp_wh_port'
+        filebase: '{dataDir}/{cruiseID}_mpp_wh_port'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8219,7 +8219,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/metpakpro_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_mpp_wh_stb'
+        filebase: '{dataDir}/{cruiseID}_mpp_wh_stb'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8256,7 +8256,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/par_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_par_fm_port'
+        filebase: '{dataDir}/{cruiseID}_par_fm_port'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8302,7 +8302,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/moxa_iologik_el12xx_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_par_fm_stb'
+        filebase: '{dataDir}/{cruiseID}_par_fm_stb'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8345,7 +8345,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/pH_sunburst_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_pH_sunburst_1'
+        filebase: '{dataDir}/{cruiseID}_pH_sunburst_1'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8382,7 +8382,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/pH_sunburst_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_pH_sunburst_2'
+        filebase: '{dataDir}/{cruiseID}_pH_sunburst_2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8426,7 +8426,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_pashr_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_pashr'
+            filebase: '{dataDir}/{cruiseID}_posmv_pashr'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -8470,7 +8470,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_gga'
+            filebase: '{dataDir}/{cruiseID}_posmv_gga'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -8483,7 +8483,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_ggk_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_ggk'
+            filebase: '{dataDir}/{cruiseID}_posmv_ggk'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -8496,7 +8496,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gll_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_gll'
+            filebase: '{dataDir}/{cruiseID}_posmv_gll'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -8509,7 +8509,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gst_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_gst'
+            filebase: '{dataDir}/{cruiseID}_posmv_gst'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -8522,7 +8522,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_hdt'
+            filebase: '{dataDir}/{cruiseID}_posmv_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -8535,7 +8535,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_prdid_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_prdid'
+            filebase: '{dataDir}/{cruiseID}_posmv_prdid'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -8548,7 +8548,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rmc_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_rmc'
+            filebase: '{dataDir}/{cruiseID}_posmv_rmc'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -8561,7 +8561,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_utc_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_utc'
+            filebase: '{dataDir}/{cruiseID}_posmv_utc'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -8574,7 +8574,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_vtg_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_vtg'
+            filebase: '{dataDir}/{cruiseID}_posmv_vtg'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -8587,7 +8587,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_zda_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_posmv_zda'
+            filebase: '{dataDir}/{cruiseID}_posmv_zda'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -8624,7 +8624,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/pt_pmel_mapr_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_pt_pmel_mapr'
+        filebase: '{dataDir}/{cruiseID}_pt_pmel_mapr'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8661,7 +8661,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/pt_uaf_oxygen_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_pt_uaf_oxygen'
+        filebase: '{dataDir}/{cruiseID}_pt_uaf_oxygen'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8698,7 +8698,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/pt_mag_aps_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_pt_whoi_mag'
+        filebase: '{dataDir}/{cruiseID}_pt_whoi_mag'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8736,7 +8736,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/rad_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_rad_fm_port'
+        filebase: '{dataDir}/{cruiseID}_rad_fm_port'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8773,7 +8773,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/rad_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_rad_fm_stb'
+        filebase: '{dataDir}/{cruiseID}_rad_fm_stb'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8810,7 +8810,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/raingauge_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_raingauge_fm'
+        filebase: '{dataDir}/{cruiseID}_raingauge_fm'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8847,7 +8847,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_alt_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_altimeter'
+        filebase: '{dataDir}/{cruiseID}_sb_altimeter'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8884,7 +8884,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/ctd_sbe49_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_ctd_sbe49'
+        filebase: '{dataDir}/{cruiseID}_sb_ctd_sbe49'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8921,7 +8921,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_ctd_uvsvx_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_ctd_uvsvx'
+        filebase: '{dataDir}/{cruiseID}_sb_ctd_uvsvx'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -8958,7 +8958,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_pt100_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_hightemp_pt100'
+        filebase: '{dataDir}/{cruiseID}_sb_hightemp_pt100'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9002,7 +9002,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_mech_comps_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_mech_comps'
+            filebase: '{dataDir}/{cruiseID}_sb_mech_comps'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter  
@@ -9015,7 +9015,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_mech_valves_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_mech_valves'
+            filebase: '{dataDir}/{cruiseID}_sb_mech_valves'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9056,7 +9056,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_oxygen_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_oxygen'
+        filebase: '{dataDir}/{cruiseID}_sb_oxygen'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9093,7 +9093,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_paro_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_paro'
+        filebase: '{dataDir}/{cruiseID}_sb_paro'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9137,7 +9137,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_paro_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_paro'
+            filebase: '{dataDir}/{cruiseID}_sb_paro'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9150,7 +9150,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_dpt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_paro_dbt'
+            filebase: '{dataDir}/{cruiseID}_sb_paro_dbt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9187,7 +9187,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_pco2_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_pco2'
+        filebase: '{dataDir}/{cruiseID}_sb_pco2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9224,7 +9224,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_pH_sunburst_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_ph'
+        filebase: '{dataDir}/{cruiseID}_sb_ph'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9268,7 +9268,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_sprint_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_sprint'
+            filebase: '{dataDir}/{cruiseID}_sb_sprint'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9281,7 +9281,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_sprint_diag_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_sprint_diag'
+            filebase: '{dataDir}/{cruiseID}_sb_sprint_diag'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9325,7 +9325,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/sb_sprint_psonnav_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_sb_sprint_psonnav'
+            filebase: '{dataDir}/{cruiseID}_sb_sprint_psonnav'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9362,7 +9362,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sb_winch_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sb_winch'
+        filebase: '{dataDir}/{cruiseID}_sb_winch'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9399,7 +9399,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/sbp29_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_sbp29'
+        filebase: '{dataDir}/{cruiseID}_sbp29'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9443,7 +9443,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_gga'
+            filebase: '{dataDir}/{cruiseID}_seapath330_gga'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9456,7 +9456,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gll_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_gll'
+            filebase: '{dataDir}/{cruiseID}_seapath330_gll'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9469,7 +9469,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_hdt_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_hdt'
+            filebase: '{dataDir}/{cruiseID}_seapath330_hdt'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9482,7 +9482,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_rmc_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_rmc'
+            filebase: '{dataDir}/{cruiseID}_seapath330_rmc'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9495,7 +9495,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_vtg_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_vtg'
+            filebase: '{dataDir}/{cruiseID}_seapath330_vtg'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9508,7 +9508,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_zda_hdr.txt'
-            filebase: '/data/openrvdas/{cruiseID}_seapath330_zda'
+            filebase: '{dataDir}/{cruiseID}_seapath330_zda'
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9545,7 +9545,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/nmea_vbw_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_speedlog_uhdas_1_vbw'
+        filebase: '{dataDir}/{cruiseID}_speedlog_uhdas_1_vbw'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9582,7 +9582,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/nmea_vbw_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_speedlog_uhdas_2_vbw'
+        filebase: '{dataDir}/{cruiseID}_speedlog_uhdas_2_vbw'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9618,7 +9618,7 @@ configs:
     writers:
     - class: LogfileWriter
       kwargs:
-        filebase: '/data/openrvdas/{cruiseID}_temp_chilled'
+        filebase: '{dataDir}/{cruiseID}_temp_chilled'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9655,7 +9655,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/transmissometer_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_transmissometer_1'
+        filebase: '{dataDir}/{cruiseID}_transmissometer_1'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9692,7 +9692,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/transmissometer_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_transmissometer_2'
+        filebase: '{dataDir}/{cruiseID}_transmissometer_2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9729,7 +9729,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/tsg_sbe45_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_tsg_sbe45_1'
+        filebase: '{dataDir}/{cruiseID}_tsg_sbe45_1'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9766,7 +9766,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/tsg_sbe45_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_tsg_sbe45_2'
+        filebase: '{dataDir}/{cruiseID}_tsg_sbe45_2'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -9810,7 +9810,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_alpha
+            filebase: {dataDir}/{cruiseID}_usbl_gga_alpha
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9823,7 +9823,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_bravo
+            filebase: {dataDir}/{cruiseID}_usbl_gga_bravo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9836,7 +9836,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_charlie
+            filebase: {dataDir}/{cruiseID}_usbl_gga_charlie
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9849,7 +9849,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_delta
+            filebase: {dataDir}/{cruiseID}_usbl_gga_delta
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9862,7 +9862,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_echo
+            filebase: {dataDir}/{cruiseID}_usbl_gga_echo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9875,7 +9875,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_foxtrot
+            filebase: {dataDir}/{cruiseID}_usbl_gga_foxtrot
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9888,7 +9888,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_golf
+            filebase: {dataDir}/{cruiseID}_usbl_gga_golf
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9901,7 +9901,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_hotel
+            filebase: {dataDir}/{cruiseID}_usbl_gga_hotel
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9914,7 +9914,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_indigo
+            filebase: {dataDir}/{cruiseID}_usbl_gga_indigo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9927,7 +9927,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_juliet
+            filebase: {dataDir}/{cruiseID}_usbl_gga_juliet
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9940,7 +9940,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_kilo
+            filebase: {dataDir}/{cruiseID}_usbl_gga_kilo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9953,7 +9953,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_lima
+            filebase: {dataDir}/{cruiseID}_usbl_gga_lima
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9966,7 +9966,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_mike
+            filebase: {dataDir}/{cruiseID}_usbl_gga_mike
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -9979,7 +9979,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_gga_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_gga_november
+            filebase: {dataDir}/{cruiseID}_usbl_gga_november
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10023,7 +10023,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_alpha
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_alpha
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10036,7 +10036,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_bravo
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_bravo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10049,7 +10049,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_charlie
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_charlie
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10062,7 +10062,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_delta
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_delta
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10075,7 +10075,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_echo
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_echo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10088,7 +10088,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_foxtrot
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_foxtrot
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10101,7 +10101,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_golf
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_golf
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10114,7 +10114,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_hotel
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_hotel
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10127,7 +10127,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_indigo
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_indigo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10140,7 +10140,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_juliet
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_juliet
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10153,7 +10153,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_kilo
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_kilo
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10166,7 +10166,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_lima
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_lima
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10179,7 +10179,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_mike
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_mike
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10192,7 +10192,7 @@ configs:
         - class: LogfileWriter
           kwargs:
             header_file: '{headerDir}/nmea_psimssb_hdr.txt'
-            filebase: /data/openrvdas/{cruiseID}_usbl_psimssb_november
+            filebase: {dataDir}/{cruiseID}_usbl_psimssb_november
             split_char: ','
             suffix: '.txt'
     - class: ComposedWriter
@@ -10229,7 +10229,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/winch_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_winch_mash'
+        filebase: '{dataDir}/{cruiseID}_winch_mash'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -10266,7 +10266,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/winch_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_winch_mermac'
+        filebase: '{dataDir}/{cruiseID}_winch_mermac'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
@@ -10303,7 +10303,7 @@ configs:
     - class: LogfileWriter
       kwargs:
         header_file: '{headerDir}/nmea_mwv_hdr.txt'
-        filebase: '/data/openrvdas/{cruiseID}_windsonic_fm_mwv'
+        filebase: '{dataDir}/{cruiseID}_windsonic_fm_mwv'
         split_char: ','
         suffix: '.txt'
     - class: ComposedWriter
