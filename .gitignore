@@ -101,3 +101,7 @@ contrib/utils/JSON_YAML_Creator/yarn.lock
 sqlite_gui
 .install_sqlite_gui_preferences
 server/openrvdas.sql
+
+# SOI
+local/soi/logger_config.yaml
+local/soi/backups_devel

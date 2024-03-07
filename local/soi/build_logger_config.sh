@@ -2,15 +2,18 @@
 
 OPENVDM_SERVER_URL="http://10.23.9.20"
 
-if [ $1 == 'devel' ];then
-  OPENVDM_SERVER_URL="http://10.128.0.47"
-fi
-
 OPENRVDAS_CONFIG_DEST="/opt/openrvdas/local/soi"
 OPENRVDAS_CONFIG_FN="logger_config"
 OPENRVDAS_CONFIG_TEMPLATE_FN="logger_config.template"
 OPENRVDAS_CONFIG_BACKUP_DEST=${OPENRVDAS_CONFIG_DEST}/backups
+OPENRVDAS_DATA_DEST="/mnt/sio_data1/openrvdas"
 HDR_DIR="${OPENRVDAS_CONFIG_DEST}/header-files"
+
+if [ $1 == 'devel' ];then
+  OPENVDM_SERVER_URL="http://10.128.0.48"
+  OPENRVDAS_CONFIG_BACKUP_DEST=${OPENRVDAS_CONFIG_DEST}/backups_devel
+  OPENRVDAS_DATA_DEST="/data/openrvdas"
+fi
 
 PWD=`pwd`
 
@@ -51,7 +54,7 @@ precheck() {
   fi
 
   if [[ ! -d "${OPENRVDAS_CONFIG_BACKUP_DEST}" ]]; then
-    yes_no "ERROR: could not find logger config backup directory ${OPENRVDAS_CONFIG_BACKUP_DEST}... create it? " "yes"
+    yes_no "Could not find logger config backup directory ${OPENRVDAS_CONFIG_BACKUP_DEST}... create it? " "yes"
     if [ $YES_NO_RESULT == "yes" ]; then
       mkdir -p ${OPENRVDAS_CONFIG_BACKUP_DEST}
     fi
@@ -66,22 +69,18 @@ precheck() {
 
 query_api() {
 
-  if output=$(curl --max-time 2 -s "${OPENVDM_SERVER_URL}api/warehouse/getCruiseID"); then
-    echo "$output" | CRUISE_ID=`python3 -c "import sys, json; print(json.load(sys.stdin)['cruiseID'])"`
-  else
-    echo "Unable to communicate with OpenVDM API. Exiting..."
-    exit 1
-  fi
+  CRUISE_ID_RAW=`curl --connect-timeout 5 -s "${OPENVDM_SERVER_URL}/api/warehouse/getCruiseID" || echo "Unable to communicate with OpenVDM API. Exiting...";exit 1`
+  CRUISE_ID=`echo $CRUISE_ID_RAW | python3 -c "import sys, json; print(json.load(sys.stdin)['cruiseID'])"`
 
   echo "Cruise ID: ${CRUISE_ID}"
 
-  CRUISE_START_DATE=`curl --connect-timeout 5 -s "${OPENVDM_SERVER_URL}api/warehouse/getCruiseStartDate" || exit 1 |
-    python3 -c "import sys, json; print(json.load(sys.stdin)['cruiseStartDate'].split()[0])" | sed 's?/?-?g'`
+  CRUISE_START_DATE_RAW=`curl --connect-timeout 5 -s "${OPENVDM_SERVER_URL}/api/warehouse/getCruiseStartDate" || echo "Unable to communicate with OpenVDM API. Exiting...";exit 1`
+  CRUISE_START_DATE=`echo $CRUISE_START_DATE_RAW | python3 -c "import sys, json; print(json.load(sys.stdin)['cruiseStartDate'].split()[0])" | sed 's?/?-?g'`
 
   echo "Cruise Start Date: ${CRUISE_START_DATE}"
 
-  CRUISE_END_DATE=`curl --connect-timeout 5 -s "${OPENVDM_SERVER_URL}api/warehouse/getCruiseEndDate" || exit 1 |
-    python3 -c "import sys, json; print(json.load(sys.stdin)['cruiseEndDate'].split()[0])" | sed 's?/?-?g'`
+  CRUISE_END_DATE_RAW=`curl --connect-timeout 5 -s "${OPENVDM_SERVER_URL}/api/warehouse/getCruiseEndDate" || echo "Unable to communicate with OpenVDM API. Exiting...";exit 1`
+  CRUISE_END_DATE=`echo $CRUISE_END_DATE_RAW | python3 -c "import sys, json; print(json.load(sys.stdin)['cruiseEndDate'].split()[0])" | sed 's?/?-?g'`
 
   echo "Cruise End Date: ${CRUISE_END_DATE}"
 
@@ -93,6 +92,7 @@ build_config_file() {
       -e "s|{cruiseStartDate}|$CRUISE_START_DATE|g" \
       -e "s|{cruiseEndDate}|$CRUISE_END_DATE|g" \
       -e "s|{headerDir}|$HDR_DIR|g" \
+      -e "s|{dataDir}|$OPENRVDAS_DATA_DEST|g"\
       ${OPENRVDAS_CONFIG_DEST}/${OPENRVDAS_CONFIG_TEMPLATE_FN} > ${OPENRVDAS_CONFIG_DEST}/${OPENRVDAS_CONFIG_FN}.yaml
 
   cd ${OPENRVDAS_CONFIG_DEST}
