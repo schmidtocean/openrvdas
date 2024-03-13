@@ -204,7 +204,7 @@ function set_default_variables {
 
     DEFAULT_INSTALL_DOC_MARKDOWN=no
 
-    DEFAULT_INSTALL_ENV=production
+    DEFAULT_INSTALL_ENV=Production
 
     # Read in the preferences file, if it exists, to overwrite the defaults.
     if [ -e $PREFERENCES_FILE ]; then
@@ -254,7 +254,7 @@ DEFAULT_SUPERVISORD_WEBINTERFACE_PORT=$SUPERVISORD_WEBINTERFACE_PORT
 
 DEFAULT_INSTALL_DOC_MARKDOWN=$INSTALL_DOC_MARKDOWN
 
-DEFAULT_ENV=$INSTALL_ENV
+DEFAULT_INSTALL_ENV=$INSTALL_ENV
 EOF
 }
 
@@ -878,6 +878,7 @@ password=${SUPERVISORD_WEBINTERFACE_HASH} ; echo -n "<password>" | sha1sum | awk
 EOF
         fi
     fi
+    cat $TEMP_FILE
     sudo mv $TEMP_FILE $SUPERVISOR_FILE
 
     #######################################################
@@ -1130,12 +1131,12 @@ INSTALL_ENV=${INSTALL_ENV:-$DEFAULT_INSTALL_ENV}
 case $INSTALL_ENV in
     1)
     INSTALL_ENV="Development"
-    sed -i "s/10.23.9.20/10.128.0.26/g" "$install_dir/local/soi/build_logger_config.sh"
+    sed -i "s/10.23.9.20/10.128.0.26/g" "$INSTALL_ROOT/openrvdas/local/soi/build_logger_config.sh"
     ;;
 
     2)
     INSTALL_ENV="Production"
-    sed -i "s/10.128.0.26/10.23.9.20/g" "$install_dir/local/soi/build_logger_config.sh"
+    sed -i "s/10.128.0.26/10.23.9.20/g" "$INSTALL_ROOT/openrvdas/local/soi/build_logger_config.sh"
     ;;
 
     # ;;
@@ -1272,7 +1273,7 @@ yes_no "Start the OpenRVDAS server on boot? " $DEFAULT_OPENRVDAS_AUTOSTART
 OPENRVDAS_AUTOSTART=$YES_NO_RESULT
 
 # Set up simulate_FKt script?
-if [ INSTALL_ENV == "Development" ]; then
+if [ $INSTALL_ENV == "Development" ]; then
     echo
     echo "#####################################################################"
     echo "For test installations, OpenRVDAS can configure simulated inputs from"

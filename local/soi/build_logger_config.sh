@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OPENVDM_SERVER_URL="http://10.23.9.20"
+OPENVDM_SERVER_URL="http://10.128.0.26"
 
 OPENRVDAS_CONFIG_DEST="/opt/openrvdas/local/soi"
 OPENRVDAS_CONFIG_FN="logger_config"
