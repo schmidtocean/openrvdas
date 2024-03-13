@@ -800,7 +800,7 @@ function setup_supervisor {
 
     # Whether the simulation script is commented out, and if not,
     # whether it should autorun on boot
-    SIMULATE_FKt_COMMENT=';'
+    SIMULATE_FKt_COMMENT=''
     AUTOSTART_SIMULATE_FKt='false'
     if [ $INSTALL_SIMULATE_FKt = 'yes' ]; then
         SIMULATE_FKt_COMMENT=''
@@ -851,7 +851,9 @@ function setup_supervisor {
     #######################################################
     # Write out the overall supervisor file, filling in variables
     TEMP_FILE=/tmp/openrvdas_tmp.ini
-    sudo rm -f $TEMP_FILE
+    if [ -f $TEMP_FILE ]; then
+	sudo rm $TEMP_FILE
+    fi
 
     cat > $TEMP_FILE <<EOF
 ; First, override the default socket permissions to allow user
@@ -876,7 +878,6 @@ password=${SUPERVISORD_WEBINTERFACE_HASH} ; echo -n "<password>" | sha1sum | awk
 EOF
         fi
     fi
-    cat $TEMP_FILE
     sudo mv $TEMP_FILE $SUPERVISOR_FILE
 
     #######################################################
@@ -1313,6 +1314,7 @@ echo
 yes_no "Enable Supervisor Web-interface? " $DEFAULT_SUPERVISORD_WEBINTERFACE
 SUPERVISORD_WEBINTERFACE=$YES_NO_RESULT
 
+echo "SUPERVISORD_WEBINTERFACE:" $SUPERVISORD_WEBINTERFACE
 if [ $SUPERVISORD_WEBINTERFACE == 'yes' ]; then
 
     read -p "Port on which to serve web interface? ($DEFAULT_SUPERVISORD_WEBINTERFACE_PORT) " SUPERVISORD_WEBINTERFACE_PORT
