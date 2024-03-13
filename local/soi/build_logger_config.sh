@@ -9,7 +9,7 @@ OPENRVDAS_CONFIG_BACKUP_DEST=${OPENRVDAS_CONFIG_DEST}/backups
 OPENRVDAS_DATA_DEST="/mnt/sio_data1/openrvdas"
 HDR_DIR="${OPENRVDAS_CONFIG_DEST}/header-files"
 
-if [ $1 == 'devel' ];then
+if [ ${1:-prod} == 'devel' ]; then
   OPENVDM_SERVER_URL="http://10.128.0.48"
   OPENRVDAS_CONFIG_BACKUP_DEST=${OPENRVDAS_CONFIG_DEST}/backups_devel
   OPENRVDAS_DATA_DEST="/data/openrvdas"

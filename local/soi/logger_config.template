@@ -599,9 +599,9 @@ loggers:
 #################################
 modes:
   'off':
-    cnav3050: cnav3050->off
+    #cnav3050: cnav3050->off
     ctd_sbe911: ctd_sbe911->off
-    ctd_svx2: ctd_svx2->off
+    #ctd_svx2: ctd_svx2->off
     dps122: dps122->off
     draft: draft->off
     ea640: ea640->off
@@ -609,11 +609,11 @@ modes:
     em124: em124->off
     em2040: em2040->off
     em712: em712->off
-    flowrate_chilled: flowrate_chilled->off
-    flowrate_inc: flowrate_inc->off
-    flowrate_man_1: flowrate_man_1->off
-    flowrate_man_2: flowrate_man_2->off
-    flowrate_unc: flowrate_unc->off
+    #flowrate_chilled: flowrate_chilled->off
+    #flowrate_inc: flowrate_inc->off
+    #flowrate_man_1: flowrate_man_1->off
+    #flowrate_man_2: flowrate_man_2->off
+    #flowrate_unc: flowrate_unc->off
     fluorometer_1: fluorometer_1->off
     fluorometer_2: fluorometer_2->off
     gyro_1: gyro_1->off
@@ -621,29 +621,29 @@ modes:
     gyro_3: gyro_3->off
     hipap_1_port: hipap_1_port->off
     hipap_2_stb: hipap_2_stb->off
-    magnetometer: magnetometer->off
+    #magnetometer: magnetometer->off
     met4_fm: met4_fm->off
     minisvs_aft: minisvs_aft->off
     minisvs_fwd: minisvs_fwd->off
     mpp_fm: mpp_fm->off
     mpp_mm_aft: mpp_mm_aft->off
-    mpp_wh_port: mpp_wh_port->off
-    mpp_wh_stb: mpp_wh_stb->off
-    par_fm_port: par_fm_port->off
-    par_fm_port_corr_log: par_fm_port_corr_log->off
+    #mpp_wh_port: mpp_wh_port->off
+    #mpp_wh_stb: mpp_wh_stb->off
+    #par_fm_port: par_fm_port->off
+    #par_fm_port_corr_log: par_fm_port_corr_log->off
     par_fm_stb: par_fm_stb->off
     par_fm_stb_corr_log: par_fm_stb_corr_log->off
     pH_sunburst_1: pH_sunburst_1->off
     pH_sunburst_2: pH_sunburst_2->off
     posmv_motion: posmv_motion->off
     posmv_nav: posmv_nav->off
-    pt_pmel_mapr: pt_pmel_mapr->off
-    pt_uaf_oxygen: pt_uaf_oxygen->off
-    pt_whoi_mag: pt_whoi_mag->off
-    rad_fm_port: rad_fm_port->off
+    #pt_pmel_mapr: pt_pmel_mapr->off
+    #pt_uaf_oxygen: pt_uaf_oxygen->off
+    #pt_whoi_mag: pt_whoi_mag->off
+    #rad_fm_port: rad_fm_port->off
     rad_fm_stb: rad_fm_stb->off
-    raingauge_fm: raingauge_fm->off
-    sb_altimeter: sb_altimeter->off
+    #raingauge_fm: raingauge_fm->off
+    #sb_altimeter: sb_altimeter->off
     sb_ctd_sbe49: sb_ctd_sbe49->off
     sb_ctd_sbe49_depth_corr_calc: sb_ctd_sbe49_depth_corr_calc->off
     sb_ctd_sbe49_depth_corr_log: sb_ctd_sbe49_depth_corr_log->off
@@ -668,14 +668,14 @@ modes:
     sb_sprint_depth_corr_calc: sb_sprint_depth_corr_calc->off
     sb_sprint_depth_corr_log: sb_sprint_depth_corr_log->off
     sb_sprint_hf: sb_sprint_hf->off
-    sb_winch: sb_winch->off
+    #sb_winch: sb_winch->off
     sbp29: sbp29->off
-    seapath330_motion: seapath330_motion->off
-    seapath330_heave: seapath330_heave->off
+    #seapath330_motion: seapath330_motion->off
+    #seapath330_heave: seapath330_heave->off
     seapath330_nav: seapath330_nav->off
     speedlog_uhdas_1: speedlog_uhdas_1->off
     speedlog_uhdas_2: speedlog_uhdas_2->off
-    temp_chilled: temp_chilled->off
+    #temp_chilled: temp_chilled->off
     transmissometer_1: transmissometer_1->off
     transmissometer_2: transmissometer_2->off
     true_wind_calc: true_wind_calc->off
@@ -691,9 +691,9 @@ modes:
     windsonic_fm_corr_log: windsonic_fm_corr_log->off
 
   'port':
-    cnav3050: cnav3050->influx
+    #cnav3050: cnav3050->influx
     ctd_sbe911: ctd_sbe911->influx
-    ctd_svx2: ctd_svx2-influx
+    #ctd_svx2: ctd_svx2-influx
     dps122: dps122->influx
     draft: draft->influx
     ea640: ea640->influx
@@ -701,11 +701,11 @@ modes:
     em124: em124->influx
     em2040: em2040->influx
     em712: em712->influx
-    flowrate_chilled: flowrate_chilled->influx
-    flowrate_inc: flowrate_inc->influx
-    flowrate_man_1: flowrate_man_1->influx
-    flowrate_man_2: flowrate_man_2->influx
-    flowrate_unc: flowrate_unc->influx
+    #flowrate_chilled: flowrate_chilled->influx
+    #flowrate_inc: flowrate_inc->influx
+    #flowrate_man_1: flowrate_man_1->influx
+    #flowrate_man_2: flowrate_man_2->influx
+    #flowrate_unc: flowrate_unc->influx
     fluorometer_1: fluorometer_1->influx
     fluorometer_2: fluorometer_2->influx
     gyro_1: gyro_1->influx
@@ -713,29 +713,29 @@ modes:
     gyro_3: gyro_3->influx
     hipap_1_port: hipap_1_port->influx
     hipap_2_stb: hipap_2_stb->influx
-    magnetometer: magnetometer->influx
+    #magnetometer: magnetometer->influx
     met4_fm: met4_fm->influx
     minisvs_aft: minisvs_aft->influx
     minisvs_fwd: minisvs_fwd->influx
     mpp_fm: mpp_fm->influx
     mpp_mm_aft: mpp_mm_aft->influx
-    mpp_wh_port: mpp_wh_port->influx
-    mpp_wh_stb: mpp_wh_stb->influx
-    par_fm_port: par_fm_port->influx
-    par_fm_port_corr_log: par_fm_port_corr_log->off
+    #mpp_wh_port: mpp_wh_port->influx
+    #mpp_wh_stb: mpp_wh_stb->influx
+    #par_fm_port: par_fm_port->influx
+    #par_fm_port_corr_log: par_fm_port_corr_log->off
     par_fm_stb: par_fm_stb->influx
     par_fm_stb_corr_log: par_fm_stb_corr_log->off
     pH_sunburst_1: pH_sunburst_1->influx
     pH_sunburst_2: pH_sunburst_2->influx
     posmv_motion: posmv_motion->influx
     posmv_nav: posmv_nav->influx
-    pt_pmel_mapr: pt_pmel_mapr->influx
-    pt_uaf_oxygen: pt_uaf_oxygen->influx
-    pt_whoi_mag: pt_whoi_mag->influx
-    rad_fm_port: rad_fm_port->influx
+    #pt_pmel_mapr: pt_pmel_mapr->influx
+    #pt_uaf_oxygen: pt_uaf_oxygen->influx
+    #pt_whoi_mag: pt_whoi_mag->influx
+    #rad_fm_port: rad_fm_port->influx
     rad_fm_stb: rad_fm_stb->influx
-    raingauge_fm: raingauge_fm->influx
-    sb_altimeter: sb_altimeter->influx
+    #raingauge_fm: raingauge_fm->influx
+    #sb_altimeter: sb_altimeter->influx
     sb_ctd_sbe49: sb_ctd_sbe49->influx
     sb_ctd_sbe49_depth_corr_calc: sb_ctd_sbe49_depth_corr_calc->on
     sb_ctd_sbe49_depth_corr_log: sb_ctd_sbe49_depth_corr_log->off
@@ -760,14 +760,14 @@ modes:
     sb_sprint_depth_corr_calc: sb_sprint_depth_corr_calc->on
     sb_sprint_depth_corr_log: sb_sprint_depth_corr_log->off
     sb_sprint_hf: sb_sprint_hf->influx
-    sb_winch: sb_winch->off
+    #sb_winch: sb_winch->off
     sbp29: sbp29->influx
-    seapath330_motion: seapath330_motion->off
-    seapath330_heave: seapath330_heave->off
+    #seapath330_motion: seapath330_motion->off
+    #seapath330_heave: seapath330_heave->off
     seapath330_nav: seapath330_nav->influx
     speedlog_uhdas_1: speedlog_uhdas_1->influx
     speedlog_uhdas_2: speedlog_uhdas_2->influx
-    temp_chilled: temp_chilled->influx
+    #temp_chilled: temp_chilled->influx
     transmissometer_1: transmissometer_1->influx
     transmissometer_2: transmissometer_2->influx
     true_wind_calc: true_wind_calc->on
@@ -783,9 +783,9 @@ modes:
     windsonic_fm_corr_log: windsonic_fm_corr_log->off
 
   'underway':
-    cnav3050: cnav3050->file/influx
+    #cnav3050: cnav3050->file/influx
     ctd_sbe911: ctd_sbe911->file/influx
-    ctd_svx2: ctd_svx2->file/influx
+    #ctd_svx2: ctd_svx2->file/influx
     dps122: dps122->file/influx
     draft: draft->file/influx
     ea640: ea640->file/influx
@@ -793,12 +793,12 @@ modes:
     em124: em124->file/influx
     em2040: em2040->file/influx
     em712: em712->file/influx
-    eml224: eml224->file/influx
-    flowrate_chilled: flowrate_chilled->file/influx
-    flowrate_inc: flowrate_inc->file/influx
-    flowrate_man_1: flowrate_man_1->file/influx
-    flowrate_man_2: flowrate_man_2->file/influx
-    flowrate_unc: flowrate_unc->file/influx
+    #eml224: eml224->file/influx
+    #flowrate_chilled: flowrate_chilled->file/influx
+    #flowrate_inc: flowrate_inc->file/influx
+    #flowrate_man_1: flowrate_man_1->file/influx
+    #flowrate_man_2: flowrate_man_2->file/influx
+    #flowrate_unc: flowrate_unc->file/influx
     fluorometer_1: fluorometer_1->file/influx
     fluorometer_2: fluorometer_2->file/influx
     gyro_1: gyro_1->file/influx
@@ -806,29 +806,29 @@ modes:
     gyro_3: gyro_3->file/influx
     hipap_1_port: hipap_1_port->file/influx
     hipap_2_stb: hipap_2_stb->file/influx
-    magnetometer: magnetometer->file/influx
+    #magnetometer: magnetometer->file/influx
     met4_fm: met4_fm->file/influx
     minisvs_aft: minisvs_aft->file/influx
     minisvs_fwd: minisvs_fwd->file/influx
     mpp_fm: mpp_fm->file/influx
     mpp_mm_aft: mpp_mm_aft->file/influx
-    mpp_wh_port: mpp_wh_port->file/influx
-    mpp_wh_stb: mpp_wh_stb->file/influx
-    par_fm_port: par_fm_port->file/influx
-    par_fm_port_corr_log: par_fm_port_corr_log->file
+    #mpp_wh_port: mpp_wh_port->file/influx
+    #mpp_wh_stb: mpp_wh_stb->file/influx
+    #par_fm_port: par_fm_port->file/influx
+    #par_fm_port_corr_log: par_fm_port_corr_log->file
     par_fm_stb: par_fm_stb->file/influx
     par_fm_stb_corr_log: par_fm_stb_corr_log->file
     pH_sunburst_1: pH_sunburst_1->file/influx
     pH_sunburst_2: pH_sunburst_2->file/influx
     posmv_motion: posmv_motion->file/influx
     posmv_nav: posmv_nav->file/influx
-    pt_pmel_mapr: pt_pmel_mapr->file/influx
-    pt_uaf_oxygen: pt_uaf_oxygen->file/influx
-    pt_whoi_mag: pt_whoi_mag->file/influx
-    rad_fm_port: rad_fm_port->file/influx
+    #pt_pmel_mapr: pt_pmel_mapr->file/influx
+    #pt_uaf_oxygen: pt_uaf_oxygen->file/influx
+    #pt_whoi_mag: pt_whoi_mag->file/influx
+    #rad_fm_port: rad_fm_port->file/influx
     rad_fm_stb: rad_fm_stb->file/influx
-    raingauge_fm: raingauge_fm->file/influx
-    sb_altimeter: sb_altimeter->file/influx
+    #raingauge_fm: raingauge_fm->file/influx
+    #sb_altimeter: sb_altimeter->file/influx
     sb_ctd_sbe49: sb_ctd_sbe49->file/influx
     sb_ctd_sbe49_depth_corr_calc: sb_ctd_sbe49_depth_corr_calc->on
     sb_ctd_sbe49_depth_corr_log: sb_ctd_sbe49_depth_corr_log->file
@@ -853,14 +853,14 @@ modes:
     sb_sprint_depth_corr_calc: sb_sprint_depth_corr_calc->on
     sb_sprint_depth_corr_log: sb_sprint_depth_corr_log->file
     sb_sprint_hf: sb_sprint_hf->file/influx
-    sb_winch: sb_winch->file/influx
+    #sb_winch: sb_winch->file/influx
     sbp29: sbp29->file/influx
-    seapath330_motion: seapath330_motion->file
-    seapath330_heave: seapath330_heave->file
+    #seapath330_motion: seapath330_motion->file
+    #seapath330_heave: seapath330_heave->file
     seapath330_nav: seapath330_nav->file/influx
     speedlog_uhdas_1: speedlog_uhdas_1->file/influx
     speedlog_uhdas_2: speedlog_uhdas_2->file/influx
-    temp_chilled: temp_chilled->file/influx
+    #temp_chilled: temp_chilled->file/influx
     transmissometer_1: transmissometer_1->file/influx
     transmissometer_2: transmissometer_2->file/influx
     true_wind_calc: true_wind_calc->on
@@ -876,9 +876,9 @@ modes:
     windsonic_fm_corr_log: windsonic_fm_corr_log->file
 
   'file-only':
-    cnav3050: cnav3050->file
+    #cnav3050: cnav3050->file
     ctd_sbe911: ctd_sbe911->file
-    ctd_svx2: ctd_svx2->file
+    #ctd_svx2: ctd_svx2->file
     dps122: dps122->file
     draft: draft->file
     ea640: ea640->file
@@ -886,12 +886,12 @@ modes:
     em124: em124->file
     em2040: em2040->file
     em712: em712->file
-    eml224: eml224->file
-    flowrate_chilled: flowrate_chilled->file
-    flowrate_inc: flowrate_inc->file
-    flowrate_man_1: flowrate_man_1->file
-    flowrate_man_2: flowrate_man_2->file
-    flowrate_unc: flowrate_unc->file
+    #eml224: eml224->file
+    #flowrate_chilled: flowrate_chilled->file
+    #flowrate_inc: flowrate_inc->file
+    #flowrate_man_1: flowrate_man_1->file
+    #flowrate_man_2: flowrate_man_2->file
+    #flowrate_unc: flowrate_unc->file
     fluorometer_1: fluorometer_1->file
     fluorometer_2: fluorometer_2->file
     gyro_1: gyro_1->file
@@ -899,29 +899,29 @@ modes:
     gyro_3: gyro_3->file
     hipap_1_port: hipap_1_port->file
     hipap_2_stb: hipap_2_stb->file
-    magnetometer: magnetometer->file
+    #magnetometer: magnetometer->file
     met4_fm: met4_fm->file
     minisvs_aft: minisvs_aft->file
     minisvs_fwd: minisvs_fwd->file
     mpp_fm: mpp_fm->file
     mpp_mm_aft: mpp_mm_aft->file
-    mpp_wh_port: mpp_wh_port->file
-    mpp_wh_stb: mpp_wh_stb->file
-    par_fm_port: par_fm_port->file
-    par_fm_port_corr_log: par_fm_port_corr_log->file
+    #mpp_wh_port: mpp_wh_port->file
+    #mpp_wh_stb: mpp_wh_stb->file
+    #par_fm_port: par_fm_port->file
+    #par_fm_port_corr_log: par_fm_port_corr_log->file
     par_fm_stb: par_fm_stb->file
     par_fm_stb_corr_log: par_fm_stb_corr_log->file
     pH_sunburst_1: pH_sunburst_1->file
     pH_sunburst_2: pH_sunburst_2->file
     posmv_motion: posmv_motion->file
     posmv_nav: posmv_nav->file
-    pt_pmel_mapr: pt_pmel_mapr->file
-    pt_uaf_oxygen: pt_uaf_oxygen->file
-    pt_whoi_mag: pt_whoi_mag->file
-    rad_fm_port: rad_fm_port->file
+    #pt_pmel_mapr: pt_pmel_mapr->file
+    #pt_uaf_oxygen: pt_uaf_oxygen->file
+    #pt_whoi_mag: pt_whoi_mag->file
+    #rad_fm_port: rad_fm_port->file
     rad_fm_stb: rad_fm_stb->file
-    raingauge_fm: raingauge_fm->file
-    sb_altimeter: sb_altimeter->file
+    #raingauge_fm: raingauge_fm->file
+    #sb_altimeter: sb_altimeter->file
     sb_ctd_sbe49: sb_ctd_sbe49->file
     sb_ctd_sbe49_depth_corr_calc: sb_ctd_sbe49_depth_corr_calc->on
     sb_ctd_sbe49_depth_corr_log: sb_ctd_sbe49_depth_corr_log->file
@@ -946,14 +946,14 @@ modes:
     sb_sprint_depth_corr_calc: sb_sprint_depth_corr_calc->on
     sb_sprint_depth_corr_log: sb_sprint_depth_corr_log->file
     sb_sprint_hf: sb_sprint_hf->file
-    sb_winch: sb_winch->file
+    #sb_winch: sb_winch->file
     sbp29: sbp29->file
-    seapath330_motion: seapath330_motion->file
-    seapath330_heave: seapath330_heave->file
+    #seapath330_motion: seapath330_motion->file
+    #seapath330_heave: seapath330_heave->file
     seapath330_nav: seapath330_nav->file
     speedlog_uhdas_1: speedlog_uhdas_1->file
     speedlog_uhdas_2: speedlog_uhdas_2->file
-    temp_chilled: temp_chilled->file
+    #temp_chilled: temp_chilled->file
     transmissometer_1: transmissometer_1->file
     transmissometer_2: transmissometer_2->file
     true_wind_calc: true_wind_calc->on
