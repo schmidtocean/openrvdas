@@ -1981,7 +1981,7 @@ configs:
       kwargs:
         definition_path: local/soi/ship_devices.yaml
     - class: ParConversionTransform
-      module: logger.transforms.parconversion_transform
+      module: local.soi.modules.transforms.parconversion_transform
       kwargs:
         coefficient: 100
         voltage1_field: 'Par_Voltage1'
@@ -2001,7 +2001,7 @@ configs:
     name: par_fm_stb->influx
     readers:
     - class: MOXAioLogikE12xxReader
-      module: logger.readers.moxa_iologik_e12xx_reader
+      module: local.soi.modules.readers.moxa_iologik_e12xx_reader
       kwargs:
         address: '10.23.10.45'
         analog_channels: '1'
@@ -2014,7 +2014,7 @@ configs:
       kwargs:
         definition_path: local/soi/ship_devices.yaml
     - class: BiosphericalParConversionTransform
-      module: logger.transforms.biosphericalparconversion_transform
+      module: local.soi.modules.transforms.biosphericalparconversion_transform
       kwargs:
         coefficient: 0.15524575 # 1/6.4414
         voltage_field: 'Par_Voltage'
@@ -2877,7 +2877,7 @@ configs:
               seconds: 0
     transforms:
     - class: DepthCorrectionTransform
-      module: logger.transforms.depthcorrection_transform
+      module: local.soi.modules.transforms.depthcorrection_transform
       kwargs:
         latitude_field: SB_Sprint_Latitude
         pressure_field: SB_CTD_SBE49_WaterPres
@@ -2916,7 +2916,7 @@ configs:
               seconds: 0
     transforms:
     - class: DensityCorrectionTransform
-      module: logger.transforms.densitycorrection_transform
+      module: local.soi.modules.transforms.densitycorrection_transform
       kwargs:
         latitude_field: SB_Sprint_Latitude
         longitude_field: SB_Sprint_Longitude
@@ -2954,7 +2954,7 @@ configs:
               seconds: 0
     transforms:
     - class: DepthCorrectionTransform
-      module: logger.transforms.depthcorrection_transform
+      module: local.soi.modules.transforms.depthcorrection_transform
       kwargs:
         latitude_field: SB_Sprint_Latitude
         pressure_field: SB_CTD_UVSVX_Pressure
@@ -2986,7 +2986,7 @@ configs:
               seconds: 0
     transforms:
     - class: DepthCorrectionTransform
-      module: logger.transforms.depthcorrection_transform
+      module: local.soi.modules.transforms.depthcorrection_transform
       kwargs:
         latitude_field: SB_Sprint_Latitude
         pressure_field: SB_CTD_UVSVX_Depth
@@ -3022,7 +3022,7 @@ configs:
 #              seconds: 0
 #    transforms:
 #    - class: DOCorrectionTransform
-#      module: logger.transforms.docorrection_transform
+#      module: local.soi.modules.transforms.docorrection_transform
 #      kwargs:
 #        conc_field: SB_Oxygen_Concentration
 #        temp_field: SB_CTD_SBE49_WaterTemp
@@ -3061,7 +3061,7 @@ configs:
               seconds: 0
     transforms:
     - class: DOCorrectionTransform
-      module: logger.transforms.docorrection_transform
+      module: local.soi.modules.transforms.docorrection_transform
       kwargs:
         conc_field: SB_Oxygen_Concentration
         temp_field: SB_CTD_UVSVX_Temperature
@@ -3096,7 +3096,7 @@ configs:
               seconds: 0
     transforms:
     - class: DepthCorrectionTransform
-      module: logger.transforms.depthcorrection_transform
+      module: local.soi.modules.transforms.depthcorrection_transform
       kwargs:
         latitude_field: SB_Sprint_Latitude
         pressure_field: SB_Paro_Pressure_psi
@@ -3130,7 +3130,7 @@ configs:
               seconds: 0
     transforms:
     - class: DepthCorrectionTransform
-      module: logger.transforms.depthcorrection_transform
+      module: local.soi.modules.transforms.depthcorrection_transform
       kwargs:
         depth_field: SB_Sprint_Depth_m
         latitude_field: SB_Sprint_Latitude
@@ -3237,7 +3237,7 @@ configs:
               seconds: 0
     transforms:
     - class: WindDirCorrectionTransform
-      module: logger.transforms.winddircorrection_transform
+      module: local.soi.modules.transforms.winddircorrection_transform
       kwargs:
         wind_dir_field: Windsonic_WindDir
         apparent_dir_name: Windsonic_WindDir_Corr
@@ -4523,7 +4523,7 @@ configs:
             definition_path: local/soi/ship_devices.yaml
             record_format: '{data_id:w} {timestamp:ti},{field_string}'
         - class: ParConversionTransform
-          module: logger.transforms.parconversion_transform
+          module: local.soi.modules.transforms.parconversion_transform
           kwargs:
             coefficient: 100 
             voltage1_field: 'Par_Voltage1'
@@ -4567,7 +4567,7 @@ configs:
     name: par_fm_stb->file
     readers:
     - class: MOXAioLogikE12xxReader
-      module: logger.readers.moxa_iologik_e12xx_reader
+      module: local.soi.modules.readers.moxa_iologik_e12xx_reader
       kwargs:
         address: '10.23.10.45'
         analog_channels: '1'
@@ -4593,7 +4593,7 @@ configs:
             definition_path: local/soi/ship_devices.yaml
             record_format: '{data_id:w} {timestamp:ti},{field_string}'
         - class: BiosphericalParConversionTransform
-          module: logger.transforms.biosphericalparconversion_transform
+          module: local.soi.modules.transforms.biosphericalparconversion_transform
           kwargs:
             coefficient: 0.15524575 # 1/6.4414
             voltage_field: 'Par_Voltage'
@@ -8103,7 +8103,7 @@ configs:
             definition_path: local/soi/ship_devices.yaml
             record_format: '{data_id:w} {timestamp:ti},{field_string}'
         - class: ParConversionTransform
-          module: logger.transforms.parconversion_transform
+          module: local.soi.modules.transforms.parconversion_transform
           kwargs:
             coefficient: 100 
             voltage1_field: 'Par_Voltage1'
@@ -8123,7 +8123,7 @@ configs:
     name: par_fm_stb->file/influx
     readers:
     - class: MOXAioLogikE12xxReader
-      module: logger.readers.moxa_iologik_e12xx_reader
+      module: local.soi.modules.readers.moxa_iologik_e12xx_reader
       kwargs:
         address: '10.23.10.45'
         analog_channels: '1'
@@ -8149,7 +8149,7 @@ configs:
             definition_path: local/soi/ship_devices.yaml
             record_format: '{data_id:w} {timestamp:ti},{field_string}'
         - class: BiosphericalParConversionTransform
-          module: logger.transforms.biosphericalparconversion_transform
+          module: local.soi.modules.transforms.biosphericalparconversion_transform
           kwargs:
             coefficient: 0.15524575 # 1/6.4414
             voltage_field: 'Par_Voltage'
