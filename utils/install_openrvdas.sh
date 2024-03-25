@@ -175,8 +175,8 @@ function set_default_variables {
     #DEFAULT_HTTP_PROXY=proxy.lmg.usap.gov:3128 #$HTTP_PROXY
     DEFAULT_HTTP_PROXY=$http_proxy
 
-    DEFAULT_OPENRVDAS_REPO=https://github.com/schmidtocean/openrvdas
-    DEFAULT_OPENRVDAS_BRANCH=master-FKt
+    DEFAULT_OPENRVDAS_REPO=https://github.com/oceandatatools/openrvdas
+    DEFAULT_OPENRVDAS_BRANCH=master
 
     DEFAULT_NONSSL_SERVER_PORT=80
     DEFAULT_SSL_SERVER_PORT=443
@@ -186,13 +186,13 @@ function set_default_variables {
     DEFAULT_SSL_CRT_LOCATION=
     DEFAULT_SSL_KEY_LOCATION=
 
-    DEFAULT_RVDAS_USER=mt
+    DEFAULT_RVDAS_USER=rvdas
 
     DEFAULT_INSTALL_FIREWALLD=no
     DEFAULT_OPENRVDAS_AUTOSTART=yes
 
-    DEFAULT_INSTALL_SIMULATE_FKt=no
-    DEFAULT_RUN_SIMULATE_FKt=no
+    DEFAULT_INSTALL_SIMULATE_NBP=no
+    DEFAULT_RUN_SIMULATE_NBP=no
 
     DEFAULT_INSTALL_GUI=yes
 
@@ -201,8 +201,6 @@ function set_default_variables {
     DEFAULT_SUPERVISORD_WEBINTERFACE_PORT=9001
 
     DEFAULT_INSTALL_DOC_MARKDOWN=no
-
-    DEFAULT_INSTALL_ENV=Production
 
     # Read in the preferences file, if it exists, to overwrite the defaults.
     if [ -e $PREFERENCES_FILE ]; then
@@ -243,16 +241,14 @@ DEFAULT_OPENRVDAS_AUTOSTART=$OPENRVDAS_AUTOSTART
 
 DEFAULT_INSTALL_GUI=$INSTALL_GUI
 
-DEFAULT_INSTALL_SIMULATE_FKt=$INSTALL_SIMULATE_FKt
-DEFAULT_RUN_SIMULATE_FKt=$RUN_SIMULATE_FKt
+DEFAULT_INSTALL_SIMULATE_NBP=$INSTALL_SIMULATE_NBP
+DEFAULT_RUN_SIMULATE_NBP=$RUN_SIMULATE_NBP
 
 DEFAULT_SUPERVISORD_WEBINTERFACE=$SUPERVISORD_WEBINTERFACE
 DEFAULT_SUPERVISORD_WEBINTERFACE_AUTH=$SUPERVISORD_WEBINTERFACE_AUTH
 DEFAULT_SUPERVISORD_WEBINTERFACE_PORT=$SUPERVISORD_WEBINTERFACE_PORT
 
 DEFAULT_INSTALL_DOC_MARKDOWN=$INSTALL_DOC_MARKDOWN
-
-DEFAULT_INSTALL_ENV=$INSTALL_ENV
 EOF
 }
 
@@ -536,9 +532,6 @@ function setup_python_packages {
       --trusted-host pypi.org --trusted-host files.pythonhosted.org \
       wheel
     venv/bin/python venv/bin/pip3 install -r utils/requirements.txt
-
-    # Additional packages for SOI modules
-    venv/bin/python venv/bin/pip3 install -r utils/requirements_soi.txt
 }
 
 ###########################################################################
@@ -800,13 +793,13 @@ function setup_supervisor {
 
     # Whether the simulation script is commented out, and if not,
     # whether it should autorun on boot
-    SIMULATE_FKt_COMMENT=''
-    AUTOSTART_SIMULATE_FKt='false'
-    if [ $INSTALL_SIMULATE_FKt = 'yes' ]; then
-        SIMULATE_FKt_COMMENT=''
+    SIMULATE_NBP_COMMENT=';'
+    AUTOSTART_SIMULATE_NBP='false'
+    if [ $INSTALL_SIMULATE_NBP = 'yes' ]; then
+        SIMULATE_NBP_COMMENT=''
     fi
-    if [ $RUN_SIMULATE_FKt = 'yes' ]; then
-        AUTOSTART_SIMULATE_FKt='true'
+    if [ $RUN_SIMULATE_NBP = 'yes' ]; then
+        AUTOSTART_SIMULATE_NBP='true'
     fi
 
     # MacOS
@@ -851,9 +844,7 @@ function setup_supervisor {
     #######################################################
     # Write out the overall supervisor file, filling in variables
     TEMP_FILE=/tmp/openrvdas_tmp.ini
-    if [ -f $TEMP_FILE ]; then
-	sudo rm $TEMP_FILE
-    fi
+    sudo rm -f $TEMP_FILE
 
     cat > $TEMP_FILE <<EOF
 ; First, override the default socket permissions to allow user
@@ -956,20 +947,20 @@ EOF
     # Write out the simulator commands, filling in variables
     cat > $TEMP_FILE <<EOF
 ; Supervisor configurations for OpenRVDAS data simulator
-${SIMULATE_FKt_COMMENT}[program:simulate_FKt]
-${SIMULATE_FKt_COMMENT}command=${VENV_BIN}/python logger/utils/simulate_data.py --config test/FKt240101/simulate_FKt240101.yaml
-${SIMULATE_FKt_COMMENT}directory=${INSTALL_ROOT}/openrvdas
-${SIMULATE_FKt_COMMENT}autostart=${AUTOSTART_SIMULATE_FKt}
-${SIMULATE_FKt_COMMENT}autorestart=true
-${SIMULATE_FKt_COMMENT}startretries=3
-${SIMULATE_FKt_COMMENT}killasgroup=true
-${SIMULATE_FKt_COMMENT}stderr_logfile=/var/log/openrvdas/simulate_FKt.stderr
-${SIMULATE_FKt_COMMENT}stderr_logfile_maxbytes=10000000 ; 10M
-${SIMULATE_FKt_COMMENT}stderr_logfile_maxbackups=100
-${SIMULATE_FKt_COMMENT}user=$RVDAS_USER
+${SIMULATE_NBP_COMMENT}[program:simulate_nbp]
+${SIMULATE_NBP_COMMENT}command=${VENV_BIN}/python logger/utils/simulate_data.py --config test/NBP1406/simulate_NBP1406.yaml
+${SIMULATE_NBP_COMMENT}directory=${INSTALL_ROOT}/openrvdas
+${SIMULATE_NBP_COMMENT}autostart=${AUTOSTART_SIMULATE_NBP}
+${SIMULATE_NBP_COMMENT}autorestart=true
+${SIMULATE_NBP_COMMENT}startretries=3
+${SIMULATE_NBP_COMMENT}killasgroup=true
+${SIMULATE_NBP_COMMENT}stderr_logfile=/var/log/openrvdas/simulate_nbp.stderr
+${SIMULATE_NBP_COMMENT}stderr_logfile_maxbytes=10000000 ; 10M
+${SIMULATE_NBP_COMMENT}stderr_logfile_maxbackups=100
+${SIMULATE_NBP_COMMENT}user=$RVDAS_USER
 
-${SIMULATE_FKt_COMMENT}[group:simulate]
-${SIMULATE_FKt_COMMENT}programs=simulate_FKt
+${SIMULATE_NBP_COMMENT}[group:simulate]
+${SIMULATE_NBP_COMMENT}programs=simulate_nbp
 EOF
     sudo cp $TEMP_FILE $SIMULATE_FILE
 }
@@ -1121,32 +1112,10 @@ HTTP_PROXY=${HTTP_PROXY:-$DEFAULT_HTTP_PROXY}
 [ -z $HTTP_PROXY ] || export http_proxy=$HTTP_PROXY
 [ -z $HTTP_PROXY ] || export https_proxy=$HTTP_PROXY
 
-echo "Development or production environment:"
-echo "1. Development"
-echo "2. Production"
-
-read -p "Enter your choice, 1 or 2 (${DEFAULT_INSTALL_ENV}): " INSTALL_ENV
-INSTALL_ENV=${INSTALL_ENV:-$DEFAULT_INSTALL_ENV}
-case $INSTALL_ENV in
-    1)
-    INSTALL_ENV="Development"
-    sed -i "s/10.23.9.20/10.128.0.26/g" "$INSTALL_ROOT/openrvdas/local/soi/build_logger_config.sh"
-    ;;
-
-    2)
-    INSTALL_ENV="Production"
-    sed -i "s/10.128.0.26/10.23.9.20/g" "$INSTALL_ROOT/openrvdas/local/soi/build_logger_config.sh"
-    ;;
-
-    # ;;
-esac
-
-
 echo
 echo "Will install from github.com"
 echo "Repository: '$OPENRVDAS_REPO'"
 echo "Branch: '$OPENRVDAS_BRANCH'"
-echo "Environment: '$INSTALL_ENV'"
 
 # Create user if they don't exist yet on Linux, but MacOS needs to
 # user a pre-existing user, because creating a user is a pain.
@@ -1271,25 +1240,24 @@ echo
 yes_no "Start the OpenRVDAS server on boot? " $DEFAULT_OPENRVDAS_AUTOSTART
 OPENRVDAS_AUTOSTART=$YES_NO_RESULT
 
-# Set up simulate_FKt script?
-if [ $INSTALL_ENV == "Development" ]; then
-    echo
-    echo "#####################################################################"
-    echo "For test installations, OpenRVDAS can configure simulated inputs from"
-    echo "stored data, which will allow you to run the \"logger_config.yaml\""
-    echo "configuration out of the box. This script will be configured to run"
-    echo "under supervisord as \"simulate:simulate_FKt\"."
-    echo
-    yes_no "Do you want to install this script?" "$DEFAULT_INSTALL_SIMULATE_FKt"
-    INSTALL_SIMULATE_FKt=$YES_NO_RESULT
+# Set up simulate_nbp script?
+echo
+echo "#####################################################################"
+echo "For test installations, OpenRVDAS can configure simulated inputs from"
+echo "stored data, which will allow you to run the \"NBP1406_cruise.yaml\""
+echo "configuration out of the box. This script will be configured to run"
+echo "under supervisord as \"simulate:simulate_nbp\"."
+echo
+yes_no "Do you want to install this script?" $DEFAULT_INSTALL_SIMULATE_NBP
+INSTALL_SIMULATE_NBP=$YES_NO_RESULT
 
-    if [ $INSTALL_SIMULATE_FKt == 'yes' ]; then
-      yes_no "Run simulate:simulate_FKt on boot?" $DEFAULT_RUN_SIMULATE_FKt
-      RUN_SIMULATE_FKt=$YES_NO_RESULT
-    else
-      RUN_SIMULATE_FKt=no
-    fi
+if [ $INSTALL_SIMULATE_NBP == 'yes' ]; then
+  yes_no "Run simulate:simulate_nbp on boot?" $DEFAULT_RUN_SIMULATE_NBP
+  RUN_SIMULATE_NBP=$YES_NO_RESULT
+else
+  RUN_SIMULATE_NBP=no
 fi
+
 
 #########################################################################
 # Install web console programs - nginx and uwsgi?
@@ -1314,7 +1282,6 @@ echo
 yes_no "Enable Supervisor Web-interface? " $DEFAULT_SUPERVISORD_WEBINTERFACE
 SUPERVISORD_WEBINTERFACE=$YES_NO_RESULT
 
-echo "SUPERVISORD_WEBINTERFACE:" $SUPERVISORD_WEBINTERFACE
 if [ $SUPERVISORD_WEBINTERFACE == 'yes' ]; then
 
     read -p "Port on which to serve web interface? ($DEFAULT_SUPERVISORD_WEBINTERFACE_PORT) " SUPERVISORD_WEBINTERFACE_PORT
@@ -1337,7 +1304,7 @@ echo
 echo "#####################################################################"
 echo "This script can install Strapdown.js so that the .md files in"
 echo "the /docs directory are rendered properly."
-echo "under supervisord as \"simulate:simulate_FKt\"."
+echo "under supervisord as \"simulate:simulate_nbp\"."
 echo
 yes_no "Do you want to install Strapdown.js?" $DEFAULT_INSTALL_DOC_MARKDOWN
 INSTALL_DOC_MARKDOWN=$YES_NO_RESULT
