@@ -16,10 +16,10 @@ ctd_svx2:
   class: UDP
   port: 99999
   filebase: test/FKt990101/data/FKt990101_ctd_svx2
-dps122:
+dpsi1:
   class: UDP
   port: 35503
-  filebase: test/FKt990101/data/FKt990101_dps122
+  filebase: test/FKt990101/data/FKt990101_dpsi1
 draft:
   class: UDP
   port: 33515
