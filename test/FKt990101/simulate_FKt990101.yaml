@@ -7,288 +7,288 @@
 cnav3050:
   class: UDP
   port: 30507
-  filebase: test/FKt990101/FKt990101_cnav3050
+  filebase: test/FKt990101/data/FKt990101_cnav3050
 ctd_sbe911:
   class: UDP
   port: 36006
-  filebase: test/FKt990101/FKt990101_ctd_sbe911
+  filebase: test/FKt990101/data/FKt990101_ctd_sbe911
 ctd_svx2:
   class: UDP
   port: 99999
-  filebase: test/FKt990101/FKt990101_ctd_svx2
+  filebase: test/FKt990101/data/FKt990101_ctd_svx2
 dps122:
   class: UDP
   port: 35503
-  filebase: test/FKt990101/FKt990101_dps122
+  filebase: test/FKt990101/data/FKt990101_dps122
 draft:
   class: UDP
   port: 33515
-  filebase: test/FKt990101/FKt990101_draft
+  filebase: test/FKt990101/data/FKt990101_draft
 ea640:
   class: UDP
   port: 65102
-  filebase: test/FKt990101/FKt990101_ea640
+  filebase: test/FKt990101/data/FKt990101_ea640
 ek80:
   class: UDP
   port: 65101
-  filebase: test/FKt990101/FKt990101_ek80_200kHz
+  filebase: test/FKt990101/data/FKt990101_ek80
 em124:
   class: UDP
   port: 60101
-  filebase: test/FKt990101/FKt990101_em124
+  filebase: test/FKt990101/data/FKt990101_em124
 em2040:
   class: UDP
   port: 64101
-  filebase: test/FKt990101/FKt990101_em2040
+  filebase: test/FKt990101/data/FKt990101_em124
 em712:
   class: UDP
   port: 62101
-  filebase: test/FKt990101/FKt990101_em712
+  filebase: test/FKt990101/data/FKt990101_em124
 eml224:
   class: UDP
   port: 10018
-  filebase: test/FKt990101/FKt990101_eml224
+  filebase: test/FKt990101/data/FKt990101_eml224
 # flowrate_chilled:
 #   class: UDP
 #   port: 10020
-#   filebase: test/FKt990101/FKt990101_flowrate_chilled
+#   filebase: test/FKt990101/data/FKt990101_flowrate_chilled
 # flowrate_inc:
 #   class: UDP
 #   port: 10020
-#   filebase: test/FKt990101/FKt990101_flowrate_inc
+#   filebase: test/FKt990101/data/FKt990101_flowrate_inc
 # flowrate_man_1:
 #   class: UDP
 #   port: 10020
-#   filebase: test/FKt990101/FKt990101_flowrate_man_1
+#   filebase: test/FKt990101/data/FKt990101_flowrate_man_1
 # flowrate_man_2:
 #   class: UDP
 #   port: 10020
-#   filebase: test/FKt990101/FKt990101_flowrate_man_2
+#   filebase: test/FKt990101/data/FKt990101_flowrate_man_2
 # flowrate_unc:
 #   class: UDP
 #   port: 10019
-#   filebase: test/FKt990101/FKt990101_flowrate_unc
+#   filebase: test/FKt990101/data/FKt990101_flowrate_unc
 fluorometer_1:
   class: UDP
   port: 34002
-  filebase: test/FKt990101/FKt990101_fluorometer_1
+  filebase: test/FKt990101/data/FKt990101_fluorometer_1
 fluorometer_2:
   class: UDP
   port: 35002
-  filebase: test/FKt990101/FKt990101_fluorometer_2
+  filebase: test/FKt990101/data/FKt990101_fluorometer_2
 gyro_1:
   class: UDP
   port: 35504
-  filebase: test/FKt990101/FKt990101_gyro_1
+  filebase: test/FKt990101/data/FKt990101_gyro_1
 gyro_2:
   class: UDP
   port: 35505
-  filebase: test/FKt990101/FKt990101_gyro_2
+  filebase: test/FKt990101/data/FKt990101_gyro_2
 gyro_3:
   class: UDP
   port: 35506
-  filebase: test/FKt990101/FKt990101_gyro_3
+  filebase: test/FKt990101/data/FKt990101_gyro_3
 hipap_1_port:
   class: UDP
   port: 35501
-  filebase: test/FKt990101/FKt990101_hipap_1_por
+  filebase: test/FKt990101/data/FKt990101_hipap_1_port
 hipap_2_stb:
   class: UDP
   port: 35502
-  filebase: test/FKt990101/FKt990101_hipap_1_stb
+  filebase: test/FKt990101/data/FKt990101_hipap_1_stb
 magnetometer:
   class: UDP
   port: 36008
-  filebase: test/FKt990101/FKt990101_magnetometer
+  filebase: test/FKt990101/data/FKt990101_magnetometer
 met4_fm:
   class: UDP
   port: 40012
-  filebase: test/FKt990101/FKt990101_met4_fm
+  filebase: test/FKt990101/data/FKt990101_met4_fm
 minisvs_aft:
   class: UDP
   port: 30511
-  filebase: test/FKt990101/FKt990101_minisvs_aft
+  filebase: test/FKt990101/data/FKt990101_minisvs_aft
 minisvs_fwd:
   class: UDP
   port: 30510
-  filebase: test/FKt990101/FKt990101_minisvs_fwd
+  filebase: test/FKt990101/data/FKt990101_minisvs_fwd
 mpp_fm:
   class: UDP
   port: 40013
-  filebase: test/FKt990101/FKt990101_mpp_fm
+  filebase: test/FKt990101/data/FKt990101_mpp_fm
 mpp_mm_aft:
   class: UDP
   port: 43001
-  filebase: test/FKt990101/FKt990101_mpp_mm_aft
+  filebase: test/FKt990101/data/FKt990101_mpp_mm_aft
 mpp_wh_port:
   class: UDP
   port: 42001
-  filebase: test/FKt990101/FKt990101_mpp_wh_port
+  filebase: test/FKt990101/data/FKt990101_mpp_wh_port
 mpp_wh_stb:
   class: UDP
   port: 42002
-  filebase: test/FKt990101/FKt990101_mpp_wh_stb
+  filebase: test/FKt990101/data/FKt990101_mpp_wh_stb
 par_fm_port:
   class: UDP
   port: 10022
-  filebase: test/FKt990101/FKt990101_par_fm_port
+  filebase: test/FKt990101/data/FKt990101_par_fm_port
 # par_fm_stb:
 #   class: MOXA
 #   port:
-#   filebase: test/FKt990101/FKt990101_par_fm_port
+#   filebase: test/FKt990101/data/FKt990101_par_fm_port
 pH_sunburst_1:
   class: UDP
   port: 31515
-  filebase: test/FKt990101/FKt990101_pH_sunburst_1
+  filebase: test/FKt990101/data/FKt990101_pH_sunburst_1
 pH_sunburst_2:
   class: UDP
   port: 31516
-  filebase: test/FKt990101/FKt990101_pH_sunburst_1
-# posmv_motion:
-#   class: UDP
-#   port: 30502
-#   filebase: test/FKt990101/posmv_motion->influx
+  filebase: test/FKt990101/data/FKt990101_pH_sunburst_1
+posmv_motion:
+  class: UDP
+  port: 30502
+  filebase: test/FKt990101/data/posmv_motion
 posmv_nav:
   class: UDP
   port: 30501
-  filebase: test/FKt990101/FKt990101_posmv
+  filebase: test/FKt990101/data/FKt990101_posmv_nav
 pt_pmel_mapr:
   class: UDP
   port: 39002
-  filebase: test/FKt990101/FKt990101_pt_pmel_mapr
+  filebase: test/FKt990101/data/FKt990101_pt_pmel_mapr
 pt_uaf_oxygen:
   class: UDP
   port: 39002
-  filebase: test/FKt990101/FKt990101_pt_uaf_oxygen
+  filebase: test/FKt990101/data/FKt990101_pt_uaf_oxygen
 pt_whoi_mag:
   class: UDP
   port: 39009
-  filebase: test/FKt990101/FKt990101_pt_whoi_mag
+  filebase: test/FKt990101/data/FKt990101_pt_whoi_mag
 rad_fm_port:
   class: UDP
   port: 40009
-  filebase: test/FKt990101/FKt990101_rad_fm_port
+  filebase: test/FKt990101/data/FKt990101_rad_fm_stb
 rad_fm_stb:
   class: UDP
   port: 40010
-  filebase: test/FKt990101/FKt990101_rad_fm_stb
+  filebase: test/FKt990101/data/FKt990101_rad_fm_stb
 raingauge_fm:
   class: UDP
   port: 40014
-  filebase: test/FKt990101/FKt990101_raingauge_fm
+  filebase: test/FKt990101/data/FKt990101_raingauge_fm
 sb_altimeter:
   class: UDP
   port: 99999
-  filebase: test/FKt990101/FKt990101_sb_altimeter
+  filebase: test/FKt990101/data/FKt990101_sb_altimeter
 sb_ctd_sbe49:
   class: UDP
   port: 38001
-  filebase: test/FKt990101/FKt990101_sb_ctd_sbe49
+  filebase: test/FKt990101/data/FKt990101_sb_ctd_sbe49
 sb_ctd_uvsvx:
   class: UDP
   port: 38002
-  filebase: test/FKt990101/FKt990101_sb_ctd_uvsvx
+  filebase: test/FKt990101/data/FKt990101_sb_ctd_uvsvx
 sb_hightemp_pt100:
   class: UDP
   port: 10002
-  filebase: test/FKt990101/FKt990101_sb_hightemp_pt100
+  filebase: test/FKt990101/data/FKt990101_sb_hightemp_pt100
 sb_mechs:
   class: UDP
   port: 10001
-  filebase: test/FKt990101/FKt990101_sb_mech_comps
+  filebase: test/FKt990101/data/FKt990101_sb_mech
 sb_oxygen:
   class: UDP
   port: 38004
-  filebase: test/FKt990101/FKt990101_sb_oxygen
+  filebase: test/FKt990101/data/FKt990101_sb_oxygen
 sb_paro:
   class: UDP
   port: 10004
-  filebase: test/FKt990101/FKt990101_sb_paro
+  filebase: test/FKt990101/data/FKt990101_sb_paro
 sb_paro_dbt:
   class: UDP
   port: 11005
-  filebase: test/FKt990101/FKt990101_sb_paro_dbt
+  filebase: test/FKt990101/data/FKt990101_sb_paro_dbt
 sb_pco2:
   class: UDP
   port: 38003
-  filebase: test/FKt990101/FKt990101_sb_pco2
+  filebase: test/FKt990101/data/FKt990101_sb_pco2
 sb_ph:
   class: UDP
   port: 38005
-  filebase: test/FKt990101/FKt990101_sb_ph
+  filebase: test/FKt990101/data/FKt990101_sb_ph
 sb_sprint:
   class: UDP
   port: 10005
-  filebase: test/FKt990101/FKt990101_sb_sprint
-# sb_sprint_hf:
-#   class: UDP
-#   port: 39112
-#   filebase: test/FKt990101/sb_sprint_hf->influx
+  filebase: test/FKt990101/data/FKt990101_sb_sprint
+sb_sprint_hf:
+  class: UDP
+  port: 39112
+  filebase: test/FKt990101/data/FKt990101_sb_sprint_hf
 sb_winch:
   class: UDP
   port: 39001
-  filebase: test/FKt990101/FKt990101_sb_winch
+  filebase: test/FKt990101/data/FKt990101_sb_winch
 sbp29:
   class: UDP
   port: 65103
-  filebase: test/FKt990101/FKt990101_sbp29
+  filebase: test/FKt990101/data/FKt990101_sbp29
 # seapath330_motion:
 #   class: UDP
 #   port:
-#   filebase: test/FKt990101/seapath330_motion->off
+#   filebase: test/FKt990101/data/seapath330_motion->off
 # seapath330_heave:
 #   class: UDP
 #   port:
-#   filebase: test/FKt990101/seapath330_heave->off
+#   filebase: test/FKt990101/data/seapath330_heave->off
 seapath330_nav:
   class: UDP
   port: 25500
-  filebase: test/FKt990101/FKt990101_seapath330
+  filebase: test/FKt990101/data/FKt990101_seapath330
 speedlog_uhdas_1:
   class: UDP
   port: 58001
-  filebase: test/FKt990101/FKt990101_speedlog_uhdas_1
+  filebase: test/FKt990101/data/FKt990101_speedlog_uhdas_1
 speedlog_uhdas_2:
   class: UDP
   port: 38020
-  filebase: test/FKt990101/FKt990101_speedlog_uhdas_2
+  filebase: test/FKt990101/data/FKt990101_speedlog_uhdas_1
 temp_chilled:
   class: UDP
   port: 99999
-  filebase: test/FKt990101/FKt990101_temp_chilled
+  filebase: test/FKt990101/data/FKt990101_temp_chilled
 transmissometer_1:
   class: UDP
   port: 34003
-  filebase: test/FKt990101/FKt990101_transmissometer_1
+  filebase: test/FKt990101/data/FKt990101_transmissometer_1
 transmissometer_2:
   class: UDP
   port: 35003
-  filebase: test/FKt990101/FKt990101_transmissometer_2
+  filebase: test/FKt990101/data/FKt990101_transmissometer_1
 tsg_sbe45_1:
   class: UDP
   port: 34001
-  filebase: test/FKt990101/FKt990101_tsg_sbe45_1
+  filebase: test/FKt990101/data/FKt990101_tsg_sbe45_1
 tsg_sbe45_2:
   class: UDP
   port: 35001
-  filebase: test/FKt990101/FKt990101_tsg_sbe45_2
+  filebase: test/FKt990101/data/FKt990101_tsg_sbe45_2
 usbl_gga:
   class: UDP
   port: 55505
-  filebase: test/FKt990101/FKt990101_usbl_gga
+  filebase: test/FKt990101/data/FKt990101_usbl_gga
 usbl_psimssb:
   class: UDP
   port: 55504
-  filebase: test/FKt990101/FKt990101_usbl_psimssb
+  filebase: test/FKt990101/data/FKt990101_usbl_psimssb
 winch_mash:
   class: UDP
   port: 36009
-  filebase: test/FKt990101/FKt990101_winch_mash
+  filebase: test/FKt990101/data/FKt990101_winch_mash
 winch_mermac:
   class: UDP
   port: 36010
-  filebase: test/FKt990101/FKt990101_winch_mermac
+  filebase: test/FKt990101/data/FKt990101_winch_mermac
 windsonic_fm:
   class: UDP
   port: 40011
-  filebase: test/FKt990101/FKt990101_windsonic_fm
+  filebase: test/FKt990101/data/FKt990101_windsonic_fm

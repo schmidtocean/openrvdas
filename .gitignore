@@ -109,3 +109,5 @@ tmp
 # SOI
 local/soi/logger_config.yaml
 local/soi/backups_devel
+data/*.txt
+
