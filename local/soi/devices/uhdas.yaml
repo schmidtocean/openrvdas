@@ -1,0 +1,49 @@
+######################################
+UHDAS:
+  category: "device_type"
+
+  # If device type can output multiple formats, include them as a
+  # list. Parser will use the first one that matches the whole line.
+  format:
+    #$VMVBW,11.1,-0.7,A,,,V,,V,,V*54
+    #$VMVBW,2.6,-0.2,A,,,V,,V,,V*64
+    #$VDVBW,-0.43,-0.25,A,,,*10
+    VDVBW: "$VDVBW,{VvelSOW:og},{UvelSOW:og},{StatusSOW:ow},{VvelSOG:og},{UvelSOG:og},{StatusSOG:ow}*{CheckSum:x}"
+    #VBW: "${:.2}VBW,{VvelSOW:og},{UvelSOW:og},{StatusSOW:w},{VvelSOG:og},{UvelSOG:og},{StatusSOG:w},{SternSOW:og},{StatusSternSOW:w},{SternSOG:og},{StatusSternSOG:w}*{:x}"
+    
+  ########
+  # Optional metadata to help make sense of the parsed values.
+  fields:
+    VvelSOW:
+      units: "kts"
+      description: "Longitudinal water speed"
+    UvelSOW:
+      units: "kts"
+      description: "Transverse water speed"
+    StatusSOW:
+      units: ""
+      description: "Status: water speed, A = valid data"
+    VvelSOG:
+      units: "kts"
+      description: "Longitudinal ground speed"
+    UvelSOG:
+      units: "kts"
+      description: "Transverse ground speed"
+    StatusSOG:
+      units: ""
+      description: "Status: ground speed, A = valid data"
+    CheckSum:
+      units: ""
+      description: "checksum"
+    # SternSOW:
+    #   units: "kts"
+    #   description: "Stern water speed"
+    # StatusSternSOW:
+    #   units: ""
+    #   description: "Status: stern water speed, A = valid data"
+    # SternSOG:
+    #   units: "kts"
+    #   description: "Stern ground speed"
+    # StatusSternSOG:
+    #   units: ""
+    #   description: "Status: stern ground speed, A = valid data"

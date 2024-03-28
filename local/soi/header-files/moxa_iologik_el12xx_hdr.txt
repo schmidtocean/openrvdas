@@ -1,0 +1,1 @@
+Timestamp,channel,mode,raw_value,scaled_value
