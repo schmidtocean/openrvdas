@@ -1,0 +1,1 @@
+Timestamp,Header,GPSTime,GPSStatus,Latitude,NorS,Longitude,EorW,SOG_kts,COG_deg,GPSDate,MagneticVar,MagneticVarEorW*CheckSum

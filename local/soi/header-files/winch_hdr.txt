@@ -1,0 +1,1 @@
+Timestamp,Header,Timestamp,WinchID,Tension_lbs,Rate_m/min,Payout_m

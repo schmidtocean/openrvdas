@@ -1,0 +1,1 @@
+Timestamp,Header,P,AirPres_hPa,hPa,PresSensorSN,C,AirTemp_C,C,TempSensorSN,H,Humidity_%,P,HumidSensorSN

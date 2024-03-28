@@ -1,0 +1,1 @@
+Timestamp,Header,GPSTime,BeaconID,Status,ErrCode,CoordSys,Orientation,FilterType,XCoord,yCoord,Depth,ExpAccu,AddInfo*CheckSum

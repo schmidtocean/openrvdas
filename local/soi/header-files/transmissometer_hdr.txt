@@ -1,0 +1,1 @@
+Timestamp,SerialNum ReferenceRawCount SignalRawCount CorrectedSignalRawCount CalcBeamAttenCoef_1/m	ThermistorRawCount

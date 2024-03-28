@@ -1,0 +1,1 @@
+Timestamp,Mag_X_Gauss,Mag_Y_Gauss,Mag_Z_Gauss,Temperature_C

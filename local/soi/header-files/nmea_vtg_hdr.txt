@@ -1,0 +1,1 @@
+Timestamp,Header,COGTrue_deg,T,COGMag_deg,M,SOG_kts,N,SOG_kmh,K*CheckSum

@@ -1,0 +1,1 @@
+Timestamp,Header,InstrumentDate,InstrumentTime,Samples,PIR_mV,LW_Wm-2,CaseTemp_C,DomeTemp_C,SW_Wm-2,BoardTemp_C,BattVoltage_V
