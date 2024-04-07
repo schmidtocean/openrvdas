@@ -1,1 +1,0 @@
-Timestamp,Header,Latitude,NorS,Longitude,EorW,GPSTime,???,Mode,*CheckSum

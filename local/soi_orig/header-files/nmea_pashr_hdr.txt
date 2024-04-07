@@ -1,1 +1,0 @@
-Timestamp,Header,GPSTime,HeadingTrue_deg,T,Roll_deg,Pitch_deg,Heave_m,RollAccuracy,PitchAccuracry,HeadingAccuracry,FixQuality,IMUStatus*CheckSum

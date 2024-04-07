@@ -1,1 +1,0 @@
-Timestamp,Header,TrueWindDir_deg,T,TrueWindMag_deg,M,TrueWindSpd_kts,N,TrueWindSpd_km/h,K*CheckSum

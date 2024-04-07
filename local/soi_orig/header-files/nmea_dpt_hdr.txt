@@ -1,1 +1,0 @@
-Timestamp,Header,Depth_at_xducer_m,Xducer_offset_m,MaxRange_m*zCheckSum

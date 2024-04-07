@@ -1,1 +1,0 @@
-Timestamp, MAPR_Time  MAPR_Temperature_Counts  MAPR_Pressure_Counts  MAPR_ORP_Counts  MAPR_LSS_Counts

@@ -1,1 +1,0 @@
-Timestamp,Header,GPSTime,RMSValue,SemiMajorAxisErrorEllips_m,SemiMinorxisErrorEllipse_m,ErrorEllipse_deg,LatitudeError_m,LongitudeError_m,HeignError_m*CheckSum

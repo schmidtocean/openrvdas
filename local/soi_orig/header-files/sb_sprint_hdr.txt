@@ -1,1 +1,0 @@
-Timestamp,Header,Roll_deg,Pitch_deg,HeadingTrue_deg,OrientStatus,Latitude_ddeg,Longitude_ddeg,PositionStatus,VelocityFwd_m/s,VelocityStbd_m/s,VelocityDown_m/s,Altitude_m,Altitude_Status,Depth_m,Depth_Used

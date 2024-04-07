@@ -1,1 +1,0 @@
-Timestamp,Header,RateOfTurn_deg/s,Valid*CheckSum

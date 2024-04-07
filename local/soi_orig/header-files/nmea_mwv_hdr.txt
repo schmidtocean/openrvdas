@@ -1,1 +1,0 @@
-Timestamp,Header,RelWindDir_deg,R,RelWindSpd_m/s,M*CheckSum
