@@ -1,1 +1,0 @@
-Timestamp,Header,Epoch_secs,A,Latitude,NorS,Longitude,EorW,SOG_kts,COG_deg},Heading_deg,Depth_m,Altitude_m,Roll_deg,Pitch_deg*CheckSum

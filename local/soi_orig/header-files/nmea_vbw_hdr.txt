@@ -1,1 +1,0 @@
-Timestamp,Header,VvelSOW_kts,UvelSOW_kts,StatusSOW,VvelSOG_kts,UvelSOG_kts,StatusSOG*Checksum

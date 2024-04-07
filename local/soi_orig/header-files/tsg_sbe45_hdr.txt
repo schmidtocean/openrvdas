@@ -1,1 +1,0 @@
-Timestamp,t1=Temperature1_C, c1=Conductivity_S/m, s=Salinity_PSU, sv=SoundVelocity_m/s, t2=SBE38_Temperature_C

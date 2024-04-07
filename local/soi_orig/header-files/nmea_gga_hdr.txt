@@ -1,1 +1,0 @@
-Timestamp,Header,GPSTime,Latitude,NorS,Longitude,EorW,FixQuality,NumSats,HDOP,AntennaHeight,M,GeoidHeight,M,LastDGPSUpdate,DGPSStationID*CheckSum

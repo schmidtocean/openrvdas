@@ -1,1 +1,0 @@
-Timestamp,Header,Heading_deg,Roll_deg,Pitch_deg,Depth_m,m,Altitude_m,m,???,???,???*CheckSum

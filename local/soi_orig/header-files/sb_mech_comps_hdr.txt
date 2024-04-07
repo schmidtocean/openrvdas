@@ -1,1 +1,0 @@
-Timestamp,Header,Comp1_%,Comp2_%,Comp3_%,Comp4_%,Comp5_%,Comp6_%

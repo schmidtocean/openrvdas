@@ -1,1 +1,0 @@
-Timestamp,Date,Time,ChlSig_ug/l_optional,ChlSigRaw,Therm*CheckSum

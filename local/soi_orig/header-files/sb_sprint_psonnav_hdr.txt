@@ -1,1 +1,0 @@
-Timestamp,Header,GPSTime,Latitude,NorS,Longitude,EorW,PositionErrorEllipseMajor_m,PositionErrorEllipseMinor_m,PositionErrorEllipeMajorDir_deg,PositionStatus,Depth_m,Depth_stddev_m,Roll_deg,Pitch_deg,Heading_deg,Heading_stddev_deg,OrientStatus,SensorStatus,,,,,*CheckSum

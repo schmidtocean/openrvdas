@@ -1,1 +1,0 @@
-Timestamp,Header,Pitch_deg,Roll_deg,Heading_deg,???

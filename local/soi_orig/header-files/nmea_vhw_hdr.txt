@@ -1,1 +1,0 @@
-Timestamp,Header,HeadingTrue_deg,T,HeadingMag_deg,M,WaterSpeed_kts,N,WaterSpeed_kmh,K*CheckSum
