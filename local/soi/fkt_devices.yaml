@@ -644,7 +644,7 @@ devices:
       Xducer_offset_m: "SBP29_Xducer_offset_m"
 
   ######################################
-  seapath330:
+  seapath380:
     category: "device"
     device_type: "Seapath"
     serial_number: "unknown"
