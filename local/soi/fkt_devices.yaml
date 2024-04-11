@@ -615,6 +615,18 @@ devices:
       BattVoltage: "RAD_FM_Stb_BattVoltage"
 
   ######################################
+  raingauge_fm:
+    category: "device"
+    device_type: "Raingauge"
+    serial_number: ""
+    description: "Raingauge - Fwd Mast"
+
+    fields:
+      WMO: "RAINGAUGE_FM_WMO"
+      Rate: "RAINGAUGE_FM_Rate"
+      Accum: "RAINGAUGE_FM_Accum"
+
+  ######################################
   sbp29:
     category: "device"
     device_type: "SBP29"
