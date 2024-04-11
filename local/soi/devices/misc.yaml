@@ -438,7 +438,7 @@ Raingauge:
 
   # "00 .000 113.127 01*0 4999 0040 0040 019"
   # WMO Rate Accum 01*0 Diag1 Diag2 Diag3 Diag4
-  format: "{WMO:d} {Rate:g} {Accum:g} 01*0 {:d} {:d} {:d} {:d}"
+  format: "{WMO:d} {Rate:f} {Accum:g} 01*0 {:d} {:d} {:d} {:d}"
 
   fields:
     WMO:
