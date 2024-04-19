@@ -19,7 +19,7 @@ DPSi1:
     ROT: "${:.2}ROT,{RateOfTurn:f},A*{CheckSum:x}"
     RMC: "${:.2}RMC,{GPSTime:f},{GPSStatus:w},{Latitude:nlat_dir},{Longitude:nlat_dir},{SpeedKt:f},{CourseTrue:f},{GPSDate:w},{MagneticVar:of},{MagneticVarEorW:ow},{Mode:w}*{CheckSum:x}"
     VTG: "${:.2}VTG,{CourseTrue:of},T,{CourseMag:of},M,{SpeedKt:of},N,{SpeedKm:of},K,{Mode:w}*{CheckSum:x}"
-    ZDA: "${:.2}ZDA,{GPSTime:f},{GPSDay:d},{GPSMonth:d},{GPSYear:d},{LocalHours:od},{LocalZone:ow}*{CheckSum:x}"
+    ZDA: "${:.2}ZDA,{GPSTime:of},{GPSDay:od},{GPSMonth:od},{GPSYear:od},{LocalHours:od},{LocalZone:ow}*{CheckSum:x}"
     
   ########
   # Optional metadata to help make sense of the parsed values.
