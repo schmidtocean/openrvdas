@@ -1,1 +1,1 @@
-Timestamp,Depth_m,Pressure_dbar,Temperature_ITS-90_C,Temperature2_ITS-90_C,Conductivity_S/m,Conductivity2_S/m,Salinity_PSU,Density_kg/m3,Oxygen_umol/kg,Oxygen2_umol/kg,BeamTransmission_%,BeamAttenuation_1/m,OxidationReductionPotential_mV,Turbidity_NTU,CTD_SBE911_BottlesFired
+Timestamp,Depth_m,Pressure_dbar,Temperature_ITS-90_C,Temperature2_ITS-90_C,Conductivity_S/m,Conductivity2_S/m,Salinity_PSU,Density_kg/m3,Oxygen_umol/kg,BeamTransmission_%,BeamAttenuation_1/m,Fluorescence_mg/m3,Turbidity_NTU,CTD_SBE911_BottlesFired
