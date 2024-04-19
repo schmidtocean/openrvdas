@@ -302,7 +302,9 @@ CTD_SBE911:
 
   # format: "{Depth:g}{:s}{Pressure:g}{:s}{Temperature:g}{:s}{Temperature2:g}{:s}{Conductivity:g}{:s}{Conductivity2:g}{:s}{Salinity:g}{:s}{Density:g}{:s}{Oxygen:g}{:s}{Oxygen2:g}{:s}{BeamTransmission:g}{:s}{BeamAttenuation:g}{:s}{OxidationReductionPotential:g}{:s}{Turbidity:g}{:s}{BottlesFired:g}"
   
-  format: "{Depth:g}{:s}{Pressure:g}{:s}{Temperature:g}{:s}{Temperature2:g}{:s}{Conductivity:g}{:s}{Conductivity2:g}{:s}{Salinity:g}{:s}{Density:g}{:s}{Oxygen:g}{:s}{Oxygen2:g}{:s}{BeamTransmission:g}{:s}{BeamAttenuation:g}{:s}{Fluorescence:g}{:s}{Turbidity:g}{:s}{BottlesFired:g}"
+  format: 
+    doubleOxy: "{Depth:g}{:s}{Pressure:g}{:s}{Temperature:g}{:s}{Temperature2:g}{:s}{Conductivity:g}{:s}{Conductivity2:g}{:s}{Salinity:g}{:s}{Density:g}{:s}{Oxygen:g}{:s}{Oxygen2:g}{:s}{BeamTransmission:g}{:s}{BeamAttenuation:g}{:s}{Fluorescence:g}{:s}{Turbidity:g}{:s}{BottlesFired:g}"
+    singleOxy: "{Depth:g}{:s}{Pressure:g}{:s}{Temperature:g}{:s}{Temperature2:g}{:s}{Conductivity:g}{:s}{Conductivity2:g}{:s}{Salinity:g}{:s}{Density:g}{:s}{Oxygen:g}{:s}{BeamTransmission:g}{:s}{BeamAttenuation:g}{:s}{Fluorescence:g}{:s}{Turbidity:g}{:s}{BottlesFired:g}"
   
   fields:
     Depth:
