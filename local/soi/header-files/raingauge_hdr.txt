@@ -1,1 +1,1 @@
-???
+Timestamp,WMOCode PrecipRate_mm/hr PrecipAccum_mm 01 D1 D2 D3 D4
