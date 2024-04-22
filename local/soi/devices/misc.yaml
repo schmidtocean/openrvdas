@@ -88,7 +88,7 @@ MetPakPro:
   
   format: 
     fm: "{:1W}{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},,{:og},{:og},{:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
-    wh: "{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
+    wh: "{:1W}{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
  
   fields:
     NodeLetter:
