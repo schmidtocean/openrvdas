@@ -83,8 +83,13 @@ MetPakPro:
   description: "MetPakPro"
   #Q,010,008.53,1012.6,076.0,+025.3,+020.8,,+99998.0006,+99998.0004,0000.000,+11.9,00,47
   #Q,240,004.59,1006.2,,,,,+99998.0006,+99998.0004,0000.000,+11.8,70,60
-  format: "{:1W}{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},,{:og},{:og},{:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
+  #Q,329,001.87,1014.4,097.0,+019.7,+019.2,+24.1,00,5C
 
+  
+  format: 
+    fm: "{:1W}{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},,{:og},{:og},{:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
+    wh: "{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
+ 
   fields:
     NodeLetter:
       description: ""
