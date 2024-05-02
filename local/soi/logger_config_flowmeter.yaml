@@ -1,0 +1,11 @@
+  #################################
+  # 'influx' configs
+  #################################
+  flowmeter->influx:
+    name: flowmeter->influx
+    readers:
+    - class: MOXAioLogikE12xxReader
+      module: contrib.soi.logger.readers.moxa_iologik_e12xx_reader
+      kwargs:
+        address: '10.23.10.48'
+        analog_channels: '0'
