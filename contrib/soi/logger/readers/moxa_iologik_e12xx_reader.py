@@ -24,7 +24,7 @@ class MOXAioLogikE12xxReader(Reader):
     """
     ############################
 
-    def __init__(self, address, polling_rate=1, timeout=0.1,
+    def __init__(self, address, polling_rate=1, timeout=0.5,
                  analog_channels='0,1,2,3', encoding='utf-8',
                  encoding_errors='ignore'):
         """
