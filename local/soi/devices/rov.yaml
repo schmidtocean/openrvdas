@@ -280,6 +280,18 @@ Oxygen:
       units: "mV"
       description: ""
 
+#######################################
+ph_AMT:
+  category: "device_type"
+  description: "AMT pH combined sensor"
+
+  format: "{:s}{AnalogOutput:og}"
+
+  fields:
+    AnalogOutput:
+      units:""
+      description:""
+
 ######################################
 Paro:
   category: "device_type"
