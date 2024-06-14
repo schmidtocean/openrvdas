@@ -154,6 +154,18 @@ devices:
       Depth_xducer_m: "SB_Paro_Depth_xducer_m"
       Xducer_offset_m: "SB_Paro_Xducer_offset_m"
       Pressure_psi: "SB_Paro_Pressure_psi"
+  
+  ######################################
+  sb_ph:
+    category: "device"
+    device_type: "ph_AMT"
+    serial_number: "268"
+    description: ""
+
+    fields:
+      AnalogOutput: "SB_ph_analog"
+
+
 
   ######################################
   sb_sprint:
