@@ -285,12 +285,12 @@ ph_AMT:
   category: "device_type"
   description: "AMT pH combined sensor"
 
-  format: "{:s}{AnalogOutput:og}"
+  format: "{AnalogOutput:og}"
 
   fields:
     AnalogOutput:
-      units:""
-      description:""
+      units: ""
+      description: ""
 
 ######################################
 Paro:
