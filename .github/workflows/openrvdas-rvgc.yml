@@ -1,0 +1,104 @@
+name: OpenRVDAS Dev CI
+
+on:
+  push:
+    branches:
+      - dev-ci
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Debug Runner Info
+      run: |
+        echo "Runner name: ${{ runner.name }}"
+        echo "Runner OS: ${{ runner.os }}"
+        echo "Runner arch: ${{ runner.arch }}"
+        echo "Workflow name: ${{ github.workflow }}"
+        echo "Event name: ${{ github.event_name }}"
+        echo "Branch name: ${{ github.ref }}"
+        echo "GitHub workspace: ${{ github.workspace }}"
+        echo "Current directory: $(pwd)"
+        ls -la
+
+    - name: Navigate to project directory
+      run: |
+        cd /opt/openrvdas || exit 1
+        echo "Current directory: $(pwd)"
+        ls -la
+
+    - name: Update repository
+      working-directory: /opt/openrvdas
+      run: |
+        git fetch origin
+        git checkout dev-ci
+        git pull origin dev-ci
+
+    - name: Set up Python environment
+      working-directory: /opt/openrvdas
+      run: |
+        source venv/bin/activate
+        python --version
+        pip --version
+
+    - name: Install Python dependencies
+      working-directory: /opt/openrvdas
+      run: |
+        cd /opt/openrvdas
+        source venv/bin/activate
+        pip install -r utils/requirements.txt
+
+    - name: Run linter and code style checks
+      working-directory: /opt/openrvdas
+      run: |
+        cd /opt/openrvdas
+        source venv/bin/activate
+        flake8 .
+
+    - name: Check server status
+      working-directory: /opt/openrvdas
+      run: |
+        supervisorctl status
+
+    - name: Restart OpenRVDAS services
+      working-directory: /opt/openrvdas
+      run: |
+        supervisorctl restart all
+
+    - name: Error logging
+      if: failure()
+      working-directory: /opt/openrvdas
+      run: |
+        echo "Job failed. Logging additional information:"
+        echo "Python version: $(python --version)"
+        echo "Pip version: $(pip --version)"
+        echo "Git version: $(git --version)"
+        echo "Current directory: $(pwd)"
+        echo "Directory contents:"
+        ls -la
+        echo "Git status:"
+        git status
+        echo "Git log (last 5 commits):"
+        git log -n 5 --oneline
+        echo "Supervisor status:"
+        supervisorctl status
+
+    - name: Success logging
+      if: success()
+      working-directory: /opt/openrvdas
+      run: |
+        echo "Build completed successfully!"
+        echo "Python version: $(python --version)"
+        echo "Pip version: $(pip --version)"
+        echo "Git version: $(git --version)"
+        echo "Current directory: $(pwd)"
+        echo "Directory contents:"
+        ls -lah
+        echo "Git status:"
+        git status
+        echo "Git log (last 5 commits):"
+        git log -n 5 --oneline
+        echo "Supervisor status:"
+        supervisorctl status
