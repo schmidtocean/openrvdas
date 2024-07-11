@@ -285,7 +285,9 @@ ph_AMT:
   category: "device_type"
   description: "AMT pH combined sensor"
 
-  format: "{AnalogOutput:og}"
+  format: 
+    withSpace: "{:s}{AnalogOutput:og}"
+    noSpace: "{AnalogOutput:og}"
 
   fields:
     AnalogOutput:
