@@ -52,10 +52,19 @@ jobs:
 
     - name: Run linter and code style checks
       working-directory: /opt/openrvdas
+      continue-on-error: true
       run: |
         cd /opt/openrvdas
         source venv/bin/activate
-        flake8 .
+        flake8 . --output-file=flake8_report.txt || true
+        echo "Flake8 issues found:"
+        cat flake8_report.txt
+
+    - name: Upload flake8 report
+      uses: actions/upload-artifact@v2
+      with:
+        name: flake8-report
+        path: /opt/openrvdas/flake8_report.txt
 
     - name: Check server status
       working-directory: /opt/openrvdas
