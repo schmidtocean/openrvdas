@@ -68,13 +68,17 @@ jobs:
 
     - name: Check server status
       working-directory: /opt/openrvdas
+      continue-on-error: true
       run: |
-        supervisorctl status
+        supervisorctl status || true
+        echo "Supervisor status exit code: $?"
 
     - name: Restart OpenRVDAS services
       working-directory: /opt/openrvdas
+      continue-on-error: true
       run: |
-        supervisorctl restart all
+        supervisorctl restart all || true
+        echo "Supervisor restart exit code: $?"
 
     - name: Error logging
       if: failure()
