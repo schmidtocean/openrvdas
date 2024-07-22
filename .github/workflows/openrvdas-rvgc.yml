@@ -61,7 +61,7 @@ jobs:
         cat flake8_report.txt
 
     - name: Upload flake8 report
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: flake8-report
         path: /opt/openrvdas/flake8_report.txt
