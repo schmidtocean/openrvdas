@@ -12,7 +12,7 @@ jobs:
     
     steps:
     - name: Stop all services
-      run: sudo supervisorctl stop all || true
+      run: supervisorctl stop all || true
 
     - name: Debug Runner Info
       run: |
@@ -70,12 +70,12 @@ jobs:
 
     - name: Restart OpenRVDAS services
       run: |
-        sudo supervisorctl start all || true
+        supervisorctl start all || true
         echo "Supervisor restart exit code: $?"
 
     - name: Check server status
       run: |
-        sudo supervisorctl status || true
+        supervisorctl status || true
         echo "Supervisor status exit code: $?"
 
     - name: Error logging
@@ -95,7 +95,7 @@ jobs:
         echo "Git log (last 5 commits):"
         git log -n 5 --oneline
         echo "Supervisor status:"
-        sudo supervisorctl status
+        supervisorctl status
 
     - name: Success logging
       if: success()
@@ -114,4 +114,4 @@ jobs:
         echo "Git log (last 5 commits):"
         git log -n 5 --oneline
         echo "Supervisor status:"
-        sudo supervisorctl status
+        supervisorctl status

@@ -110,3 +110,12 @@ tmp
 local/soi/logger_config.yaml
 test/FKt990101/data/*.txt
 
+#tmp
+# tmp
+tmp
+# SOI
+local/soi/logger_config.yaml
+local/soi/backups_devel
+test/FKt990101/data/*.txt
+
+flake8_report.txt
