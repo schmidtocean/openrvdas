@@ -11,6 +11,9 @@ jobs:
     runs-on: self-hosted
     
     steps:
+    - name: Stop all services
+      run: sudo supervisorctl stop all || true
+
     - name: Debug Runner Info
       run: |
         echo "Runner name: ${{ runner.name }}"
@@ -46,15 +49,14 @@ jobs:
     - name: Install Python dependencies
       working-directory: /opt/openrvdas
       run: |
-        cd /opt/openrvdas
         source venv/bin/activate
         pip install -r utils/requirements.txt
+        pip install -r utils/requirements_soi.txt
 
     - name: Run linter and code style checks
       working-directory: /opt/openrvdas
       continue-on-error: true
       run: |
-        cd /opt/openrvdas
         source venv/bin/activate
         flake8 . --output-file=flake8_report.txt || true
         echo "Flake8 issues found:"
@@ -66,52 +68,40 @@ jobs:
         name: flake8-report
         path: /opt/openrvdas/flake8_report.txt
 
-    - name: Check server status
-      working-directory: /opt/openrvdas
-      continue-on-error: true
-      run: |
-        supervisorctl status || true
-        echo "Supervisor status exit code: $?"
-
     - name: Restart OpenRVDAS services
-      working-directory: /opt/openrvdas
-      continue-on-error: true
       run: |
-        supervisorctl restart all || true
+        sudo supervisorctl start all || true
         echo "Supervisor restart exit code: $?"
+
+    - name: Check server status
+      run: |
+        sudo supervisorctl status || true
+        echo "Supervisor status exit code: $?"
 
     - name: Error logging
       if: failure()
       working-directory: /opt/openrvdas
       run: |
         echo "Job failed. Logging additional information:"
-        echo "Python version: $(python --version)"
-        echo "Pip version: $(pip --version)"
-        echo "Git version: $(git --version)"
-        echo "Current directory: $(pwd)"
-        echo "Directory contents:"
+        python --version
+        pip --version
+        git --version
+        pwd
         ls -la
-        echo "Git status:"
         git status
-        echo "Git log (last 5 commits):"
         git log -n 5 --oneline
-        echo "Supervisor status:"
-        supervisorctl status
+        sudo supervisorctl status
 
     - name: Success logging
       if: success()
       working-directory: /opt/openrvdas
       run: |
         echo "Build completed successfully!"
-        echo "Python version: $(python --version)"
-        echo "Pip version: $(pip --version)"
-        echo "Git version: $(git --version)"
-        echo "Current directory: $(pwd)"
-        echo "Directory contents:"
+        python --version
+        pip --version
+        git --version
+        pwd
         ls -lah
-        echo "Git status:"
         git status
-        echo "Git log (last 5 commits):"
         git log -n 5 --oneline
-        echo "Supervisor status:"
-        supervisorctl status
+        sudo supervisorctl status
