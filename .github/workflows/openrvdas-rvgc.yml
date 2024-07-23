@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev-ci
+      - dev-ci2
   workflow_dispatch:
 
 jobs:
@@ -35,9 +36,43 @@ jobs:
     - name: Update repository
       working-directory: /opt/openrvdas
       run: |
+        # Fetch the latest changes
         git fetch origin
-        git checkout dev-ci
-        git pull origin dev-ci
+
+        # Check if there are any local changes
+        if ! git diff-index --quiet HEAD --; then
+          echo "Stashing local changes"
+          git stash push -m "Stashed by CI workflow"
+        fi
+
+        # Get the current branch name
+        current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+        # Checkout the branch that triggered the workflow
+        if [ "$current_branch" != "${{ github.ref_name }}" ]; then
+          echo "Switching from $current_branch to ${{ github.ref_name }}"
+          git checkout ${{ github.ref_name }} || {
+            echo "Failed to checkout ${{ github.ref_name }}"
+            exit 1
+          }
+        fi
+
+        # Pull the latest changes
+        git pull origin ${{ github.ref_name }} || {
+          echo "Failed to pull latest changes from ${{ github.ref_name }}"
+          exit 1
+        }
+
+        # If we stashed changes earlier, try to apply them
+        if git stash list | grep -q "Stashed by CI workflow"; then
+          echo "Attempting to apply stashed changes"
+          git stash apply || {
+            echo "Warning: Failed to apply stashed changes. They remain in the stash."
+          }
+        fi
+
+        # Show the current status
+        git status
 
     - name: Set up Python environment
       working-directory: /opt/openrvdas
