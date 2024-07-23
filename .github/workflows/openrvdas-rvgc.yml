@@ -70,47 +70,40 @@ jobs:
 
     - name: Reread and restart Supervisor services
       run: |
-          supervisorctl reread
-          supervisorctl update
-          supervisorctl start all || true
-          echo "Supervisor restart exit code: $?"
+        supervisorctl reread
+        supervisorctl update
+        supervisorctl start all || true
+        echo "Supervisor restart exit code: $?"
 
-    - name: Run unit tests
+    - name: Run all tests
       working-directory: /opt/openrvdas
+      env:
+        PYTHONPATH: /opt/openrvdas
       run: |
         source venv/bin/activate
-        python -m unittest discover -v
+        python -m unittest discover -v -s . -p 'test_*.py'
 
-    - name: Test logger components
+    - name: Run specific test suites
       working-directory: /opt/openrvdas
+      env:
+        PYTHONPATH: /opt/openrvdas
       run: |
         source venv/bin/activate
-        python logger/utils/test_components.py
+        echo "Running logger tests:"
+        python -m unittest discover -v -s test/logger -p 'test_*.py'
+        echo "Running server tests:"
+        python -m unittest discover -v -s test/server -p 'test_*.py'
+        echo "Running database tests:"
+        python -m unittest discover -v -s test/database -p 'test_*.py'
 
-    - name: Test data parsing
-      working-directory: /opt/openrvdas
-      run: |
-        source venv/bin/activate
-        python logger/transforms/test_parse_nmea.py
-
-    - name: Test listener
-      working-directory: /opt/openrvdas
-      run: |
-        source venv/bin/activate
-        python logger/listeners/test_listen_udp.py
-
-    - name: Test database operations
-      working-directory: /opt/openrvdas
-      run: |
-        source venv/bin/activate
-        python database/test_django_models.py
-
-    - name: Test API
-      working-directory: /opt/openrvdas
-      run: |
-        source venv/bin/activate
-        python server/test_cached_data_server.py
-
+#    - name: Run Django tests
+#      working-directory: /opt/openrvdas
+#      env:
+#        PYTHONPATH: /opt/openrvdas
+#      run: |
+#        source venv/bin/activate
+#        python manage.py test django_gui ||
+    
     - name: Check Django migrations
       working-directory: /opt/openrvdas
       run: |
