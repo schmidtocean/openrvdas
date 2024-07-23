@@ -83,13 +83,18 @@ jobs:
       working-directory: /opt/openrvdas
       run: |
         echo "Job failed. Logging additional information:"
-        python --version
-        pip --version
-        git --version
-        pwd
+        source venv/bin/activate
+        echo "Python version: $(python --version 2>&1)"
+        echo "Pip version: $(pip --version)"
+        echo "Git version: $(git --version)"
+        echo "Current directory: $(pwd)"
+        echo "Directory contents:"
         ls -la
+        echo "Git status:"
         git status
+        echo "Git log (last 5 commits):"
         git log -n 5 --oneline
+        echo "Supervisor status:"
         sudo supervisorctl status
 
     - name: Success logging
@@ -97,11 +102,16 @@ jobs:
       working-directory: /opt/openrvdas
       run: |
         echo "Build completed successfully!"
-        python --version
-        pip --version
-        git --version
-        pwd
+        source venv/bin/activate
+        echo "Python version: $(python --version 2>&1)"
+        echo "Pip version: $(pip --version)"
+        echo "Git version: $(git --version)"
+        echo "Current directory: $(pwd)"
+        echo "Directory contents:"
         ls -lah
+        echo "Git status:"
         git status
+        echo "Git log (last 5 commits):"
         git log -n 5 --oneline
+        echo "Supervisor status:"
         sudo supervisorctl status
