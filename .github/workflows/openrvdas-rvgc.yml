@@ -68,6 +68,48 @@ jobs:
         name: flake8-report
         path: /opt/openrvdas/flake8_report.txt
 
+    - name: Run unit tests
+      working-directory: /opt/openrvdas
+      run: |
+        source venv/bin/activate
+        python -m unittest discover -v
+
+    - name: Test logger components
+      working-directory: /opt/openrvdas
+      run: |
+        source venv/bin/activate
+        python logger/utils/test_components.py
+
+    - name: Test data parsing
+      working-directory: /opt/openrvdas
+      run: |
+        source venv/bin/activate
+        python logger/transforms/test_parse_nmea.py
+
+    - name: Test listener
+      working-directory: /opt/openrvdas
+      run: |
+        source venv/bin/activate
+        python logger/listeners/test_listen_udp.py
+
+    - name: Test database operations
+      working-directory: /opt/openrvdas
+      run: |
+        source venv/bin/activate
+        python database/test_django_models.py
+
+    - name: Test API
+      working-directory: /opt/openrvdas
+      run: |
+        source venv/bin/activate
+        python server/test_cached_data_server.py
+
+    - name: Check Django migrations
+      working-directory: /opt/openrvdas
+      run: |
+        source venv/bin/activate
+        python manage.py makemigrations --check --dry-run
+
     - name: Restart OpenRVDAS services
       run: |
         supervisorctl start all || true
@@ -95,7 +137,7 @@ jobs:
         echo "Git log (last 5 commits):"
         git log -n 5 --oneline
         echo "Supervisor status:"
-        supervisorctl status
+        supervisorctl status || true
 
     - name: Success logging
       if: success()
@@ -114,4 +156,4 @@ jobs:
         echo "Git log (last 5 commits):"
         git log -n 5 --oneline
         echo "Supervisor status:"
-        supervisorctl status
+        supervisorctl status || true
