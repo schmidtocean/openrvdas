@@ -15,7 +15,7 @@ Winch:
     RD: "RD,{Tension:g},{Rate:g},{Payout:g},{:g}"
     SB: "{Payout:og},{:S}{:s}{:S}{:s}{:S}{Rate:og},{:S}{:s}{:S}{:s}{:S}{Tension:og}{:S}{:s}{:S}{:s}{:S}"
     RC: "$RC03,{Tension:g},{Rate:g},{Payout:g},{:d}*{CheckSum:x}"
-    R3: "$R30C,{Tension:g},{Rate:g},{Payout:g},{:d}*{CheckSum:x}" 
+    R3: "$R30C,{Tension:g},{Rate:g},{Payout:g},{:g}*{CheckSum:x}" 
     #SB: "{Payout:og},Cable Speed [m]:{Rate:og},Cable Tension [Te]:{Tension:og}Cable Length [m]:"   
   ########
   # Optional metadata to help make sense of the parsed values.
