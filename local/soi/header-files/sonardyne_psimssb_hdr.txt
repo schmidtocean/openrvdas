@@ -1,1 +1,1 @@
-???
+Timestamp,Header,GPSTime,BeaconID,A,ErrorCode,D,N,F,Latitude,NorS,Longitude,EorW,Depth,Altitude,N,,
