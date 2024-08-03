@@ -10,10 +10,12 @@ Winch:
     # $FKWNC,2020-01-28T00:46:45.628005,Mermac,323.0,0,-8.7
     #Cable Length [m]:-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.16Cable Length [m]:-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.16Cable Length [m]:-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.16Cable Length [m]:-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.16Cable Length [m]:-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.16
     # "-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.15Cable Length [m]"
+    #$R30C,0000.0,-00005,0000.0,-00031.3*08
     FKWNC: "$FKWNC,{Timestamp:ti},{WinchID:w},{Tension:g},{Rate:g},{Payout:g}"
     RD: "RD,{Tension:g},{Rate:g},{Payout:g},{:g}"
     SB: "{Payout:og},{:S}{:s}{:S}{:s}{:S}{Rate:og},{:S}{:s}{:S}{:s}{:S}{Tension:og}{:S}{:s}{:S}{:s}{:S}"
     RC: "$RC03,{Tension:g},{Rate:g},{Payout:g},{:d}*{CheckSum:x}"
+    R3: "$R30C,{Tension:g},{Rate:g},{Payout:g},{:d}*{CheckSum:x}" 
     #SB: "{Payout:og},Cable Speed [m]:{Rate:og},Cable Tension [Te]:{Tension:og}Cable Length [m]:"   
   ########
   # Optional metadata to help make sense of the parsed values.
