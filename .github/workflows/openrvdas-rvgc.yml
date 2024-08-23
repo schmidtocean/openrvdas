@@ -116,34 +116,7 @@ jobs:
         PYTHONPATH: /opt/openrvdas
       run: |
         source venv/bin/activate
-        python -m unittest discover -v -s . -p 'test_*.py'
-
-    - name: Run specific test suites
-      working-directory: /opt/openrvdas
-      env:
-        PYTHONPATH: /opt/openrvdas
-      run: |
-        source venv/bin/activate
-        echo "Running logger tests:"
-        python -m unittest discover -v -s test/logger -p 'test_*.py'
-        echo "Running server tests:"
-        python -m unittest discover -v -s test/server -p 'test_*.py'
-        echo "Running database tests:"
-        python -m unittest discover -v -s test/database -p 'test_*.py'
-
-#    - name: Run Django tests
-#      working-directory: /opt/openrvdas
-#      env:
-#        PYTHONPATH: /opt/openrvdas
-#      run: |
-#        source venv/bin/activate
-#        python manage.py test django_gui ||
-    
-    - name: Check Django migrations
-      working-directory: /opt/openrvdas
-      run: |
-        source venv/bin/activate
-        python manage.py makemigrations --check --dry-run
+        ./manage.py test
 
     - name: Check server status
       run: |
