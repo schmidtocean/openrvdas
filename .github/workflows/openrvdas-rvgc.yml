@@ -3,8 +3,7 @@ name: OpenRVDAS Dev CI
 on:
   push:
     branches:
-      - dev-ci
-      - dev-ci2
+      - '**'
   workflow_dispatch:
 
 jobs:
