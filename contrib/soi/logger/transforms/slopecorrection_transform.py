@@ -22,7 +22,7 @@ class SlopeCorrectionTransform(Transform):
     """
     Transform that applies slope and offset corrections to specified fields in a passed DASRecord."""
 
-    def __init__(self, slopes, log_level=logging.INFO):
+    def __init__(self, slopes, log_level=logging.INFO, output_fields=None):
         """
         ```
         slopes
@@ -47,9 +47,16 @@ class SlopeCorrectionTransform(Transform):
                  appear in red. Setting it to logging.DEBUG means that no message will appear on
                  the console in normal mode.
 
+        output_fields
+                 A dictionary mapping input field names to output field names. If not provided
+                 or if a field is not in the dictionary, the input field name will be used as
+                 the output field name. For example:
+                 {'sb_ctd_temp': 'sb_ctd_temp_corr', 'sb_ph': 'sb_ph_corr'}
+
         ```
         """
         self.slopes = {}
+        self.output_fields = output_fields or {}
 
         if slopes is not None:
             for condition in slopes.split(','):
@@ -79,7 +86,7 @@ class SlopeCorrectionTransform(Transform):
         # If we've got a list, hope it's a list of records. Recurse,
         # calling transform() on each of the list elements in order and
         # return the resulting list.
-        if isinstance(record,list):
+        if isinstance(record, list):
             results = []
             for single_record in record:
                 results.append(self.transform(single_record))
@@ -88,30 +95,32 @@ class SlopeCorrectionTransform(Transform):
         if isinstance(record, DASRecord):
             fields = record.fields
         elif isinstance(record, dict):
-            if 'fields' in record:
-                fields = record['fields']
-            else:
-                fields = record
+            fields = record.get('fields', record)
         else:
             logging.log(self.log_level,
                         'Record passed to SlopeCorrectionTransform was neither a dict nor a '
                         'DASRecord. Type was %s: %s', type(record), str(record)[:80])
             return None
 
-        for mxb in self.slopes:
-            if mxb not in fields:
+        for input_field in self.slopes:
+            if input_field not in fields:
                 continue
-            (slope, offset) = self.slopes[mxb]  # what are the slope/offset mxbs?
+            (slope, offset) = self.slopes[input_field]
 
-            value = fields.get(mxb)  # what is the record's value of this field?
+            value = fields.get(input_field)
 
             # We expect field value to be numeric; if not, complain lightly and remove it
-            if not isinstance(value, int) and not isinstance(value, float):
+            if not isinstance(value, (int, float)):
                 logging.log(self.log_level,
-                        'SlopeCorrectionTransform found non-numeric value for %s: %s', mxb, value)
-                del fields[mxb]
+                        'SlopeCorrectionTransform found non-numeric value for %s: %s', input_field, value)
+                del fields[input_field]
                 continue
 
-            fields[mxb] = value * slope + offset
+            output_field = self.output_fields.get(input_field, input_field)
+            fields[output_field] = value * slope + offset
+
+            # If the output field is different from the input field, remove the input field
+            if output_field != input_field:
+                del fields[input_field]
 
         return record
