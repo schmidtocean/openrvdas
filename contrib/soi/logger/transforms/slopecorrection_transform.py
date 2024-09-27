@@ -20,7 +20,7 @@ from logger.transforms.transform import Transform  # noqa: E402
 #
 class SlopeCorrectionTransform(Transform):
     """
-    Transform that filters out values in a passed DASRecord that are out of slopes."""
+    Transform that applies slope and offset corrections to specified fields in a passed DASRecord."""
 
     def __init__(self, slopes, log_level=logging.INFO):
         """
@@ -31,21 +31,21 @@ class SlopeCorrectionTransform(Transform):
                     <field_name>:<slope>:<offset>
 
                  Either <slope> or <offset> may be empty. For example:
-                    # No slope, no offset
-                    'SeawaterTemp::22.4,SpeedOverGround:1.05:,SpeedThroughWater:1.09:5.25'
+                    # Slope 1, no offset; slope 1.05, no offset; slope 1.09, offset 5.25
+                    'SeawaterTemp:1:,SpeedOverGround:1.05:,SpeedThroughWater:1.09:5.25'
 
         log_level
-                 At what level the transform should log a message when it sees a value
-                 that is out of bounds. Allowed values are log levels from the logging module,
-                 e.g. logging.INFO, logging.DEBUG, logging.WARNING, etc.
+                 At what level the transform should log a message when it encounters an issue,
+                 such as invalid input or non-numeric values. Allowed values are log levels
+                 from the logging module, e.g. logging.INFO, logging.DEBUG, logging.WARNING, etc.
 
                  If the logger is running in normal mode, it will display messages that
                  have log level INFO and more severe (WARNING, ERROR, FATAL). Setting the
                  log_level parameter of this transform to logging.WARNING means that any time
-                 a value falls out of its specified bounds, a WARNING message will be sent to
+                 an issue is encountered, a WARNING message will be sent to
                  the console, appearing in yellow on the web console. logging.ERROR means it will
                  appear in red. Setting it to logging.DEBUG means that no message will appear on
-                 the console.
+                 the console in normal mode.
 
         ```
         """
@@ -72,7 +72,7 @@ class SlopeCorrectionTransform(Transform):
 
     ############################
     def transform(self, record):
-        """Does record violate any bounds?"""
+        """Apply slope and offset corrections to specified fields in the record."""
         if not record:
             return None
 
