@@ -9,8 +9,9 @@ DASRecords or dictionary, or...?
 
 import logging
 import sys
+import yaml
 
-from os.path import dirname, abspath
+from os.path import dirname, abspath, join, exists
 sys.path.append(dirname(dirname(dirname(dirname(abspath(__file__))))))
 #from logger.utils import formats  # noqa: E402
 from logger.utils.das_record import DASRecord  # noqa: E402
@@ -22,7 +23,7 @@ class SlopeCorrectionTransform(Transform):
     """
     Transform that applies slope and offset corrections to specified fields in a passed DASRecord."""
 
-    def __init__(self, slopes, log_level=logging.INFO, output_fields=None):
+    def __init__(self, slopes=None, log_level=logging.INFO, output_fields=None):
         """
         ```
         slopes
@@ -33,6 +34,8 @@ class SlopeCorrectionTransform(Transform):
                  Either <slope> or <offset> may be empty. For example:
                     # Slope 1, no offset; slope 1.05, no offset; slope 1.09, offset 5.25
                     'SeawaterTemp:1:,SpeedOverGround:1.05:,SpeedThroughWater:1.09:5.25'
+
+                 If None, slopes will be loaded from YAML files in local/soi/slopes/ directory.
 
         log_level
                  At what level the transform should log a message when it encounters an issue,
@@ -57,6 +60,9 @@ class SlopeCorrectionTransform(Transform):
         """
         self.slopes = {}
         self.output_fields = output_fields or {}
+        
+        self.slopes_dir = join(dirname(dirname(dirname(dirname(dirname(abspath(__file__)))))), 'local', 'soi', 'slopes')
+        self.yaml_loaded = False
 
         if slopes is not None:
             for condition in slopes.split(','):
@@ -69,6 +75,7 @@ class SlopeCorrectionTransform(Transform):
                     raise ValueError('SlopeCorrectionTransform slopes must be colon-separated '
                                  'triples of field_name:slope:offset. '
                                  f'Found "{condition}" instead.')
+            self.yaml_loaded = True
 
         if log_level not in [logging.DEBUG, logging.INFO, logging.WARNING,
                              logging.ERROR, logging.FATAL]:
@@ -76,6 +83,28 @@ class SlopeCorrectionTransform(Transform):
                              'level, such as logging.DEBUG, logging.INFO or logging.WARNING. '
                              f'Found "{log_level}" instead.')
         self.log_level = log_level
+
+    ############################
+    def load_slopes_from_yaml(self, input_field):
+        """Load slopes from <input_field>_slope.yaml file in the local/soi/slopes/ directory."""
+        yaml_filename = f"{input_field}_slope.yaml"
+        yaml_path = join(self.slopes_dir, yaml_filename)
+        
+        if exists(yaml_path):
+            try:
+                with open(yaml_path, 'r') as yaml_file:
+                    data = yaml.safe_load(yaml_file)
+                    slope = data['slope']
+                    offset = data['offset']
+                    self.slopes[input_field] = (slope, offset)
+                    logging.log(self.log_level, f"Loaded slope correction for {input_field} from {yaml_filename}: "
+                                                f"slope = {slope}, offset = {offset}")
+            except yaml.YAMLError as e:
+                logging.log(self.log_level, f"Error parsing YAML in {yaml_filename}: {e}")
+            except KeyError as e:
+                logging.log(self.log_level, f"Missing key in {yaml_filename}: {e}")
+        else:
+            logging.log(self.log_level, f"{yaml_filename} not found at {yaml_path}")
 
     ############################
     def transform(self, record):
@@ -102,6 +131,13 @@ class SlopeCorrectionTransform(Transform):
                         'DASRecord. Type was %s: %s', type(record), str(record)[:80])
             return None
 
+        # Load slopes from YAML files if not already loaded
+        if not self.yaml_loaded:
+            for input_field in fields.keys():
+                if input_field not in self.slopes:
+                    self.load_slopes_from_yaml(input_field)
+            self.yaml_loaded = True
+
         for input_field in self.slopes:
             if input_field not in fields:
                 continue
@@ -117,7 +153,13 @@ class SlopeCorrectionTransform(Transform):
                 continue
 
             output_field = self.output_fields.get(input_field, input_field)
-            fields[output_field] = value * slope + offset
+            corrected_value = value * slope + offset
+            fields[output_field] = corrected_value
+
+            logging.log(self.log_level, f"Applied slope correction to {input_field}: "
+                                        f"original value = {value}, "
+                                        f"corrected value = {corrected_value} "
+                                        f"(slope = {slope}, offset = {offset})")
 
             # If the output field is different from the input field, remove the input field
             if output_field != input_field:
