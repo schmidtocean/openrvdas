@@ -116,6 +116,7 @@ jobs:
       run: |
         source venv/bin/activate
         python -m unittest discover -v -s . -p 'test_*.py'
+        python -m unittest discover -v -s contrib/soi/logger/transforms
 
     - name: Check server status
       run: |
