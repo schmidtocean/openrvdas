@@ -156,10 +156,11 @@ class SlopeCorrectionTransform(Transform):
             corrected_value = value * slope + offset
             fields[output_field] = corrected_value
 
-            logging.log(self.log_level, f"Applied slope correction to {input_field}: "
-                                        f"original value = {value}, "
-                                        f"corrected value = {corrected_value} "
-                                        f"(slope = {slope}, offset = {offset})")
+            if self.log_level <= logging.DEBUG:
+                logging.debug(f"Applied slope correction to {input_field}: "
+                              f"original value = {value}, "
+                              f"corrected value = {corrected_value} "
+                              f"(slope = {slope}, offset = {offset})")
 
             # If the output field is different from the input field, remove the input field
             if output_field != input_field:
