@@ -115,7 +115,8 @@ jobs:
         PYTHONPATH: /opt/openrvdas
       run: |
         source venv/bin/activate
-        ./manage.py test --exclude-tag=django_gui
+        python -m unittest discover -v -s . -p 'test_*.py'
+        python -m unittest discover -v -s contrib/soi/logger/transforms
 
     - name: Check server status
       run: |
