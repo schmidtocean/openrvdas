@@ -226,6 +226,26 @@ Mechs:
       description: ""
 
 ######################################
+Miniips:
+  category: "device_type"
+  description: "Valeport PAA-10LX Mini IPS"
+
+  format:
+    DPT: "$DPT,{Depth_xducer_m:og},{Xducer_offset_m:g}"
+    PARO: "$PARO,{Pressure_psi:og}"
+
+  fields:
+    Depth_xducer_m:
+      units: "m"
+      description: "Depth at xducer in meters"
+    Xducer_offset_m:
+      units: "m"
+      description: "Distance to waterline from transducer in meters"
+    Pressure_psi:
+      units: "psia"
+      description: "Water pressure, abs"
+
+######################################
 Oxygen:
   category: "device_type"
   description: "Oxygen Sensor"

@@ -109,6 +109,22 @@ devices:
       Thust_8A: "SB_Mech_Valves_Thust_8A"
       Thust_8B: "SB_Mech_Valves_Thust_8B"
 
+
+  
+  ######################################
+  sb_miniips:
+    category: "device"
+    device_type: "Miniips"
+    serial_number: "unknown"
+    description: ""
+
+    fields:
+      Depth_xducer_m: "SB_Miniips_Depth_xducer_m"
+      Xducer_offset_m: "SB_Miniips_Xducer_offset_m"
+      Pressure_psi: "SB_Miniips_Pressure_psi"
+  
+
+
   ######################################
   sb_oxygen:
     category: "device"
