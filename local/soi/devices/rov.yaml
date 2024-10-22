@@ -233,6 +233,7 @@ Miniips:
   format:
     DPT: "$DPT,{Depth_xducer_m:og},{Xducer_offset_m:g}"
     PARO: "$PARO,{Pressure_psi:og}"
+    PARONOHEADER: "*{Pressure_psi:g}"
 
   fields:
     Depth_xducer_m:
