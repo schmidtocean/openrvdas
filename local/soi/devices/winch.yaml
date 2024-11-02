@@ -27,7 +27,7 @@ Winch:
       units: ""
       description: "Unique Winch Identifier"
     Tension:
-      units: "lbs"
+      units: "kg"
       description: "Wire Tension"
     Rate:
       units: "m/min"
