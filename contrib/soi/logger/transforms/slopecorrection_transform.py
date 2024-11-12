@@ -56,10 +56,18 @@ class SlopeCorrectionTransform(Transform):
                  the output field name. For example:
                  {'sb_ctd_temp': 'sb_ctd_temp_corr', 'sb_ph': 'sb_ph_corr'}
 
+        keep_original_fields
+                 Optional boolean parameter that determines whether to keep the original fields
+                 after applying corrections. If True, both original and corrected values will
+                 be kept. If False (default), original fields will be removed when they differ
+                 from output fields. True is useful for calling from main logger, False is useful
+                 for calling from separate _calc logger
+
         ```
         """
         self.slopes = {}
         self.output_fields = output_fields or {}
+        self.keep_original_fields = keep_original_fields
         
         self.slopes_dir = join(dirname(dirname(dirname(dirname(dirname(abspath(__file__)))))), 'local', 'soi', 'slopes')
         self.yaml_loaded = False
