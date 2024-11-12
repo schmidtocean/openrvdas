@@ -196,6 +196,10 @@ sb_mechs:
   class: UDP
   port: 10001
   filebase: test/FKt990101/data/FKt990101_sb_mech-
+sb_miniips:
+  class: UDP
+  port: 38012
+  filebase: test/FKt990101/data/FKt990101_sb_miniips-
 sb_oxygen:
   class: UDP
   port: 38004
