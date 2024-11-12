@@ -154,7 +154,7 @@ posmv_nav:
   filebase: test/FKt990101/data/FKt990101_posmv_nav-
 pt_pmel_mapr:
   class: UDP
-  port: 39002
+  port: 39014
   filebase: test/FKt990101/data/FKt990101_pt_pmel_mapr-
 pt_uaf_oxygen:
   class: UDP
