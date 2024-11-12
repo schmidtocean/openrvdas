@@ -23,7 +23,7 @@ class SlopeCorrectionTransform(Transform):
     """
     Transform that applies slope and offset corrections to specified fields in a passed DASRecord."""
 
-    def __init__(self, slopes=None, log_level=logging.INFO, output_fields=None):
+    def __init__(self, slopes=None, log_level=logging.INFO, output_fields=None, keep_original_fields=False):
         """
         ```
         slopes
@@ -162,8 +162,8 @@ class SlopeCorrectionTransform(Transform):
                               f"corrected value = {corrected_value} "
                               f"(slope = {slope}, offset = {offset})")
 
-            # If the output field is different from the input field, remove the input field
-            if output_field != input_field:
+            # Only remove the input field if we're not keeping originals and the output field is different
+            if not self.keep_original_fields and output_field != input_field:
                 del fields[input_field]
 
         return record
