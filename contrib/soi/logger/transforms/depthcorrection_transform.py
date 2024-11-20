@@ -230,13 +230,13 @@ class DepthCorrectionTransform(DerivedDataTransform):
 
         latitude_max_age = self.max_field_age.get(self.latitude_field, None)
         if (latitude_max_age and timestamp - self.latitude_val_time > latitude_max_age):
-            logging.debug('latitude_field too old - max age %g, age %g',
+            logging.warning('latitude_field too old - max age %g, age %g',
                           latitude_max_age, timestamp - self.latitude_val_time)
             return True
 
         pressure_max_age = self.max_field_age.get(self.pressure_field, None)
         if (pressure_max_age and timestamp - self.pressure_val_time > pressure_max_age):
-            logging.debug('pressure_field too old - max age %g, age %g',
+            logging.warning('pressure_field too old - max age %g, age %g',
                           pressure_max_age, timestamp - self.pressure_val_time)
             return True
 
