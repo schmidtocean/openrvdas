@@ -1,1 +1,1 @@
-Timestamp,Temperature_C,Conductivity_S/m,Pressure_dbar,Salinity_ppt,SoundVelocity_m/s
+Timestamp,Temperature_C,Conductivity_S/m,Pressure_dbar,Salinity_PSU,SoundVelocity_m/s
