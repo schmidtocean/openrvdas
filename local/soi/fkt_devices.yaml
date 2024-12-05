@@ -947,3 +947,19 @@ devices:
     fields:
       WindDir: "Windsonic_WindDir"
       WindSpd: "Windsonic_WindSpd"
+
+  #####################################
+  maximet_fm:
+    category: "device"
+    device_type: "MaxiMet"
+    serial_number: ""
+    description: "Gill MaxiMet ForeMast"
+
+    fields:
+      WindDir: "MaxiMet_FM_WindDir"
+      WindSpd: "MaxiMet_FM_WindSpd"
+      WindDir_InstrumentTrueWind: "MaxiMet_FM_InstrumentTrueWindDir"
+      AirPres: "MaxiMet_FM_AirPres"
+      Humidity: "MaxiMet_FM_Humidity"
+      AirTemp: "MaxiMet_FM_AirTemp"
+      DewPoint: "MaxiMet_FM_DewPoint"

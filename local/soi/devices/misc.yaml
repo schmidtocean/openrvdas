@@ -89,7 +89,7 @@ MetPakPro:
   format: 
     fm: "{:1W}{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},,{:og},{:og},{:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
     wh: "{:1W}{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
- 
+
   fields:
     NodeLetter:
       description: ""
@@ -457,3 +457,50 @@ Raingauge:
     Accum:
       units: "mm"
       description: "Accumulated precipitation"
+
+######################################
+MaxiMet:
+  category: "device_type"
+  description: "Gill MaxiMet Weather Station"
+
+  #fm: "{:1W}{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},,{:og},{:og},{:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
+  #wh: "{:1W}{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
+  # Q,353,000.08,074,1007.1,038.7,+022.3,+007.7,2024-12-03T11:11:45.9,+05.1,0000,22
+  format: 
+    clean: "{NodeLetter:w},{WindDir:od},{WindSpd:og},{WindDir_InstrumentTrueWind:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},{nc},{SupplyVoltage:og},{SupplyCode:ow},{CheckSum:x}"
+    unprintables: "{:1W}{NodeLetter:w},{WindDir:od},{WindSpd:og},{WindDir_InstrumentTrueWind:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},{nc},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
+
+  fields:
+    NodeLetter: 
+      description: "Identifies unit"
+    WindDir:
+      units: "deg"
+      description: "Relative Wind Dir"
+    WindSpd:
+      units: "m/s"
+      description: "Relative Wind Speed"
+    WindDir_InstrumentTrueWind:
+      units: "deg"
+      description: "Instrument internally calculated True Wind Direction"
+    AirPres:
+      units: "hPa"
+      description: "No sea-level offset applied"
+    Humidity:
+      units: "%"
+      description: ""
+    AirTemp:
+      units: "C"
+      description: ""
+    DewPoint:
+      units: "C"
+      description: ""
+    Time:
+      units: "years-months-daysT-hours:minutes:seconds"
+      description: "Instrument internal time"
+    SupplyVoltage:
+      units: "v"
+      description: ""
+    SupplyCode:
+      units: "none"
+      description: ""
+    
