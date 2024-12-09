@@ -45,3 +45,67 @@ mapr:
     LSS:
       units: "counts"
       description: " "
+
+######################################
+contros_ch4:
+  category: "device_type"
+  description: "CONTROS HydroC CH4"
+
+  # $CODS4,0,0,D,0,0,2024-04-24,07:41:55,,3,6451,,,102779,100726,,,,1195500,23576492,0,0,1,,,,,88919,,,,,,552399000,549133000,552399000*<checksum>CRLF
+  # $COTS1,0,0,D,0,0,2024-04-24,07:41:55,,3,26951,,,,21095,,,27017,,*<checksum>CRLF
+  format:
+    data: "$CODS4,0,0,D,0,0,{InstrumentDate:S},{InstrumentTime:S},,{WeekDay:d},{P_pump:d},,{p_TDLAS:d},{p_in:d},,,{I_Total:d},{U_Supply:d},0,0,{ExternalPump:d},,,,,{Runtime:d},,,,,{CH4ConcentrationEst:d},{CH4PartialPressure:d},{CH4Fraction:d}*{CheckSum:x}"
+    tempcontroller: "$COTS1,0,0,D,0,{InstrumentDate:S},{InstrumentTime:S},,{WeekDay:d},{ProbeTemp:d},,,,{GasTemp:d},,,{RelHumidity:d},,*{CheckSum:x}"
+
+  fields:
+    InstrumentDate:
+      units: "YYYY-MM-DD"
+      description: "System date in ISO 8601 format"
+    InstrumentTime:
+      units: "HH:MM:SS"
+      description: "System time in 24-hour format"
+    WeekDay:
+      units: "1-7"
+      description: "Day of the week where 1 represents Monday and 7 represents Sunday"
+    P_pump:
+      units: "mW"
+      description: "External pump power supplied by HydroC"
+    p_TDLAS:
+      units: "mbar x 100"
+      description: "Pressure in the gas stream behind the TDLAS unit"
+    p_in:
+      units: "mbar x 100"
+      description: "Pressure in the gas stream behind the membrane"
+    I_Total:
+      units: "μA"
+      description: "Total current consumption of the HydroC"
+    U_Supply:
+      units: "μV"
+      description: "Supply voltage for the HydroC"
+    ExternalPump:
+      units: "binary"
+      description: "Status of the external pump (1 = running, 0 = off)"
+    Runtime:
+      units: "seconds"
+      description: "Total seconds of operation since the last calibration"
+    CH4ConcentrationEst:
+      units: "ppm x 1000"
+      description: "Estimated fraction of CH4 in the headspace"
+    CH4PartialPressure:
+      units: "μatm x 1000"
+      description: "Partial pressure of CH4"
+    CH4Fraction:
+      units: "ppm x 1000"
+      description: "Mole fraction of CH4 in the headspace"
+    ProbeTemp:
+      units: "°C x 1000"
+      description: "Temperature of the probe for temperature control"
+    GasTemp:
+      units: "°C x 1000"
+      description: "Temperature of the gas stream behind the sensor unit"
+    RelHumidity:
+      units: "% x 1000"
+      description: "Relative humidity of the gas stream behind the sensor unit"
+    CheckSum:
+      units: "hexadecimal"
+      description: "Checksum for NMEA string validation, calculated as XOR of characters between `$` and `*`"

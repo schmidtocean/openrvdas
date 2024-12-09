@@ -53,3 +53,25 @@ devices:
       # C2_RPH: "PT_SB_Oxygen_C2_RPH"
       # C1_AMP: "PT_SB_Oxygen_C1_AMP"
       # C2_AMP: "PT_SB_Oxygen_C2_AMP"
+
+  ######################################
+  pt_contros_ch4:
+    category: "device"
+    device_type: "contros_ch4"
+    serial_number: ""
+    description: ""
+
+    fields:
+      P_pump: "PT_CH4_P_Pump"
+      p_TDLAS: "PT_CH4_Pres_TDLAS"
+      p_in: "PT_CH4_Pres_In"
+      I_Total: "PT_CH4_Current"
+      U_Supply: "PT_CH4_Voltage_Supply"
+      ExternalPump: "PT_CH4_Ext_Pump"
+      Runtime: "PT_CH4_Runtime"
+      CH4ConcentrationEst: "PT_CH4_Concentration_Est"
+      CH4PartialPressure: "PT_CH4_Partial_Pres"
+      CH4Fraction: "PT_CH4_Fraction"
+      ProbeTemp: "PT_CH4_Probe_Temp"
+      GasTemp: "PT_CH4_Gas_Temp"
+      RelHumidity: "PT_CH4_Rel_Humidity"
