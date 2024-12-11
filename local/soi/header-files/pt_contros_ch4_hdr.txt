@@ -1,0 +1,1 @@
+Timestamp,InstrumentDate_YYYY-MM-DD,InstrumentTime_HH:MM:SS,WeekDay,P_pump_mW,p_TDLAS_mbarx100,p_in_mbarx100,I_Total_μA,U_Supply_μV,ExternalPump_binary,Runtime_seconds,CH4ConcentrationEst_ppmx1000,CH4PartialPressure_μatmx1000,CH4Fraction_ppmx1000
