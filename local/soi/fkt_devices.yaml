@@ -444,11 +444,12 @@ devices:
   ######################################
   minisvs_aft:
     category: "device"
-    device_type: "MiniSVS"
-    serial_number: "44486"
+    device_type: "MiniSVST"
+    serial_number: "85418"
     description: ""
 
     fields:
+      Temperature: "MiniSVS_Aft_Temperature"
       SoundVelocity: "MiniSVS_Aft_SoundVelocity"
 
   ######################################
