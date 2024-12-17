@@ -64,7 +64,11 @@ MET4:
   description: "Paroscientific MET4"
 
   # $WIXDR,P,<pres_bar>,B,<pres_SN>,C,<temp_c>,C,<temp_SN>,H,<humidity>,P,<humid_SN>
-  format: "$WIXDR,P,{AirPres:g},hPa,{:w},C,{AirTemp:g},C,{:w},H,{Humidity:g},P,{:w}"
+  # $WIXDR,P,1001.075,hPa,DQ153542,C,.12,C,DQ20408332,H,100.00,P,DQ20408332
+  # $WIXDR,P,1012.465,hPa,DQ153542,C,8.98,C,DQ20408332,H,72.56,P,DQ20408332
+  # Note airtemp could be expressed as non-leading zero decimal so :g is not applicable
+
+  format: "$WIXDR,P,{AirPres:g},hPa,{:w},C,{AirTemp:f},C,{:w},H,{Humidity:f},P,{:w}"
 
   fields:
     AirPres:
