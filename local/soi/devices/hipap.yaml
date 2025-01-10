@@ -14,8 +14,8 @@ HiPAP:
     PSIMSSB:
     - "$PSIMSSB,{GPSTime:f},{BeaconID:w},A,{ErrorCode:ow},D,N,F,{Latitude:nlat_dir},{Longitude:nlat_dir},{Depth:f},{Altitude:f},N,,"
     - "$PSIMSSB,{GPSTime:f},{BeaconID:w},V,NRy,D,N,M,,,,,N,,"
-    - "$GPGGA,{GPSTime:f},{Latitude:nlat_dir},{Longitude:nlat_dir},{FixQuality:d},{NumSats:d},{HDOP:of},{AntennaHeight:of},M,{GeoidHeight:of},M,{LastDGPSUpdate:of},{DGPSStationID:od}*{CheckSum:x}"
-    
+    - "${:.2}GGA,{GPSTime:f},{Latitude:nlat_dir},{Longitude:nlat_dir},{FixQuality:d},{NumSats:d},{HDOP:of},{AntennaHeight:of},M,{GeoidHeight:of},M,{LastDGPSUpdate:of},{DGPSStationID:od}*{CheckSum:x}"
+    - "$PSIMSNS,{GPSTime:f},,{:w},{:w},{Roll:f},{Pitch:f},{Heave:f},{Heading:f},,{:w},{:f},,M121" 
   ########
   # Optional metadata to help make sense of the parsed values.
   fields:
