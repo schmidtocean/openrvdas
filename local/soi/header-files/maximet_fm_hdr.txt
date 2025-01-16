@@ -1,1 +1,1 @@
-Timestamp,NodeLetter,WindDir,WindSpd,WindDir_InstrumentTrueWind,AirPres,Humidity,AirTemp,DewPoint,,SupplyVoltage,SupplyCode,CheckSum
+Timestamp,NodeLetter,WindDir,WindSpd,WindDir_InstrumentTrueWind,AirPres,Humidity,AirTemp,DewPoint,InstrumentTime,SupplyVoltage,SupplyCode,CheckSum
