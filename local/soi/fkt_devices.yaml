@@ -964,3 +964,19 @@ devices:
       Humidity: "MaxiMet_FM_Humidity"
       AirTemp: "MaxiMet_FM_AirTemp"
       DewPoint: "MaxiMet_FM_DewPoint"
+
+  #####################################
+  maximet_crane:
+    category: "device"
+    device_type: "MaxiMet"
+    serial_number: ""
+    description: "Gill MaxiMet ForeMast"
+
+    fields:
+      WindDir: "MaxiMet_Crane_WindDir"
+      WindSpd: "MaxiMet_Crane_WindSpd"
+      WindDir_InstrumentTrueWind: "MaxiMet_Crane_InstrumentTrueWindDir"
+      AirPres: "MaxiMet_Crane_AirPres"
+      Humidity: "MaxiMet_Crane_Humidity"
+      AirTemp: "MaxiMet_Crane_AirTemp"
+      DewPoint: "MaxiMet_Crane_DewPoint"
