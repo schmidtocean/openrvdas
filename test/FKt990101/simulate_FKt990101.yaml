@@ -100,6 +100,14 @@ magnetometer:
   class: UDP
   port: 36008
   filebase: test/FKt990101/data/FKt990101_magnetometer-
+maximet_crane:
+  class: UDP
+  port: 44001
+  filebase: test/FKt990101/data/FKt990101_maximet_crane-
+maximet_fm:
+  class: UDP
+  port: 40013
+  filebase: test/FKt990101/data/FKt990101_maximet_fm-
 met4_fm:
   class: UDP
   port: 40012
@@ -112,10 +120,6 @@ minisvs_fwd:
   class: UDP
   port: 30510
   filebase: test/FKt990101/data/FKt990101_minisvs_fwd-
-mpp_fm:
-  class: UDP
-  port: 40013
-  filebase: test/FKt990101/data/FKt990101_mpp_fm-
 mpp_mm_aft:
   class: UDP
   port: 43001
