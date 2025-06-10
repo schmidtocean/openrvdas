@@ -7,57 +7,84 @@
 HiPAP:
   category: "device_type"
 
-  # If device type can output multiple formats, include them as a
-  # list. Parser will use the first one that matches the whole line.
-  # $PSIMSSB,121826.836,M21,A,,D,N,F,1814.33567,N,06847.28996,W,0.000,20.000,N,,
   format:
-    PSIMSSB:
-    - "$PSIMSSB,{GPSTime:f},{BeaconID:w},A,{ErrorCode:ow},D,N,F,{Latitude:nlat_dir},{Longitude:nlat_dir},{Depth:f},{Altitude:f},N,,"
-    - "$PSIMSSB,{GPSTime:f},{BeaconID:w},V,NRy,D,N,M,,,,,N,,"
-    - "${:.2}GGA,{GPSTime:f},{Latitude:nlat_dir},{Longitude:nlat_dir},{FixQuality:d},{NumSats:d},{HDOP:of},{AntennaHeight:of},M,{GeoidHeight:of},M,{LastDGPSUpdate:of},{DGPSStationID:od}*{CheckSum:x}"
-    - "$PSIMSNS,{GPSTime:f},,{:w},{:w},{Roll:f},{Pitch:f},{Heave:f},{Heading:f},,{:w},{:f},,M121" 
+    # Handles SSBL position telegrams
+    # Example: $PSIMSSB,164710.938,M01,A,,C,N,M,-29.656,-19.177,158.877,0.185,T,0.100151,
+    PSIMSSB: "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:f},{Y_coord:f},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},{AddlVal2:of},"
+
+    # Handles sensor values telegrams
+    # Example: $PSIMSNS,164711.822,M01,1,1,-0.10,0.18,0.00,20.44,,d1,0.006,,M121
+    PSIMSNS: "$PSIMSNS,{GPSTime:f},{TransceiverNum:w},{TransducerNum:d},{SensorStatus:d},{Roll:f},{Pitch:f},{Heave:f},{Heading:f},,{SensorID:w},{SensorValue:f},,{SystemID:w}"
+    # Optional and likely unused feed-through ship position GGA message from HiPAP
+    GGA: "${:.2}GGA,{GPSTime:f},{Latitude:nlat_dir},{Longitude:nlat_dir},{FixQuality:d},{NumSats:d},{HDOP:of},{AntennaHeight:of},M,{GeoidHeight:of},M,{LastDGPSUpdate:of},{DGPSStationID:od}*{CheckSum:x}"
   ########
-  # Optional metadata to help make sense of the parsed values.
+  # Metadata for the parsed values.
   fields:
     GPSTime:
-      units: ""
-      description: ""
+      units: "UTC"
+      description: "Coordinated Universal Time (hhmmss.ss)"
     BeaconID:
-      units: ""
-      description: ""
+      units: "ID"
+      description: "Transponder code (e.g., M01, B33)"
+    Status:
+      units: "code"
+      description: "Measurement status: A for OK, V for not OK"
     ErrorCode:
-      units: ""
-      description: ""
-    Latitude:
-      units: "degrees"
-      description: "Latitude in degrees; north or south depends on NorS"
-    Longitude:
-      units: "degrees"
-      description: "Longitude in degrees; east or west depends on value of EorW"
+      units: "code"
+      description: "Three-character error code if status is V"
+    CoordSys:
+      units: "code"
+      description: "Coordinate system: C=Cartesian, P=Polar, U=UTM"
+    Orientation:
+      units: "code"
+      description: "Coordinate orientation: H=Vessel Head Up, N=North, E=East"
+    SWFilter:
+      units: "code"
+      description: "Software filter status: M=Measured, F=Filtered, P=Predicted"
+    X_coord:
+      units: "meters or degrees"
+      description: "X coordinate (e.g., Starboard, North, Eastings), meaning depends on CoordSys and Orientation fields"
+    Y_coord:
+      units: "meters or degrees"
+      description: "Y coordinate (e.g., Forwards, East, Northings), meaning depends on CoordSys and Orientation fields"
     Depth:
       units: "meters"
       description: "Depth of beacon in meters"
-    Altitude:
-      units: ""
-      description: ""
-    FixQuality:
-      units: ""
-      description: ""
-    NumSats:
-      units: "count"
-      description: ""
-    HDOP:
-      units: ""
-      description: ""
-    AntennaHeight:
+    Accuracy:
       units: "meters"
-      description: ""
-    GeoidHeight:
+      description: "Expected accuracy of the position"
+    AddlInfo:
+      units: "code"
+      description: "Additional information: N=None, C=Compass, I=Inclinometer"
+    AddlVal1:
+      description: "First additional value (e.g., Tp compass or Tp x inclination)"
+    AddlVal2:
+      description: "Second additional value (e.g., Tp y inclination)"
+    TransceiverNum:
+      units: "ID"
+      description: "Transceiver number"
+    TransducerNum:
+      units: "ID"
+      description: "Transducer number"
+    SensorStatus:
+      description: "Unknown sensor status field from example"
+    Roll:
+      units: "degrees"
+      description: "Roll angle in degrees"
+    Pitch:
+      units: "degrees"
+      description: "Pitch angle in degrees"
+    Heave:
       units: "meters"
-      description: ""
-    LastDGPSUpdate:
-      units: ""
-      description: ""
-    DGPSStationID:
-      units: ""
-      description: ""
+      description: "Heave in meters"
+    Heading:
+      units: "degrees"
+      description: "Heading in degrees (0-360)"
+    SensorID:
+      units: "ID"
+      description: "Unknown sensor ID from example"
+    SensorValue:
+      description: "Unknown sensor value from example"
+    SystemID:
+      units: "ID"
+      description: "Unknown system ID from example"

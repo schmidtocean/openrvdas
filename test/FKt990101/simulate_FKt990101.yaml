@@ -90,12 +90,12 @@ gyro_3:
   filebase: test/FKt990101/data/FKt990101_gyro_3-
 hipap_1_port:
   class: UDP
-  port: 35501
+  port: 56001
   filebase: test/FKt990101/data/FKt990101_hipap_1_port-
 hipap_2_stb:
   class: UDP
-  port: 35502
-  filebase: test/FKt990101/data/FKt990101_hipap_1_stb-
+  port: 56002
+  filebase: test/FKt990101/data/FKt990101_hipap_2_stb-
 magnetometer:
   class: UDP
   port: 36008
