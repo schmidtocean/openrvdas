@@ -815,13 +815,39 @@ devices:
     description: ""
 
     fields:
+      # Common Field
       GPSTime: "HiPAP_Stb_2_GPSTime"
+
+      # PSIMSSB Fields
       BeaconID: "HiPAP_Stb_2_BeaconID"
+      Status: "HiPAP_Stb_2_Status"
       ErrorCode: "HiPAP_Stb_2_ErrorCode"
+      CoordSys: "HiPAP_Stb_2_CoordSys"
+      Orientation: "HiPAP_Stb_2_Orientation"
+      SWFilter: "HiPAP_Stb_2_SWFilter"
+      X_coord: "HiPAP_Stb_2_X_coord"
+      Y_coord: "HiPAP_Stb_2_Y_coord"
+      Depth: "HiPAP_Stb_2_Depth"
+      Accuracy: "HiPAP_Stb_2_Accuracy"
+      AddlInfo: "HiPAP_Stb_2_AddlInfo"
+      AddlVal1: "HiPAP_Stb_2_AddlVal1"
+      AddlVal2: "HiPAP_Stb_2_AddlVal2"
+
+      # PSIMSNS Fields
+      TransceiverNum: "HiPAP_Stb_2_TransceiverNum"
+      TransducerNum: "HiPAP_Stb_2_TransducerNum"
+      SensorStatus: "HiPAP_Stb_2_SensorStatus"
+      Roll: "HiPAP_Stb_2_Roll"
+      Pitch: "HiPAP_Stb_2_Pitch"
+      Heave: "HiPAP_Stb_2_Heave"
+      Heading: "HiPAP_Stb_2_Heading"
+      SensorID: "HiPAP_Stb_2_SensorID"
+      SensorValue: "HiPAP_Stb_2_SensorValue"
+      SystemID: "HiPAP_Stb_2_SystemID"
+
+      # GGA Message Fields
       Latitude: "HiPAP_Stb_2_Latitude"
       Longitude: "HiPAP_Stb_2_Longitude"
-      Depth: "HiPAP_Stb_2_Depth"
-      Altitude: "HiPAP_Stb_2_Altitude"
       FixQuality: "HiPAP_Stb_2_FixQuality"
       NumSats: "HiPAP_Stb_2_NumSats"
       HDOP: "HiPAP_Stb_2_HDOP"
