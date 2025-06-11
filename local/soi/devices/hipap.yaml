@@ -12,15 +12,18 @@ HiPAP:
     # Example: $PSIMSSB,164710.938,M01,A,,C,N,M,-29.656,-19.177,158.877,0.185,T,0.100151,
     PSIMSSB:
     # Local coord format
+    # Example: $PSIMSSB,164736.202,M01,A,,C,N,M,-29.681,-19.123,58.876,0.185,T,0.100151,
     - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat},{Y_coord:nlat},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},{AddlVal2:of},"
     - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat},{Y_coord:nlat},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},"
     # Geographic coord format
+    # Example: $PSIMSSB,130248.934,M01,A,,D,N,M,3641.63178,S,07305.80905,W,458.876,0.185,N,,
     - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},{AddlVal2:of},"
     - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},"
     # Handles sensor values telegrams for head attitude
     # Example: $PSIMSNS,164711.822,M01,1,1,-0.10,0.18,0.00,20.44,,d1,0.006,,M121
     PSIMSNS: "$PSIMSNS,{GPSTime:f},{TransceiverNum:w},{TransducerNum:d},{SensorStatus:d},{Roll:f},{Pitch:f},{Heave:f},{Heading:f},,{SensorID:w},{SensorValue:f},,{SystemID:w}"
     # Optional and likely unused feed-through ship position GGA message from HiPAP
+    # Example: $INGGA,130625.01,3641.615694,S,07305.796228,W,2,32,0.4,27.58,M,20.51,M,10.0,0919*5F
     GGA: "${:.2}GGA,{GPSTime:f},{Latitude:nlat_dir},{Longitude:nlat_dir},{FixQuality:d},{NumSats:d},{HDOP:of},{AntennaHeight:of},M,{GeoidHeight:of},M,{LastDGPSUpdate:of},{DGPSStationID:od}*{CheckSum:x}"
   ########
   # Metadata for the parsed values.
