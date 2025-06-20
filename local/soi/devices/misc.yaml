@@ -127,7 +127,9 @@ MiniSVS:
   category: "device_type"
   description: "MiniSVS"
 
-  format: "{SoundVelocity:g}"
+  format:
+    space: " {SoundVelocity:g}"
+    no-space: "{SoundVelocity:g}"
 
   fields:
     SoundVelocity:
