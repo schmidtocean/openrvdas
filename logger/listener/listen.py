@@ -95,7 +95,7 @@ class ListenerFromLoggerConfig(Listener):
         # that we can catch and properly route stderr output from
         # parsing/creation of the other keyword args.
         kwargs = {}
-        stderr_writers_spec = config_dict.get('stderr_writers', None)
+        stderr_writers_spec = config_dict.get('stderr_writers')
         if stderr_writers_spec:
             stderr_writers = self._class_kwargs_from_config(stderr_writers_spec)
             logging.getLogger().addHandler(StdErrLoggingHandler(stderr_writers))
@@ -135,12 +135,12 @@ class ListenerFromLoggerConfig(Listener):
             return [self._class_kwargs_from_config(c) for c in class_json]
 
         # Get name and constructor for component we're going to instantiate
-        class_name = class_json.get('class', None)
+        class_name = class_json.get('class')
         if class_name is None:
             raise ValueError('missing "class" definition in "{}"'.format(class_json))
 
         # Are they telling us where the class definition is? If so import it
-        class_module_name = class_json.get('module', None)
+        class_module_name = class_json.get('module')
         if class_module_name is not None:
             module = importlib.import_module(class_module_name)
             class_const = getattr(module, class_name, None)
@@ -150,7 +150,7 @@ class ListenerFromLoggerConfig(Listener):
         else:
             # If they haven't given us a 'module' declaration, assume class
             # is something that's already defined.
-            class_const = globals().get(class_name, None)
+            class_const = globals().get(class_name)
             if not class_const:
                 raise ValueError('No component class "{}" found: "{}"'.format(
                     class_name, class_json))
@@ -183,6 +183,7 @@ class ListenerFromLoggerConfigString(ListenerFromLoggerConfig):
     def __init__(self, config_str, log_level=None):
         """Create a Listener from a JSON config string."""
         config = read_config.parse(config_str)
+        config = read_config.expand_cruise_definition(config)
         logging.info('Received config string: %s', pprint.pformat(config))
         super().__init__(config=config)
 
@@ -204,13 +205,17 @@ class ListenerFromLoggerConfigFile(ListenerFromLoggerConfig):
             (config_file, config_name) = config_file.split(':', maxsplit=1)
         config = read_config.read_config(config_file)
 
+        # If we're loading a single config from a cruise definition file,
+        # expand the file.
         if config_name:
-            config_dict = config.get('configs', None)
+            config = read_config.expand_cruise_definition(config)
+
+            config_dict = config.get('configs')
             if not config_dict:
                 raise ValueError('Configuration name "%s" specified, but no '
                                  '"configs" section found in file "%s"'
                                  % (config_name, config_file))
-            config = config_dict.get(config_name, None)
+            config = config_dict.get(config_name)
             if not config:
                 raise ValueError('Configuration name "%s" not found in file "%s"'
                                  % (config_name, config_file))
@@ -338,7 +343,7 @@ if __name__ == '__main__':
                         'Note: zero-base indexing, so "1:" means "start at '
                         'second element.')
 
-    parser.add_argument('--slice_separator', dest='slice_separator', default=' ',
+    parser.add_argument('--slice_separator', dest='slice_separator', default=None,
                         help='Field separator for --slice.')
 
     parser.add_argument('--transform_regex_filter', dest='regex_filter',
@@ -363,19 +368,19 @@ if __name__ == '__main__':
                         default=nmea_parser.DEFAULT_MESSAGE_PATH,
                         help='Comma-separated globs of NMEA message definition '
                         'file names, e.g. '
-                        'local/message/*.yaml')
+                        'local/usap/message/*.yaml')
     parser.add_argument('--parse_nmea_sensor_path',
                         dest='parse_nmea_sensor_path',
                         default=nmea_parser.DEFAULT_SENSOR_PATH,
                         help='Comma-separated globs of NMEA sensor definition '
                         'file names, e.g. '
-                        'local/sensor/*.yaml')
+                        'local/usap/sensor/*.yaml')
     parser.add_argument('--parse_nmea_sensor_model_path',
                         dest='parse_nmea_sensor_model_path',
                         default=nmea_parser.DEFAULT_SENSOR_MODEL_PATH,
                         help='Comma-separated globs of NMEA sensor model '
                         'definition file names, e.g. '
-                        'local/sensor_model/*.yaml')
+                        'local/usap/sensor_model/*.yaml')
 
     parser.add_argument('--transform_parse', dest='parse',
                         action='store_true', default=False,
@@ -387,7 +392,7 @@ if __name__ == '__main__':
                         default=record_parser.DEFAULT_DEFINITION_PATH,
                         help='Comma-separated globs of device definition '
                         'file names, e.g. '
-                        'local/devices/*.yaml')
+                        'local/usap/devices/*.yaml')
     parser.add_argument('--parse_to_json',
                         dest='parse_to_json', action='store_true',
                         help='If specified, parser outputs JSON.')
@@ -506,8 +511,7 @@ if __name__ == '__main__':
     ############################
     # Miscellaneous args
     parser.add_argument('--check_format', dest='check_format',
-                        action='store_true', default=False, help='Check '
-                        'reader/transform/writer format compatibility')
+                        action='store_true', default=False, help='Deprecated ')
 
     parser.add_argument('-v', '--verbosity', dest='verbosity',
                         default=0, action='count',
@@ -615,7 +619,7 @@ if __name__ == '__main__':
             while arg_end < len(sys.argv):
                 next_arg = sys.argv[arg_end]
                 if next_arg.find('-') == 0:
-                    if next_arg != '-' and not re.match('-\d', next_arg):  # noqa: W605
+                    if next_arg != '-' and not re.match(r'^-\d', next_arg):  # noqa: W605
                         break
                 arg_end += 1
 
@@ -858,6 +862,9 @@ if __name__ == '__main__':
                 data_server = new_args.write_cached_data_server
                 writers.append(CachedDataWriter(data_server=data_server))
 
+        if all_args.check_format:
+            logging.warning('Argument --check_format is deprecated and no longer '
+                            'serves any function.')
         ##########################
         # If we don't have any readers, read from stdin, if we don't have
         # any writers, write to stdout.
@@ -871,8 +878,7 @@ if __name__ == '__main__':
         # create the Listener.
         listener = Listener(readers=readers, transforms=transforms, writers=writers,
                             stderr_writers=stderr_writers,
-                            interval=all_args.interval,
-                            check_format=all_args.check_format)
+                            interval=all_args.interval)
 
     ############################
     # Whichever way we created the listener, run it.

@@ -26,9 +26,9 @@ class DASRecord:
         """
         if json_str:
             parsed = json.loads(json_str)
-            self.data_id = parsed.get('data_id', None)
-            self.message_type = parsed.get('message_type', None)
-            self.timestamp = parsed.get('timestamp', None)
+            self.data_id = parsed.get('data_id')
+            self.message_type = parsed.get('message_type')
+            self.timestamp = parsed.get('timestamp')
             self.fields = parsed.get('fields', {})
             self.metadata = parsed.get('metadata', {})
         else:
@@ -80,8 +80,31 @@ class DASRecord:
                 self.fields == other.fields and
                 self.metadata == other.metadata)
 
+    ############################
+    def __setitem__(self, field, value):
+        self.fields[field] = value
 
-def to_das_record_list(record):
+    ############################
+    def __getitem__(self, field):
+        try:
+            return self.fields[field]
+        except KeyError:
+            logging.error(f'No field "{field}" found in DASRecord {self}')
+            raise
+
+    ############################
+    def __delitem__(self, field):
+        try:
+            del self.fields[field]
+        except KeyError:
+            logging.error(f'Attempt to delete non-existent field "{field}" in DASRecord: {self}')
+
+    ############################
+    def get(self, field, default=None):
+        return self.fields.get(field, default)
+
+
+def to_das_record_list(record, data_id=None):
     """Utility function to normalize different types of records into a
     list of DASRecords.
 
@@ -115,9 +138,10 @@ def to_das_record_list(record):
 
     # If it's a single timestamp dict, it's easy
     elif 'timestamp' in record and 'fields' in record:
-        return [DASRecord(timestamp=record['timestamp'],
+        return [DASRecord(data_id=data_id,
+                          timestamp=record['timestamp'],
                           fields=record['fields'],
-                          metadata=record.get('metadata', None))]
+                          metadata=record.get('metadata'))]
 
     # If here, we believe we've received a field dict, in which each
     # field may have multiple [timestamp, value] pairs. First thing we
@@ -136,7 +160,7 @@ def to_das_record_list(record):
                 by_timestamp[timestamp][field] = value
 
         # Now copy the entries into an ordered-by-timestamp list.
-        results = [DASRecord(timestamp=ts, fields=by_timestamp[ts])
+        results = [DASRecord(data_id=data_id, timestamp=ts, fields=by_timestamp[ts])
                    for ts in sorted(by_timestamp)]
         return results
     except ValueError:

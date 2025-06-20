@@ -3,10 +3,11 @@
 import os.path
 import sys
 import datetime
+from typing import Union
 
 from os.path import dirname, realpath
 sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
-from logger.utils.formats import Text  # noqa: E402
+from logger.utils.das_record import DASRecord  # noqa E402
 from logger.writers.writer import Writer  # noqa: E402
 
 
@@ -15,7 +16,7 @@ class TextFileWriter(Writer):
 
     def __init__(self, filename=None, flush=True, truncate=False,
                  split_by_date=False, create_path=True, header=None,
-                 header_file=None):
+                 header_file=None, quiet=False):
         """Write text records to a file. If no filename is specified, write to
         stdout.
         ```
@@ -35,13 +36,14 @@ class TextFileWriter(Writer):
         header_file  Add the content of the specified file to each file.
       ```
         """
-        super().__init__(input_format=Text)
-
         self.filename = filename
         self.flush = flush
         self.truncate = truncate
         self.split_by_date = split_by_date
         self.header = None
+
+        # Initialize type checking
+        super().__init__(quiet=quiet)
 
         if split_by_date and not filename:
             raise ValueError('TextFileWriter: filename must be specified if '
@@ -139,17 +141,15 @@ class TextFileWriter(Writer):
             self.file.write(self.header)
 
     ############################
-    def write(self, record):
+    def write(self, record: Union[str, DASRecord]):
         """ Write out record, appending a newline at end."""
-        if record is None:
+
+        if not self.can_process_record(record):  # inherited from BaseModule()
+            self.digest_record(record)           # inherited from BaseModule()
             return
 
-        # If we've got a list, hope it's a list of records. Recurse,
-        # calling write() on each of the list elements in order.
-        if isinstance(record, list):
-            for single_record in record:
-                self.write(single_record)
-            return
+        if isinstance(record, DASRecord):
+            record = record.as_json()
 
         # If we're splitting by date, make sure that we're still writing
         # to the right file.

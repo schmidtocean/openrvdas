@@ -61,13 +61,13 @@ YOUR PEERS WHO WILL TELL YOU THAT YOU REALLY SHOULD HAVE KNOWN BETTER.
 
 ## Documentation
 
-Most OpenRVDAS documentation is gathered in the [docs/](docs/) subdirectory of this project. We recommend beginning with [OpenRVDAS Introduction and Overview](docs/intro_and_overview.md), [Introduction to Loggers](docs/intro_to_loggers.md) and [Controlling Loggers](docs/controlling_loggers.md) to get started.
+Most OpenRVDAS documentation is gathered in the [docs/](docs/) subdirectory of this project. We recommend beginning with [docs/README.md](docs/README.md) for an overview on where and how to get started.
 
 Extensive online documentation, including quick start guides, is also available on the project's home page at [https://openrvdas.org/](https://openrvdas.org/).
 
 ## Installation
 
-OpenRVDAS is written primarily in Python 3.[^1] The installation script at [utils/install_openrvdas.sh](utils/install_openrvrdas.sh)
+OpenRVDAS is written primarily in Python 3.[^1] The installation script at [utils/install_openrvdas.sh](utils/install_openrvdas.sh)
 has been tested on CentOS 7 and 8, Ubuntu 18 and 20, Raspbian and MacOS, but it may also work on other systems.
 Please refer to [INSTALL.md](./INSTALL.md) for details.
 

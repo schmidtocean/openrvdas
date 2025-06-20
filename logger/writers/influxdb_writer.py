@@ -3,7 +3,7 @@
 import time
 import logging
 import sys
-
+from typing import Union
 try:
     import urllib3
     URLLIB3_INSTALLED = True
@@ -14,7 +14,6 @@ from os.path import dirname, realpath
 sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 
 from logger.utils.das_record import DASRecord  # noqa: E402
-from logger.utils.formats import Text  # noqa: E402
 from logger.writers.writer import Writer  # noqa: E402
 
 INFLUXDB_AUTH_TOKEN = INFLUXDB_ORG = INFLUXDB_URL = INFLUXDB_BUCKET = None
@@ -39,9 +38,9 @@ class InfluxDBWriter(Writer):
     """Write to the specified file. If filename is empty, write to stdout."""
 
     def __init__(self, bucket_name=INFLUXDB_BUCKET, measurement_name=None,
-                 auth_token=INFLUXDB_AUTH_TOKEN,
+                 tags=None, auth_token=INFLUXDB_AUTH_TOKEN,
                  org=INFLUXDB_ORG, url=INFLUXDB_URL,
-                 verify_ssl=INFLUXDB_VERIFY_SSL):
+                 verify_ssl=INFLUXDB_VERIFY_SSL, quiet=False):
         """Write data records to the InfluxDB.
         ```
         bucket_name - the name of the bucket in InfluxDB.  If the bucket does
@@ -49,6 +48,22 @@ class InfluxDBWriter(Writer):
 
         measurement_name - optional measurement name to use. If not provided,
                   writer will use the record's data_id.
+
+        tags - optional tags to be applied to records submitted to InfluxDB
+               API.
+
+               Example:
+               tags:
+                   tag0: value0
+                   tag1:
+                       value: value1
+                       filter:
+                           - measurement1
+                           - measurement2
+                       default: defaultValue1
+                   tag2:
+                       value: value2
+                       filter: measurement2
 
         auth_token - The auth token required by the InfluxDB instance. If omitted,
                   will look for value in imported INFLUXDB_AUTH_TOKEN and throw
@@ -67,7 +82,7 @@ class InfluxDBWriter(Writer):
                   attempt to verify the validity of the relevant SSL certificate.
         ```
         """
-        super().__init__(input_format=Text)  # type: ignore
+        super().__init__(quiet=quiet)
         if not URLLIB3_INSTALLED:
             raise ImportError('InfluxDBWriter requires Python "urllib3" module; '
                               'please run "pip install urllib3"')
@@ -100,6 +115,28 @@ class InfluxDBWriter(Writer):
             raise RuntimeError('Python module influxdb_client not found. Please '
                                'install using "pip install influxdb_client" prior '
                                'to using InfluxDBWriter.')
+
+        if tags and not isinstance(tags, dict):
+            raise RuntimeError('The specified tags kwarg must be None or a dict')
+
+        self.tags = {'*': {}}
+        if tags:
+            for tag, details in tags.items():
+                if isinstance(details, str):
+                    self.tags['*'][tag] = details
+
+                if isinstance(details, dict) and 'filter' in details:
+                    if isinstance(details['filter'], str):
+                        details['filter'] = [details['filter']]
+
+                    if 'default' in details:
+                        self.tags['*'][tag] = details['default']
+
+                    for filter_item in details['filter']:
+                        if filter_item not in self.tags:
+                            self.tags[filter_item] = {}
+
+                        self.tags[filter_item][tag] = details['value']
 
         self.auth_token = auth_token
         self.org = org
@@ -164,7 +201,7 @@ class InfluxDBWriter(Writer):
             self.write_api = client.write_api(write_options=ASYNCHRONOUS)
 
     ############################
-    def write(self, record):
+    def write(self, record: Union[DASRecord, dict]):
         """Note: Assume record is a dict or DASRecord or list of
         dict/DASRecord. In each record look for 'fields', 'data_id' and
         'timestamp' (UTC epoch seconds). If data_id is missing, use the
@@ -178,36 +215,38 @@ class InfluxDBWriter(Writer):
                 fields = record.fields
                 timestamp = record.timestamp
             else:
-                data_id = record.get('data_id', None)
+                data_id = record.get('data_id')
                 fields = record.get('fields', {})
-                timestamp = record.get('timestamp', None) or time.time()
+                timestamp = record.get('timestamp') or time.time()
+
+            measurement = self.measurement_name or data_id
+            tags = {**{'sensor': measurement}, **self.tags['*']}
+
+            if measurement in self.tags:
+                tags = {**tags, **self.tags[measurement]}
+
             influxDB_record = {
                 'measurement': self.measurement_name or data_id,
-                'tags': {'sensor': data_id or self.measurement_name or self.bucket_name},
+                'tags': tags,
                 'fields': fields,
                 'time': int(timestamp * 1000000000)
             }
             return influxDB_record
 
-        if not record:
+        # See if it's something we can process, and if not, try digesting
+        if not self.can_process_record(record):  # inherited from BaseModule()
+            self.digest_record(record)  # inherited from BaseModule()
             return
 
-        logging.debug('InfluxDBWriter writing record: %s', record)
-
-        if not type(record) in [dict, list, DASRecord]:
-            logging.warning('InfluxDBWriter received record that was not dict, '
-                            'list or DASRecord format. Type %s: %s',
-                            type(record), str(record))
         try:
-            if isinstance(record, list):
-                influxDB_record = [record_to_influx(r) for r in record]
-            else:
-                influxDB_record = record_to_influx(record)
+            logging.debug('InfluxDBWriter writing record: %s', record)
+            influxDB_record = record_to_influx(record)
             # logging.info('influxdb\n bucket: %s\nrecord: %s',
             #             self.bucket_name, pprint.pformat(influxDB_record))
             self.write_api.write(self.bucket_id, self.org_id, influxDB_record)
 
         except Exception as e:
-            logging.warning('InfluxDBWriter exception: %s', str(e))
-            logging.warning('InfluxDBWriter could not ingest record '
-                            'type %s: %s', type(record), str(record))
+            if not self.quiet:
+                logging.warning('InfluxDBWriter exception: %s', str(e))
+                logging.warning('InfluxDBWriter could not ingest record '
+                                'type %s: %s', type(record), str(record))

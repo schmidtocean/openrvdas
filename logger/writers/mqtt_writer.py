@@ -4,50 +4,63 @@ import logging
 import sys
 
 # Don't barf if they don't have paho mqtt installed. Only complain if
-# they actually try to use it, below
+# they actually try to use it, below. If it *is* installed, check which
+# version, so we know how to call it.
 try:
     import paho.mqtt.client as mqtt  # import the client | $ pip installing paho-mqtt is necessary
-    import paho.mqtt.publish
     PAHO_ENABLED = True
+
+    # Check which paho version is being used
+    from pkg_resources import get_distribution, packaging  # noqa: E402
+    PAHO_VERSION = get_distribution("paho-mqtt").version
+    if packaging.version.parse(PAHO_VERSION) >= packaging.version.parse('2.0.0'):
+        USE_VERSION_FLAG = True
+    else:
+        USE_VERSION_FLAG = False
 except ModuleNotFoundError:
     PAHO_ENABLED = False
 
 from os.path import dirname, realpath
 sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
-from logger.utils.formats import Text  # noqa: E402
 from logger.writers.writer import Writer  # noqa: E402
 
 
 class MQTTWriter(Writer):
     """Write to paho-mqtt broker channel."""
 
-    def __init__(self, broker, channel, client_name):
+    def __init__(self, broker, channel, client_name=None, qos=0):
         """
         Write text records to a paho-mqtt broker channel.
         ```
         broker       MQTT broker to connect, broker format[###.###.#.###]
         channel      MQTT channel to read from, channel format[@broker/path_of_subscripton]
+        client_name  Deprecated
+        qos          Quality of service: 0 = at most once, 1 = at least once, 2 = exactly once
+
         ```
         See /readers/mqtt_reader.py for info on how to start a broker
         """
-        super().__init__(input_format=Text)
-
         if not PAHO_ENABLED:
             raise ModuleNotFoundError('MQTTReader(): paho-mqtt is not installed. Please '
                                       'try "pip install paho-mqtt" prior to use.')
-
+        if qos not in [0, 1, 2]:
+            raise ValueError('MQTTWriter parameter qos must be integer value 0, 1 or 2. '
+                             f'Found type "{type(qos).__name__}", value "{qos}".')
         self.broker = broker
         self.channel = channel
         self.client_name = client_name
+        self.qos = qos
 
         try:
-            self.paho = mqtt.Client(client_name)
+            if USE_VERSION_FLAG:
+                self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+            else:
+                self.client = mqtt.Client()
 
-            self.paho.connect(broker)
-            self.paho.subscribe(channel)
+            self.client.connect(broker)
+            self.client.subscribe(channel)
 
-            while paho.loop() == 0:
-                pass
+            self.client.loop_start()
 
         except mqtt.WebsocketConnectionError as e:
             logging.error('Unable to connect to broker at %s:%s',
@@ -55,16 +68,17 @@ class MQTTWriter(Writer):
             raise e
 
     ############################
-    def write(self, record):
-        """Write the record to the broker channel."""
-        if not record:
-            return
+    def __del__(self):
+        """Clean up the connection once finished"""
+        self.client.loop_stop()
+        self.client.disconnect()
 
-        # If we've got a list, hope it's a list of records. Recurse,
-        # calling write() on each of the list elements in order.
-        if isinstance(record, list):
-            for single_record in record:
-                self.write(single_record)
+    ############################
+    def write(self, record: str):
+
+        # See if it's something we can process, and if not, try digesting
+        if not self.can_process_record(record):  # inherited from BaseModule()
+            self.digest_record(record)  # inherited from BaseModule()
             return
 
         # If record is not a string, try converting to JSON. If we don't know
@@ -76,7 +90,7 @@ class MQTTWriter(Writer):
         #    record = str(record)
 
         try:
-            self.paho.publish(self.channel, record)
+            self.client.publish(self.channel, record, self.qos)
         except mqtt.WebsocketConnectionError as e:
             logging.error('Unable to connect to broker at %s:%d',
                           self.broker, self.channel)

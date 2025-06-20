@@ -6,8 +6,11 @@ import socket
 import struct
 import sys
 
+from typing import Union
+
 from os.path import dirname, realpath
 sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
+from logger.utils.das_record import DASRecord  # noqa E402
 from logger.writers.writer import Writer  # noqa E402
 
 # So that we can write the user's record no matter how silly big it is, we
@@ -75,7 +78,7 @@ class UDPWriter(Writer):
 
     def __init__(self, destination=None, port=None,
                  mc_interface=None, mc_ttl=3, num_retry=2, warning_limit=5, eol='',
-                 reuseaddr=False, reuseport=False,
+                 reuseaddr=False, reuseport=False, quiet=False,
                  encoding='utf-8', encoding_errors='ignore'):
         """Write records to a UDP network socket.
         ```
@@ -120,7 +123,7 @@ class UDPWriter(Writer):
         ```
 
         """
-        super().__init__(encoding=encoding,
+        super().__init__(quiet=quiet, encoding=encoding,
                          encoding_errors=encoding_errors)
 
         self.num_retry = num_retry
@@ -225,18 +228,16 @@ class UDPWriter(Writer):
             return None
 
     ############################
-    def write(self, record):
+    def write(self, record: Union[str, bytes, DASRecord]):
         """Write the record to the network."""
-        # If we don't have a record, there's nothing to do
-        if not record:
+
+        # See if it's something we can process, and if not, try digesting
+        if not self.can_process_record(record):  # inherited from BaseModule()
+            self.digest_record(record)  # inherited from BaseModule()
             return
 
-        # If we've got a list, hope it's a list of records. Recurse,
-        # calling write() on each of the list elements in order.
-        if isinstance(record, list):
-            for single_record in record:
-                self.write(single_record)
-            return
+        if isinstance(record, DASRecord):
+            record = record.as_json()
 
         # Append eol if configured
         if self.eol:
@@ -312,7 +313,9 @@ class UDPWriter(Writer):
                 # If we failed, complain, unless we've already complained too much
                 self.good_writes = 0
                 if self.num_warnings < self.warning_limit:
-                    logging.error('UDPWriter: send() error: %s: %s', self.target_str, str(e))
+                    logging.error(f'UDPWriter: send() error: {self.target_str}: {str(e)}')
+                    if 'Message too long' in str(e):
+                        logging.error(f'Message length is {rec_len}')
                     self.num_warnings += 1
                     if self.num_warnings == self.warning_limit:
                         logging.error('UDPWriter.write() - muting errors')

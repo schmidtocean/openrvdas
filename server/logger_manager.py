@@ -26,7 +26,7 @@ from server.server_api import ServerAPI  # noqa: E402
 from logger.transforms.to_das_record_transform import ToDASRecordTransform  # noqa: E402
 from logger.utils.stderr_logging import DEFAULT_LOGGING_FORMAT  # noqa: E402
 from logger.utils.stderr_logging import StdErrLoggingHandler  # noqa: E402
-from logger.utils.read_config import read_config  # noqa: E402
+from logger.utils.read_config import read_config, expand_cruise_definition  # noqa: E402
 
 # For sending stderr to CachedDataServer
 from logger.utils.das_record import DASRecord  # noqa: E402
@@ -202,8 +202,8 @@ class LoggerManager:
         send an updated cruise definition to the console.
         """
         logging.info('Fetching new cruise definitions from API')
-        try:
-            with self.config_lock:
+        with self.config_lock:
+            try:
                 self.loggers = self.api.get_loggers()
                 self.config_to_logger = {}
                 for logger, logger_configs in self.loggers.items():
@@ -216,7 +216,7 @@ class LoggerManager:
                 # from a callback when the API alerts us that something has
                 # changed. So we need to re-grab self.cruise
                 self.cruise = self.api.get_configuration()  # a Cruise object
-                self.cruise_filename = self.cruise.get('config_filename', None)
+                self.cruise_filename = self.cruise.get('config_filename')
                 loaded_time = self.cruise.get('loaded_time')
                 self.cruise_loaded_time = datetime.datetime.timestamp(loaded_time)
                 self.active_mode = self.api.get_active_mode()
@@ -233,8 +233,8 @@ class LoggerManager:
                 logging.info('Sending updated cruise definitions to CDS.')
                 self._write_record_to_data_server(
                     'status:cruise_definition', cruise_dict)
-        except (AttributeError, ValueError, TypeError) as e:
-            logging.info('Failed to update cruise definition: %s', e)
+            except (AttributeError, ValueError, TypeError) as e:
+                logging.info('Failed to update cruise definition: %s', e)
 
     ############################
     def _check_logger_status_loop(self):
@@ -322,7 +322,7 @@ class LoggerManager:
                     logging.info('No cruise definition found in API')
                     time.sleep(self.interval * 2)
                     continue
-                self.cruise_filename = self.cruise.get('config_filename', None)
+                self.cruise_filename = self.cruise.get('config_filename')
                 loaded_time = self.cruise.get('loaded_time')
                 self.cruise_loaded_time = datetime.datetime.timestamp(loaded_time)
 
@@ -545,17 +545,16 @@ if __name__ == '__main__':  # noqa: C901
     api.on_load(callback=logger_manager._load_new_definition_from_api)
 
     ############################
-    # Start all the various LoggerManager threads running
-    logger_manager.start()
-
-    ############################
     # If they've given us an initial configuration, get and load it.
     if args.config:
         config = read_config(args.config)
+        config = expand_cruise_definition(config)
 
         # Hacky bit: need to stash the config filename for posterity
-        if 'cruise' in config:
-            config['cruise']['config_filename'] = args.config
+        if 'cruise' not in config or config['cruise'] is None:
+            config['cruise'] = {}
+
+        config['cruise']['config_filename'] = args.config
         api.load_configuration(config)
 
         active_mode = args.mode or api.get_default_mode()
@@ -564,6 +563,10 @@ if __name__ == '__main__':  # noqa: C901
                         log_level=api.INFO,
                         message='started with: %s, mode %s' %
                         (args.config, active_mode))
+
+    ############################
+    # Start all the various LoggerManager threads running
+    logger_manager.start()
 
     try:
         # If no console, just wait for the configuration update thread to

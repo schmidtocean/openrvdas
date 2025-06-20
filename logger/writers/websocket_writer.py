@@ -4,17 +4,28 @@
 import asyncio
 import logging
 import ssl
+import sys
 import threading
-import websockets
 
+from typing import Union
 from urllib.parse import urlparse
+
+from os.path import dirname, realpath
+sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
+from logger.writers.writer import Writer  # noqa E402
+
+try:
+    import websockets
+    WEBSOCKETS_INSTALLED = True
+except ImportError:
+    WEBSOCKETS_INSTALLED = False
 
 
 ################################################################################
-class WebsocketWriter():
+class WebsocketWriter(Writer):
     ############################
 
-    def __init__(self, uri, cert_file=None, key_file=None):
+    def __init__(self, uri, cert_file=None, key_file=None, quiet=False):
         """
         ```
         uri         Protocol, hostname and port to serve as. E.g. 'wss://openrvdas:8081'
@@ -24,11 +35,17 @@ class WebsocketWriter():
         key_file
         ```
         """
+        if not WEBSOCKETS_INSTALLED:
+            raise ImportError('WebsocketWriter requires Python "websockets" module; '
+                              'please run "pip install websockets"')
         self.uri = uri
         parsed_uri = urlparse(uri)
         self.host = parsed_uri.hostname
         self.port = parsed_uri.port
         self.protocol = parsed_uri.scheme
+
+        # Initialize record type checking.
+        super().__init__(quiet=quiet)
 
         if self.protocol == 'wss':
             self.ssl = True
@@ -119,9 +136,12 @@ class WebsocketWriter():
         self.loop.run_forever()
 
     ############################
-    def write(self, record):
+    def write(self, record: Union[str, bytes]):
         """Write a record to all connected clients"""
-        if not record:
+
+        # See if it's something we can process, and if not, try digesting
+        if not self.can_process_record(record):  # inherited from BaseModule()
+            self.digest_record(record)  # inherited from BaseModule()
             return
 
         logging.debug(f'WebsocketWriter received record: {record}')
