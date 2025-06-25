@@ -19,6 +19,7 @@ HiPAP:
     # Example: $PSIMSSB,130248.934,M01,A,,D,N,M,3641.63178,S,07305.80905,W,458.876,0.185,N,,
     - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},{AddlVal2:of},"
     - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},"
+    - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},{AddlVal2:of},,{Val4:od},{Val5:od},"
     # Handles sensor values telegrams for head attitude
     # Example: $PSIMSNS,164711.822,M01,1,1,-0.10,0.18,0.00,20.44,,d1,0.006,,M121
     # Example2:$PSIMSNS,193747.229,,1,1,0.35,-0.20,0.00,16.12,,60,0.000,,M121"
