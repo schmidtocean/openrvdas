@@ -1,0 +1,208 @@
+################################################################################
+# HUGIN Device Type definitions
+#
+# Based on HUGIN AUV Interface Control Document 10xxxxx/A
+################################################################################
+Hugin:
+  category: "device_type"
+
+  # If a device type can output multiple formats, include them as a
+  # list. The parser will use the first one that matches the whole line.
+  format:
+    # Handles AUV position and depth telegrams (Latitude, Longitude, Depth)
+    # Example: $PFFILLD,964009759,59.483966,N,010.479030,E,137.6,C,2.4,2.4,,SI
+    # ’ --string ‘$PKMSLLD,1750965608,H,9999,00.000446,S,000.000053,W,0.0,C,10.0,10.0,,EG’
+
+    PKMSLLD: "$PKMSLLD,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{Latitude:nlat_dir},{Longitude:nlat_dir},{Depth:of},{DepthRef:ow},{LatStdDev:of},{LonStdDev:of},{DepthStdDev:of},{SourceType:ow}"
+    # Handles AUV orientation, altitude, and velocity telegrams (Attitude, Altitude, Velocity)
+    # Example: $PFFIAAV,964009759,330.0,329.5,-16.0,-0.6,61.0,1.95,0.00
+    PKMSAAV: "$PKMSAAV,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{Heading:of},{Course:of},{Pitch:of},{Roll:of},{Altitude:of},{FwdVel:of},{StbVel:of}"
+
+    # Handles AUV control system status and references
+    # Example: $PFFICSR,964009759,4,120.0,50.0,H,163.0,R,330.0,H,1293,65535,M,5
+    PKMSCSR: "$PKMSCSR,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{MissionLine:od},{DepthRef:of},{AltRef:of},{DepthMode:ow},{SpeedRef:of},{SpeedMode:ow},{CourseRef:of},{GuidanceMode:nc},{RemDuration:od},{RemDistance:od},{MissionState:ow},{PayloadStatus:od}"
+
+    # Handles AUV waypoint data
+    # Example: $PFFIWPT,964009840,59.485085,N,010.477743,E,59.505667,N,010.454833,E,0.0
+    PKMSWPT: "$PKMSWPT,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{OrigLat:of},{OrigLatHemi:ow},{OrigLon:of},{OrigLonHemi:ow},{DestLat:of},{DestLatHemi:ow},{DestLon:of},{DestLonHemi:ow},{XTrackOffset:of}"
+
+    # Handles supplementary AUV data
+    # Example: $PFFISUP,1097434879,U,D,0.525,3.0,47.5,36000
+    PKMSSUP: "$PKMSSUP,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{AUVStatus:ow},{MasterTriggerMode:ow},{TriggerRateDist:of},{SecondaryTriggerRate:of},{Voltage:of},{BatteryLife:od}"
+
+    # Handles Topside information from HuginOS
+    # Example: $PFFITSI,1097434879,5.2,C,,,,165,,,34,18430
+    PKMSTSI: "$PKMSTSI,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{HuginOS_Ver:nc},{HuginOS_Mode:ow},{HiPAP_Age:od},{ACL_Age:od},{ADL_Age:od},{RF_Age:od},{Sat_Age:od},{Svc_Age:od},{UTM_Zone:od},{RemMissionVehicleTime:od}"
+
+  ########
+  # Metadata from Hugin ICD
+  fields:
+    VehicleClass:
+      units: "na"
+      description: "H for HUGIN/MUNIN AUV or S for Sounder USV"
+    VehicleID:
+      units: "na"
+      description: "AUV Serial no, 9999 is simulation"
+    VehicleTime:
+      units: "seconds"
+      description: "VehicleTime since 1970-01-01 00:00 UTC"
+    Latitude:
+      units: "degrees"
+      description: "Latitude position in decimal degrees"
+    LatHemi:
+      units: "char"
+      description: "Hemisphere of latitude: N(orth) or S(outh)"
+    Longitude:
+      units: "degrees"
+      description: "Longitude position in decimal degrees"
+    LonHemi:
+      units: "char"
+      description: "Hemisphere of longitude: E(ast) or W(est)"
+    Depth:
+      units: "meters"
+      description: "Depth in meters below the specified reference point"
+    DepthRef:
+      units: "code"
+      description: "Reference for depth field: C(urrent sea level) or S(hip's reference position)"
+    LatStdDev:
+      units: "meters"
+      description: "Latitude standard deviation in meters"
+    LonStdDev:
+      units: "meters"
+      description: "Longitude standard deviation in meters"
+    DepthStdDev:
+      units: "meters"
+      description: "Depth standard deviation in meters"
+    SourceType:
+      units: "code"
+      description: "Type/source of position measurement: SG (AUV raw GPS), SI (AUV INS), TR (Topside raw), TF (Topside filtered), TP (Topside predicted)"
+    Heading:
+      units: "degrees"
+      description: "AUV heading in degrees"
+    Course:
+      units: "degrees"
+      description: "Course over ground in degrees"
+    Pitch:
+      units: "degrees"
+      description: "Pitch angle in degrees; positive value indicates nose up"
+    Roll:
+      units: "degrees"
+      description: "Roll angle in degrees; positive value indicates port side up"
+    Altitude:
+      units: "meters"
+      description: "Altitude above seafloor in meters"
+    FwdVel:
+      units: "m/s"
+      description: "Forward velocity in meters per second"
+    StbVel:
+      units: "m/s"
+      description: "Starboard velocity in meters per second"
+    MissionLine:
+      units: "integer"
+      description: "Mission plan line number; 0 if not in a mission"
+    AltRef:
+      units: "meters"
+      description: "Altitude reference in meters"
+    DepthMode:
+      units: "code"
+      description: "Depth control mode: D(epth), S(teep depth), H(eight/Altitude), T(rajectory) or E(xternal)"
+    SpeedRef:
+      units: "RPM or m/s"
+      description: "RPM reference, or speed reference in meters per second"
+    SpeedMode:
+      units: "code"
+      description: "Speed control mode: R(PM), S(peed) or E(xternal)"
+    CourseRef:
+      units: "degrees"
+      description: "Course or heading reference in degrees"
+    GuidanceMode:
+      units: "code"
+      description: "Guidance mode: H(eading), C(ourse), W(aypoint), S(piral/circle), P(ipeline tracking) or E(xternal)"
+    RemDuration:
+      units: "seconds"
+      description: "Remaining duration in seconds"
+    RemDistance:
+      units: "meters"
+      description: "Remaining distance in meters"
+    MissionState:
+      units: "code"
+      description: "Mission state: C(onfiguration), A(rmed), M(ission), E(mergency ascent), S(ascent), P(redicted) or O(ther)"
+    PayloadStatus:
+      units: "bitmask"
+      description: "Payload relay status, formed by binary 'or' of control bits for active relays"
+    OrigLat:
+      units: "degrees"
+      description: "Origin waypoint latitude"
+    OrigLatHemi:
+      units: "char"
+      description: "Hemisphere of origin waypoint latitude: N(orth) or S(outh)"
+    OrigLon:
+      units: "degrees"
+      description: "Origin waypoint longitude"
+    OrigLonHemi:
+      units: "char"
+      description: "Hemisphere of origin waypoint longitude: E(ast) or W(est)"
+    DestLat:
+      units: "degrees"
+      description: "Destination waypoint latitude"
+    DestLatHemi:
+      units: "char"
+      description: "Hemisphere of destination waypoint latitude: N(orth) or S(outh)"
+    DestLon:
+      units: "degrees"
+      description: "Destination waypoint longitude"
+    DestLonHemi:
+      units: "char"
+      description: "Hemisphere of destination waypoint longitude: E(ast) or W(est)"
+    XTrackOffset:
+      units: "meters"
+      description: "Cross-track offset in meters"
+    AUVStatus:
+      units: "code"
+      description: "AUV status: D(on deck), S(at surface), or U(submerged)"
+    MasterTriggerMode:
+      units: "code"
+      description: "Master trigger mode: T(ime) or D(istance)"
+    TriggerRateDist:
+      units: "Hz or meters"
+      description: "Master trigger rate in Hz, or distance in metres"
+    SecondaryTriggerRate:
+      units: "Hz"
+      description: "Secondary payload trigger rate (usually for multibeam echo sounder) in Hz"
+    Voltage:
+      units: "V"
+      description: "System voltage in Volts"
+    BatteryLife:
+      units: "seconds"
+      description: "Remaining battery life in seconds"
+    HuginOS_Ver:
+      description: "HuginOS software version"
+    HuginOS_Mode:
+      units: "code"
+      description: "HuginOS mode: C(onfig) or M(ission)"
+    HiPAP_Age:
+      units: "seconds"
+      description: "HiPAP data age in seconds"
+    ACL_Age:
+      units: "seconds"
+      description: "ACL data age in seconds"
+    ADL_Age:
+      units: "seconds"
+      description: "ADL data age in seconds"
+    RF_Age:
+      units: "seconds"
+      description: "RF link data age in seconds"
+    Sat_Age:
+      units: "seconds"
+      description: "Satellite link data age in seconds"
+    Svc_Age:
+      units: "seconds"
+      description: "Service link (network) data age in seconds"
+    UTM_Zone:
+      description: "Currently configured UTM zone"
+    RemMissionVehicleTime:
+      units: "seconds"
+      description: "Remaining mission time in seconds"
+    Checksum:
+      units: "hex"
+      description: "Optional NMEA checksum"

@@ -1,0 +1,84 @@
+################################################################################
+# Device definitions for the The Childlike Empress devices
+# all devices should start with emp_{devicename} so they are easily identified
+# See README.md in this directory
+
+includes:
+  - local/soi/devices/*.yaml
+
+devices:
+  ######################################
+  emp_hugin_rt:
+    category: "device"
+    device_type: "Hugin"
+    serial_number: "2140"
+    description: "Kongsberg Hugin Superior AUV"
+
+    fields:
+      # PFFILLD Fields
+      Time: "Hugin_Time_s"
+      VehicleClass: "Hugin_Vehicle_Class"
+      VehicleID: "Hugin_Vehicle_ID"
+      Latitude: "Hugin_Latitude_deg"
+      LatHemi: "Hugin_Latitude_Hemisphere"
+      Longitude: "Hugin_Longitude_deg"
+      LonHemi: "Hugin_Longitude_Hemisphere"
+      Depth: "Hugin_Depth_m"
+      DepthRef: "Hugin_Depth_Reference_Code"
+      LatStdDev: "Hugin_Latitude_StdDev_m"
+      LonStdDev: "Hugin_Longitude_StdDev_m"
+      DepthStdDev: "Hugin_Depth_StdDev_m"
+      SourceType: "Hugin_Position_Source_Code"
+
+      # PFFIAAV Fields
+      Heading: "Hugin_Heading_deg"
+      Course: "Hugin_Course_deg"
+      Pitch: "Hugin_Pitch_deg"
+      Roll: "Hugin_Roll_deg"
+      Altitude: "Hugin_Altitude_m"
+      FwdVel: "Hugin_Velocity_Forward_mps"
+      StbVel: "Hugin_Velocity_Starboard_mps"
+
+      # PFFICSR Fields
+      MissionLine: "Hugin_Mission_Line_Number"
+      AltRef: "Hugin_Altitude_Reference_m"
+      DepthMode: "Hugin_Depth_Control_Mode_Code"
+      SpeedRef: "Hugin_Speed_Reference"
+      SpeedMode: "Hugin_Speed_Control_Mode_Code"
+      CourseRef: "Hugin_Course_Reference_deg"
+      GuidanceMode: "Hugin_Guidance_Mode_Code"
+      RemDuration: "Hugin_Remaining_Duration_s"
+      RemDistance: "Hugin_Remaining_Distance_m"
+      MissionState: "Hugin_Mission_State_Code"
+      PayloadStatus: "Hugin_Payload_Status_Bitmask"
+
+      # PFFIWPT Fields
+      OrigLat: "Hugin_Waypoint_Origin_Lat_deg"
+      OrigLatHemi: "Hugin_Waypoint_Origin_Lat_Hemi"
+      OrigLon: "Hugin_Waypoint_Origin_Lon_deg"
+      OrigLonHemi: "Hugin_Waypoint_Origin_Lon_Hemi"
+      DestLat: "Hugin_Waypoint_Destination_Lat_deg"
+      DestLatHemi: "Hugin_Waypoint_Destination_Lat_Hemi"
+      DestLon: "Hugin_Waypoint_Destination_Lon_deg"
+      DestLonHemi: "Hugin_Waypoint_Destination_Lon_Hemi"
+      XTrackOffset: "Hugin_Cross_Track_Offset_m"
+
+      # PFFISUP Fields
+      AUVStatus: "Hugin_AUV_Status_Code"
+      MasterTriggerMode: "Hugin_Master_Trigger_Mode_Code"
+      TriggerRateDist: "Hugin_Master_Trigger_Value"
+      SecondaryTriggerRate: "Hugin_Secondary_Trigger_Rate_Hz"
+      Voltage: "Hugin_System_Voltage_V"
+      BatteryLife: "Hugin_Battery_Remaining_s"
+
+      # PFFITSI Fields
+      HuginOS_Ver: "Hugin_OS_Version"
+      HuginOS_Mode: "Hugin_OS_Mode_Code"
+      HiPAP_Age: "Hugin_DataAge_HiPAP_s"
+      ACL_Age: "Hugin_DataAge_ACL_s"
+      ADL_Age: "Hugin_DataAge_ADL_s"
+      RF_Age: "Hugin_DataAge_RFLink_s"
+      Sat_Age: "Hugin_DataAge_SatLink_s"
+      Svc_Age: "Hugin_DataAge_ServiceLink_s"
+      UTM_Zone: "Hugin_OS_UTM_Zone"
+      RemMissionTime: "Hugin_OS_Remaining_Mission_Time_s"
