@@ -1020,13 +1020,13 @@ devices:
     description: "Gill MaxiMet WheelHouse Starboard"
 
     fields:
-      WindDir: "MaxiMet_WH_STB_WindDir"
-      WindSpd: "MaxiMet_WH_STB_WindSpd"
-      WindDir_InstrumentTrueWind: "MaxiMet_WH_STB_InstrumentTrueWindDir"
-      AirPres: "MaxiMet_WH_STB_AirPres"
-      Humidity: "MaxiMet_WH_STB_Humidity"
-      AirTemp: "MaxiMet_WH_STB_AirTemp"
-      DewPoint: "MaxiMet_WH_STB_DewPoint"
+      WindDir: "MaxiMet_WH_Stb_WindDir"
+      WindSpd: "MaxiMet_WH_Stb_WindSpd"
+      WindDir_InstrumentTrueWind: "MaxiMet_WH_Stb_InstrumentTrueWindDir"
+      AirPres: "MaxiMet_WH_Stb_AirPres"
+      Humidity: "MaxiMet_WH_Stb_Humidity"
+      AirTemp: "MaxiMet_WH_Stb_AirTemp"
+      DewPoint: "MaxiMet_WH_Stb_DewPoint"
 
   #####################################
   maximet_crane:
