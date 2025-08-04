@@ -1013,6 +1013,22 @@ devices:
       DewPoint: "MaxiMet_FM_DewPoint"
 
   #####################################
+  maximet_wh_stb:
+    category: "device"
+    device_type: "MaxiMet"
+    serial_number: ""
+    description: "Gill MaxiMet WheelHouse Starboard"
+
+    fields:
+      WindDir: "MaxiMet_WH_STB_WindDir"
+      WindSpd: "MaxiMet_WH_STB_WindSpd"
+      WindDir_InstrumentTrueWind: "MaxiMet_WH_STB_InstrumentTrueWindDir"
+      AirPres: "MaxiMet_WH_STB_AirPres"
+      Humidity: "MaxiMet_WH_STB_Humidity"
+      AirTemp: "MaxiMet_WH_STB_AirTemp"
+      DewPoint: "MaxiMet_WH_STB_DewPoint"
+
+  #####################################
   maximet_crane:
     category: "device"
     device_type: "MaxiMet"
