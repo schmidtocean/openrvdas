@@ -1,0 +1,98 @@
+###################
+logger_templates:
+  #################
+  udp_logger_template_sb:
+    configs:
+      'off': {}
+      influx:
+        readers:
+        - class: UDPReader
+          kwargs:
+            port: <<reader_udp_port>>
+        transforms:
+        - class: TimestampTransform
+        - class: PrefixTransform
+          kwargs:
+            prefix: <<logger>>
+        - class: ParseTransform
+          kwargs:
+            definition_path: local/soi/sb_devices.yaml
+        writers:
+        - class: CachedDataWriter
+          kwargs:
+            data_server: <<cdw_port>>
+        - class: InfluxDBWriter
+          kwargs:
+            bucket_name: <<influxdb_default_bucket>>
+            measurement_name: <<logger>>
+      influx_restricted:
+        readers:
+        - class: UDPReader
+          kwargs:
+            port: <<reader_udp_port>>
+        transforms:
+        - class: TimestampTransform
+        - class: PrefixTransform
+          kwargs:
+            prefix: <<logger>>
+        - class: ParseTransform
+          kwargs:
+            definition_path: local/soi/sb_devices.yaml
+        writers:
+        - class: CachedDataWriter
+          kwargs:
+            data_server: <<cdw_port>>
+        - class: InfluxDBWriter
+          kwargs:
+            bucket_name: <<influxdb_restricted_bucket>>
+            measurement_name: <<logger>>
+      file:
+        readers:
+        - class: UDPReader
+          kwargs:
+            port: <<reader_udp_port>>
+        transforms:
+        - class: TimestampTransform
+          kwargs:
+            sep: ','
+        writers:
+        - class: LogfileWriter
+          kwargs:
+            header_file: <<header_dir>>/<<logger>>_hdr.txt
+            filebase: <<file_root>>/<<cruise>>_<<logger>>
+            split_char: ','
+            suffix: '.txt'
+      file/influx:
+        readers:
+        - class: UDPReader
+          kwargs:
+            port: <<reader_udp_port>>
+        transforms:
+        - class: TimestampTransform
+          kwargs:
+            sep: ','
+        writers:
+        - class: LogfileWriter
+          kwargs:
+            header_file: <<header_dir>>/<<logger>>_hdr.txt
+            filebase: <<file_root>>/<<cruise>>_<<logger>>
+            split_char: ','
+            suffix: '.txt'
+        - class: ComposedWriter
+          kwargs:
+            transforms:
+            - class: PrefixTransform
+              kwargs:
+                prefix: '<<logger>>'
+            - class: ParseTransform
+              kwargs:
+                definition_path: local/soi/sb_devices.yaml
+                record_format: '{data_id:w} {timestamp:ti},{field_string}'
+            writers:
+            - class: CachedDataWriter
+              kwargs:
+                data_server:  <<cdw_port>>
+            - class: InfluxDBWriter
+              kwargs:
+                bucket_name: <<influxdb_default_bucket>>
+                measurement_name: <<logger>>
