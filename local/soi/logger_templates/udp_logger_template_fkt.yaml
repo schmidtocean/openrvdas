@@ -1,0 +1,61 @@
+###################
+logger_templates:
+  #################
+  udp_logger_template_fkt:
+    configs:
+      'off': {}
+      influx:
+        readers:
+        - class: UDPReader
+          kwargs:
+            port: <<reader_udp_port>>
+        transforms:
+        - class: TimestampTransform
+        - class: PrefixTransform
+          kwargs:
+            prefix: <<logger>>
+        - class: ParseTransform
+          kwargs:
+            definition_path: local/soi/fkt_devices.yaml
+        writers:
+        - class: CachedDataWriter
+          kwargs:
+            data_server: <<cdw_port>> # add global variable cdw_port = localhost:8766
+        - class: InfluxDBWriter
+          kwargs:
+            bucket_name: <<influxdb_default_bucket>> # add global variable influxdb_default_bucket = openrvdas
+            measurement_name: <<logger>>
+      influx+file:
+        readers:
+        - class: UDPReader
+          kwargs:
+            port: <<reader_udp_port>>
+        transforms:
+        - class: TimestampTransform
+          kwargs:
+            sep: ','
+        writers:
+        - class: LogfileWriter
+          kwargs:
+            header_file: '{headerDir}/<<logger>>_hdr.txt'
+            filebase: '{dataDir}/{cruiseID}_<<logger>>' # change to global data_dir = new default is <<file_root>>/<<logger>>/raw/<<cruise>>_<<logger>>
+            split_char: ','
+            suffix: '.txt'
+        - class: ComposedWriter
+          kwargs:
+            transforms:
+            - class: PrefixTransform
+              kwargs:
+                prefix: '<<logger>>'
+            - class: ParseTransform
+              kwargs:
+                definition_path: local/soi/fkt_devices.yaml
+                record_format: '{data_id:w} {timestamp:ti},{field_string}'
+            writers:
+            - class: CachedDataWriter
+              kwargs:
+                data_server:  <<cdw_port>>
+            - class: InfluxDBWriter
+              kwargs:
+                bucket_name: <<influxdb_default_bucket>>
+                measurement_name: <<logger>>
