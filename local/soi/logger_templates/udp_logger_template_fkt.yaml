@@ -37,8 +37,8 @@ logger_templates:
         writers:
         - class: LogfileWriter
           kwargs:
-            header_file: '{headerDir}/<<logger>>_hdr.txt'
-            filebase: '{dataDir}/{cruiseID}_<<logger>>' # change to global data_dir = new default is <<file_root>>/<<logger>>/raw/<<cruise>>_<<logger>>
+            header_file: <<header_dir>>/<<logger>>_hdr.txt
+            filebase: <<file_root>>/<<cruise>>_<<logger>>
             split_char: ','
             suffix: '.txt'
         - class: ComposedWriter
