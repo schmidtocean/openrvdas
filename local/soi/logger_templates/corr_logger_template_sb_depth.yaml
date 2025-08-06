@@ -34,7 +34,7 @@ logger_templates:
         - class: InfluxDBWriter
           kwargs:
             bucket_name: <<influxdb_default_bucket>>
-            measurement_name: <<device>> # mesurement name needs to be lowercase
+            measurement_name: <<measurement_name>> # mesurement name needs to be lowercase
       influx_restricted:
         readers:
         - class: CachedDataReader
