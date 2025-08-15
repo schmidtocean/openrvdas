@@ -75,13 +75,13 @@ logger_templates:
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<emp_definition_path>>
-          bucket_name: <<bucket_name>>
+          bucket_name: <<influxdb_default_bucket>>
       influx_restricted:
         config_template: udp_to_influx_config_template
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<emp_definition_path>>
-          bucket_name: <<restricted_bucket_name>>
+          bucket_name: <<influxdb_restricted_bucket>>
       file:
         config_template: udp_to_file_config_template
         variables:
@@ -91,7 +91,7 @@ logger_templates:
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<emp_definition_path>>
-          bucket_name: <<restricted_bucket_name>>
+          bucket_name: <<influxdb_default_bucket>>
 
   udp_logger_template_fkt:
     configs:
@@ -101,13 +101,13 @@ logger_templates:
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<fkt_definition_path>>
-          bucket_name: <<bucket_name>>
+          bucket_name: <<influxdb_default_bucket>>
       influx_restricted:
         config_template: udp_to_influx_config_template
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<fkt_definition_path>>
-          bucket_name: <<restricted_bucket_name>>
+          bucket_name: <<influxdb_restricted_bucket>>
       file:
         config_template: udp_to_file_config_template
         variables:
@@ -127,13 +127,13 @@ logger_templates:
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<pt_definition_path>>
-          bucket_name: <<bucket_name>>
+          bucket_name: <<influxdb_default_bucket>>
       influx_restricted:
         config_template: udp_to_influx_config_template
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<pt_definition_path>>
-          bucket_name: <<restricted_bucket_name>>
+          bucket_name: <<influxdb_restricted_bucket>>
       file:
         config_template: udp_to_file_config_template
         variables:
@@ -153,13 +153,13 @@ logger_templates:
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<sb_definition_path>>
-          bucket_name: <<bucket_name>>
+          bucket_name: <<influxdb_default_bucket>>
       influx_restricted:
         config_template: udp_to_influx_config_template
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<sb_definition_path>>
-          bucket_name: <<restricted_bucket_name>>
+          bucket_name: <<influxdb_restricted_bucket>>
       file:
         config_template: udp_to_file_config_template
         variables:

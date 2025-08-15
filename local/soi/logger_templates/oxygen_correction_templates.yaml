@@ -1,0 +1,43 @@
+###################
+logger_templates:
+  #################
+  corr_oxygen_logger_template:
+    configs:
+      'off': {}
+      influx:
+        readers:
+        - class: CachedDataReader
+          kwargs:
+            data_server: <<cdw_port>>
+            subscription:
+              fields:
+                <<oxygen_concentration_field>>:
+                  seconds: 0
+                <<ctd_water_temp_field>>:
+                  seconds: 0
+                <<ctd_salinity_field>>:
+                  seconds: 0
+                <<ctd_depth_field>>:
+                  seconds: 0
+        transforms:
+        - class: DOCorrectionTransform
+          module: contrib.soi.logger.transforms.docorrection_transform
+          kwargs:
+            conc_field: <<oxygen_concentration_field>>
+            temp_field: <<water_temp_field>>
+            sal_field: <<salinity_field>>
+            pressure_field: <<depth_field>>
+            corr_conc_name: <<corr_concentration_name>>
+            corr_sat_name: <<corr_saturation_name>>
+            update_on_fields:
+            - <<oxygen_concentration_field>>
+            max_field_age: 
+              <<ctd_depth_field>>: 2
+        writers:
+        - class: CachedDataWriter
+          kwargs:
+            data_server: <<cdw_port>>
+        - class: InfluxDBWriter
+          kwargs:
+            bucket_name: <<influxdb_default_bucket>>
+            measurement_name: <<measurement_name>>
