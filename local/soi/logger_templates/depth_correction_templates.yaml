@@ -108,7 +108,7 @@ logger_templates:
           pressure_abs: <<pressure_abs>
           pressure_field: <<pressure_field>>
       file:
-        config_template: udp_to_file_config_template
+        config_template: depth_corr_to_file_config_template
         variables:
           conv_coefficient: <<conv_coefficient>>
           device: <<device>>
@@ -116,7 +116,7 @@ logger_templates:
           pressure_abs: <<pressure_abs>
           pressure_field: <<pressure_field>>
       file+influx:
-        config_template: udp_to_file+influx_config_template
+        config_template: depth_corr_to_file+influx_config_template
         variables:
           bucket_name: <<influxdb_default_bucket>>
           conv_coefficient: <<conv_coefficient>>
