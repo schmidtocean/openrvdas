@@ -11,7 +11,7 @@ logger_templates:
             data_server: <<cdw_port>>
             subscription:
               fields:
-                <<oxygen_concentration_field>>:
+                <<concentration_field>>:
                   seconds: 0
                 <<temperature_field>>:
                   seconds: 0
@@ -30,7 +30,7 @@ logger_templates:
             corr_conc_name: <<corr_concentration_name>>
             corr_sat_name: <<corr_saturation_name>>
             update_on_fields:
-            - <<oxygen_concentration_field>>
+            - <<concentration_field>>
             max_field_age: 
               <<pressure_field>>: 2
         writers:
