@@ -113,6 +113,7 @@ logger_templates:
           conv_coefficient: <<conv_coefficient>>
           device: <<device>>
           latitude_field: <<latitude_field>>
+          measurement_name: <<measurement_name>>
           pressure_abs: <<pressure_abs>
           pressure_field: <<pressure_field>>
       file+influx:
