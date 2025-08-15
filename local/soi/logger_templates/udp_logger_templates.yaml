@@ -117,7 +117,7 @@ logger_templates:
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<fkt_definition_path>>
-          bucket_name: <<restricted_bucket_name>>
+          bucket_name: <<influxdb_default_bucket>>
 
   udp_logger_template_pt:
     configs:
@@ -143,7 +143,7 @@ logger_templates:
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<pt_definition_path>>
-          bucket_name: <<restricted_bucket_name>>
+          bucket_name: <<influxdb_default_bucket>>
 
   udp_logger_template_sb:
     configs:
@@ -169,4 +169,4 @@ logger_templates:
         variables:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<sb_definition_path>>
-          bucket_name: <<restricted_bucket_name>>
+          bucket_name: <<influxdb_default_bucket>>
