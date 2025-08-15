@@ -13,26 +13,26 @@ logger_templates:
               fields:
                 <<oxygen_concentration_field>>:
                   seconds: 0
-                <<ctd_water_temp_field>>:
+                <<temperature_field>>:
                   seconds: 0
-                <<ctd_salinity_field>>:
+                <<salinity_field>>:
                   seconds: 0
-                <<ctd_depth_field>>:
+                <<pressure_field>>:
                   seconds: 0
         transforms:
         - class: DOCorrectionTransform
           module: contrib.soi.logger.transforms.docorrection_transform
           kwargs:
-            conc_field: <<oxygen_concentration_field>>
-            temp_field: <<water_temp_field>>
+            conc_field: <<concentration_field>>
+            temp_field: <<temperature_field>>
             sal_field: <<salinity_field>>
-            pressure_field: <<depth_field>>
+            pressure_field: <<pressure_field>>
             corr_conc_name: <<corr_concentration_name>>
             corr_sat_name: <<corr_saturation_name>>
             update_on_fields:
             - <<oxygen_concentration_field>>
             max_field_age: 
-              <<ctd_depth_field>>: 2
+              <<pressure_field>>: 2
         writers:
         - class: CachedDataWriter
           kwargs:
