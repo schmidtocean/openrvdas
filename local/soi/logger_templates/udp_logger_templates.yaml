@@ -1,0 +1,172 @@
+###################
+config_templates:
+  #################
+  udp_to_file_config_template: &udp_to_file_base
+    readers:
+    - class: UDPReader
+      kwargs:
+        port: <<reader_udp_port>>
+    transforms:
+    - class: TimestampTransform
+      kwargs:
+        sep: ','
+    writers:
+    - class: LogfileWriter
+      kwargs:
+        header_file: <<header_dir>>/<<logger>>_hdr.txt
+        filebase: <<file_root>>/<<cruise>>_<<logger>>
+        split_char: ','
+        suffix: '.txt'
+
+  udp_to_influx_config_template:
+    <<: *udp_to_file_base
+    writers:
+    - class: ComposedWriter
+      transforms:
+      - class: PrefixTransform
+        kwargs:
+          prefix: <<logger>>
+      - class: ParseTransform
+        kwargs:
+          definition_path: <<definition_path>>
+      writers:
+      - class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+      - class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<bucket_name>>
+          measurement_name: <<logger>>
+
+  udp_to_file+influx_config_template:
+    <<: *udp_to_file_base
+    writers:
+    - class: LogfileWriter
+      kwargs:
+        header_file: <<header_dir>>/<<logger>>_hdr.txt
+        filebase: <<file_root>>/<<cruise>>_<<logger>>
+        split_char: ','
+        suffix: '.txt'
+    - class: ComposedWriter
+      transforms:
+      - class: PrefixTransform
+        kwargs:
+          prefix: <<logger>>
+      - class: ParseTransform
+        kwargs:
+          definition_path: <<definition_path>>
+      writers:
+      - class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+      - class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<bucket_name>>
+          measurement_name: <<logger>>
+
+###################
+logger_templates:
+  #################
+  udp_logger_template_emp:
+    configs:
+      'off': {}
+      influx:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<emp_definition_path>>
+          bucket_name: <<bucket_name>>
+      influx_restricted:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<emp_definition_path>>
+          bucket_name: <<restricted_bucket_name>>
+      file:
+        config_template: udp_to_file_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+      file+influx:
+        config_template: udp_to_file+influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<emp_definition_path>>
+          bucket_name: <<restricted_bucket_name>>
+
+  udp_logger_template_fkt:
+    configs:
+      'off': {}
+      influx:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<fkt_definition_path>>
+          bucket_name: <<bucket_name>>
+      influx_restricted:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<fkt_definition_path>>
+          bucket_name: <<restricted_bucket_name>>
+      file:
+        config_template: udp_to_file_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+      file+influx:
+        config_template: udp_to_file+influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<fkt_definition_path>>
+          bucket_name: <<restricted_bucket_name>>
+
+  udp_logger_template_pt:
+    configs:
+      'off': {}
+      influx:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<pt_definition_path>>
+          bucket_name: <<bucket_name>>
+      influx_restricted:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<pt_definition_path>>
+          bucket_name: <<restricted_bucket_name>>
+      file:
+        config_template: udp_to_file_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+      file+influx:
+        config_template: udp_to_file+influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<pt_definition_path>>
+          bucket_name: <<restricted_bucket_name>>
+
+  udp_logger_template_sb:
+    configs:
+      'off': {}
+      influx:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<sb_definition_path>>
+          bucket_name: <<bucket_name>>
+      influx_restricted:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<sb_definition_path>>
+          bucket_name: <<restricted_bucket_name>>
+      file:
+        config_template: udp_to_file_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+      file+influx:
+        config_template: udp_to_file+influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<sb_definition_path>>
+          bucket_name: <<restricted_bucket_name>>

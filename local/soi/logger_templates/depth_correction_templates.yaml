@@ -1,0 +1,124 @@
+###################
+config_templates:
+  #################
+  depth_corr_to_file_config_template: &depth_corr_to_file_config_template_base
+    readers:
+    - class: CachedDataReader
+      kwargs:
+        data_server: <<cdw_port>>
+        subscription:
+          fields:
+            <<device_pressure_field_name>>:
+              seconds: 0
+            <<latitude_field>>:
+              seconds: 0
+    transforms:
+    - class: DepthCorrectionTransform
+      module: contrib.soi.logger.transforms.depthcorrection_transform
+      kwargs:
+        latitude_field: <<latitude_field>>
+        pressure_field: <<device_pressure_field_name>>
+        pressure_abs: <<device_pressure_abs>
+        conv_coefficient: <<conv_coefficient>>
+        corr_depth_name: <<device>>_Depth_Corr # device name needs to be uppercase
+        update_on_fields:
+        - <<device_pressure_field_name>>
+        max_field_age:
+          <<latitude_field>>: 600
+    writers:
+    - class: ComposedWriter
+      transforms:
+      - class: FormatTransform
+        module: logger.transforms.format_transform
+        kwargs:
+          format_str: <<device>>_Depth_Corr # device name needs to be uppercase
+      - class: TimestampTransform
+        kwargs:
+          sep: ','
+      writers:
+      - class: LogfileWriter
+        kwargs:
+          header_file: <<header_dir>>/corr_depth_corrected_hdr.txt
+          filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+          split_char: ','
+          suffix: '.txt'
+
+  depth_corr_to_influx_config_template:
+    <<: *depth_corr_to_file_config_template_base
+    writers:
+    - class: CachedDataWriter
+      kwargs:
+        data_server: <<cdw_port>>
+    - class: InfluxDBWriter
+      kwargs:
+        bucket_name: <<bucket_name>>
+        measurement_name: <<measurement_name>>
+
+  depth_corr_to_file+influx_config_template:
+    <<: *depth_corr_to_file_config_template_base
+    writers:
+    - class: CachedDataWriter
+      kwargs:
+        data_server: <<cdw_port>>
+    - class: InfluxDBWriter
+      kwargs:
+        bucket_name: <<bucket_name>>
+        measurement_name: <<measurement_name>>
+    - class: ComposedWriter
+      transforms:
+      - class: FormatTransform
+        module: logger.transforms.format_transform
+        kwargs:
+          format_str: <<device>>_Depth_Corr # device name needs to be uppercase
+      - class: TimestampTransform
+        kwargs:
+          sep: ','
+      writers:
+      - class: LogfileWriter
+        kwargs:
+          header_file: <<header_dir>>/corr_depth_corrected_hdr.txt
+          filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+          split_char: ','
+          suffix: '.txt'
+
+###################
+logger_templates:
+  #################
+  corr_depth_logger_template:
+    configs:
+      'off': {}
+      influx:
+        config_template: depth_corr_to_influx_config_template
+        variables:
+          latitude_field: <<latitude_field>>
+          pressure_field: <<device_pressure_field_name>>
+          pressure_abs: <<device_pressure_abs>
+          conv_coefficient: <<conv_coefficient>>
+          device: <<device>>
+          bucket_name: <<bucket_name>>
+      influx_restricted:
+        config_template: depth_corr_to_influx_config_template
+        variables:
+          latitude_field: <<latitude_field>>
+          pressure_field: <<device_pressure_field_name>>
+          pressure_abs: <<device_pressure_abs>
+          conv_coefficient: <<conv_coefficient>>
+          device: <<device>>
+          bucket_name: <<restricted_bucket_name>>
+      file:
+        config_template: udp_to_file_config_template
+        variables:
+          latitude_field: <<latitude_field>>
+          pressure_field: <<device_pressure_field_name>>
+          pressure_abs: <<device_pressure_abs>
+          conv_coefficient: <<conv_coefficient>>
+          device: <<device>>
+      file+influx:
+        config_template: udp_to_file+influx_config_template
+        variables:
+          latitude_field: <<latitude_field>>
+          pressure_field: <<device_pressure_field_name>>
+          pressure_abs: <<device_pressure_abs>
+          conv_coefficient: <<conv_coefficient>>
+          device: <<device>>
+          bucket_name: <<restricted_bucket_name>>
