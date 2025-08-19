@@ -126,12 +126,12 @@ mpp_mm_aft:
   filebase: test/FKt990101/data/FKt990101_mpp_mm_aft-
 mpp_wh_port:
   class: UDP
-  port: 42001
-  filebase: test/FKt990101/data/FKt990101_mpp_wh_port-
-mpp_wh_stb:
-  class: UDP
   port: 42002
-  filebase: test/FKt990101/data/FKt990101_mpp_wh_stb-
+  filebase: test/FKt990101/data/FKt990101_mpp_wh_port-
+maximet_wh_stb:
+  class: UDP
+  port: 42001
+  filebase: test/FKt990101/data/FKt990101_maximet_wh_stb-
 par_fm_port:
   class: UDP
   port: 10022
