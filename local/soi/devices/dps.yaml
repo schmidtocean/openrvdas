@@ -11,6 +11,7 @@ DPSi1:
     GLL:
     - "${:.2}GLL,{Latitude:nlat_dir},{Longitude:nlat_dir},{GPSTime:f},{:w},{Mode:w}*{CheckSum:x}"
     - "${:.2}GLL,,,,,{GPSTime:f},{:w},{Mode:w}*{CheckSum:x}"
+    GST: "${:.2}GST,{GPSTime:f},{RMS:of},{SemiMajorStd:of},{SemiMinorStd:of},{Orientation:of},{LatitudeStd:of},{LongitudeStd:of},{AltitudeStd:of}*{CheckSum:x}"
     HDT: "${:.2}HDT,{HeadingTrue:f},T*{CheckSum:x}"
     PRDID: "$PRDID,{Pitch:f},{Roll:f},{HeadingTrue:f}"
     PSXN20: "$PSXN,20,{HorizQual:d},{HeightQual:d},{HeadingQual:d},{RollPitchQual:d}*{CheckSum:x}"
@@ -125,3 +126,25 @@ DPSi1:
     RateOfTurn:
       units: "degrees/minutes"
       description: "Rate of turn, “–” indicates bow turns to port"
+    # GST fields
+    RMS:
+      units: "meters"
+      description: "RMS value of the standard deviation of the range inputs"
+    SemiMajorStd:
+      units: "meters"
+      description: "Standard deviation of semi-major axis of error ellipse"
+    SemiMinorStd:
+      units: "meters"
+      description: "Standard deviation of semi-minor axis of error ellipse"
+    Orientation:
+      units: "degrees"
+      description: "Orientation of semi-major axis of error ellipse from true north"
+    LatitudeStd:
+      units: "meters"
+      description: "Standard deviation of latitude error"
+    LongitudeStd:
+      units: "meters"
+      description: "Standard deviation of longitude error"
+    AltitudeStd:
+      units: "meters"
+      description: "Standard deviation of altitude error"
