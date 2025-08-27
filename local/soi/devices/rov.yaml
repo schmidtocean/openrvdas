@@ -4,7 +4,9 @@ CTD_SBE49:
   description: "CTD_SBE49"
 
   # ttt.ttt, cc.ccccc, ppp.ppp, sss.ssss, vvv.vvv
-  format: "{WaterTemp:g},{:s}{Conductivity:g},{:s}{WaterPres:g},{:s}{Salinity:g},{:s}{SoundVelocity:g}"
+  format: 
+    spaces: "{WaterTemp:g},{:s}{Conductivity:g},{:s}{WaterPres:g},{:s}{Salinity:g},{:s}{SoundVelocity:g}"
+    nospace: "{WaterTemp:g},{Conductivity:g},{WaterPres:g},{Salinity:g},{SoundVelocity:g}"
 
   fields:
     WaterTemp:
