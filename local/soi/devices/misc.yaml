@@ -229,8 +229,9 @@ sunburst_pH:
   category: "device_type"
   description: "sunburst_pH"
 
-  format: "$SBSPH,{InstrumentYearDay:g},{Temperature:g},{SalinityConstant:g},{pH:g},{BatteryVoltage:g},{InstrumentDate:S},{InstrumentTime:S}"
-
+  format: 
+    legacy: "$SBSPH,{InstrumentYearDay:g},{Temperature:g},{SalinityConstant:g},{pH:g},{BatteryVoltage:g},{InstrumentDate:S},{InstrumentTime:S}"
+    new: "$SBSPH,{InstrumentYearDay:g},{Temperature:g},{SalinityConstant:g},{pH:g}"
   fields:
     InstrumentYearDay:
       units: "time"
