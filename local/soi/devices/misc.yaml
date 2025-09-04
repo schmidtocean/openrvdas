@@ -230,9 +230,10 @@ sunburst_pH:
   description: "sunburst_pH"
 
   format: 
-    constSal: "$SBSPH,{InstrumentYearDay:g},{Temperature:g},{SalinityConstant:g},{pH_ConstSal:g},{BatteryVoltage:g},{InstrumentDate:S},{InstrumentTime:S}"
-    measSal: "$SBSPH,{InstrumentYearDay:g},{Temperature:g},{SalinityConstant:g},{pH_ConstSal:g},{pH_MeasSal:g},{BatteryVoltage:g},{InstrumentDate:S},{InstrumentTime:S}"
     measSal2: "$SBSPH,{InstrumentYearDay:g},{Temperature:g},{SalinityConstant:g},{pH_ConstSal:g},{SalinityUsed:g},{pH_MeasSal:g},{BatteryVoltage:g},{InstrumentDate:S},{InstrumentTime:S}"
+    measSal: "$SBSPH,{InstrumentYearDay:g},{Temperature:g},{SalinityConstant:g},{pH_ConstSal:g},{pH_MeasSal:g},{BatteryVoltage:g},{InstrumentDate:S},{InstrumentTime:S}"
+    constSal: "$SBSPH,{InstrumentYearDay:g},{Temperature:g},{SalinityConstant:g},{pH_ConstSal:g},{BatteryVoltage:g},{InstrumentDate:S},{InstrumentTime:S}"
+
   fields:
     InstrumentYearDay:
       units: "time"
