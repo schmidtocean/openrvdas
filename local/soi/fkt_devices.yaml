@@ -516,7 +516,7 @@ devices:
       InstrumentYearDay: "pH_sunburst_1_InstrumentYearDay"
       Temperature: "pH_sunburst_1_Temperature"
       SalinityConstant: "pH_sunburst_1_SalinityConstant"
-      pH: "pH_sunburst_1_pH"
+      pH_ConstSal: "pH_sunburst_1_pH_ConstSal"
       BatteryVoltage: "pH_sunburst_1_BatteryVoltage"
       InstrumentDate: "pH_sunburst_1_InstrumentDate"
       InstrumentTime: "pH_sunburst_1_InstrumentTime"
