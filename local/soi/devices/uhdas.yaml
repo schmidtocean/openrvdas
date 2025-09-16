@@ -8,25 +8,25 @@ UHDAS:
     #$VMVBW,11.1,-0.7,A,,,V,,V,,V*54
     #$VMVBW,2.6,-0.2,A,,,V,,V,,V*64
     #$VDVBW,-0.43,-0.25,A,,,*10
-    VDVBW: "$VDVBW,{VvelSOW:og},{UvelSOW:og},{StatusSOW:ow},{VvelSOG:og},{UvelSOG:og},{StatusSOG:ow}*{CheckSum:x}"
+    VDVBW: "$VDVBW,{UvelSOW:og},{VvelSOW:og},{StatusSOW:ow},{UvelSOG:og},{VvelSOG:og},{StatusSOG:ow}*{CheckSum:x}"
     #VBW: "${:.2}VBW,{VvelSOW:og},{UvelSOW:og},{StatusSOW:w},{VvelSOG:og},{UvelSOG:og},{StatusSOG:w},{SternSOW:og},{StatusSternSOW:w},{SternSOG:og},{StatusSternSOG:w}*{:x}"
     
   ########
   # Optional metadata to help make sense of the parsed values.
   fields:
-    VvelSOW:
+    UvelSOW:
       units: "kts"
       description: "Longitudinal water speed"
-    UvelSOW:
+    VvelSOW:
       units: "kts"
       description: "Transverse water speed"
     StatusSOW:
       units: ""
       description: "Status: water speed, A = valid data"
-    VvelSOG:
+    UvelSOG:
       units: "kts"
       description: "Longitudinal ground speed"
-    UvelSOG:
+    VvelSOG:
       units: "kts"
       description: "Transverse ground speed"
     StatusSOG:
