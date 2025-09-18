@@ -14,7 +14,7 @@ from logger.transforms.parse_transform import ParseTransform  # noqa: E402
 LINES = """sb_pilot_choice 2021-08-01T16:20:00.072000Z $GPGGA,162000.03,3306.09892353,N,11753.01678546,W,-1,0,0.0,527.364,M,0.000,M,0.0,*7D
 sb_ctd_svx2 2021-08-01T16:20:00.105000Z $CTD,34.86,6.6200,769.11,533.9594,34.6510,1484.89
 sb_pilot_choice 2021-08-01T16:20:00.326000Z $GPGGA,162000.31,3306.09892102,N,11753.01678043,W,-1,0,0.0,527.364,M,0.000,M,0.0,*7A
-sb_pilot_choice 2021-08-01T16:20:00.576000Z $GPGGA,162000.55,3306.09891851,N,11753.01677540,W,-1,0,0.0,527.364,M,0.000,M,0.0,*7D
+sb_pilot_choice 2021-08-01T16:20:00.576000Z $GPGGA,162000.55,3306.09891851,N,11753.01677540,W,0,0,0.0,527.364,M,0.000,M,0.0,*47
 sb_ctd_svx2 2021-08-01T16:20:00.607000Z $CTD,34.85,6.6200,769.06,533.9221,34.6470,1484.88
 sb_pilot_choice 2021-08-01T16:20:00.826000Z $GPGGA,162000.81,3306.09891599,N,11753.01676534,W,-1,0,0.0,527.364,M,0.000,M,0.0,*7F
 sb_pilot_choice 2021-08-01T16:20:01.076000Z $GPGGA,162001.03,3306.09891599,N,11753.01677037,W,-1,0,0.0,527.364,M,0.000,M,0.0,*73
@@ -75,7 +75,7 @@ RESULTS = [
     {'Depth_Corr': 525.87},
     None,
     None,
-    {'Depth_Corr': 525.83},
+    None,
     None,
     None,
     {'Depth_Corr': 525.81},
@@ -169,10 +169,10 @@ class TestDepthCorrectionTransform(unittest.TestCase):
     ############################
     def test_no_record(self):
         dc = DepthCorrectionTransform(corr_depth_name='Depth_Corr',
-                                        latitude_field='Latitude',
                                         #depth_field='Depth',
-                                        pressure_field='WaterPres')
-
+                                      latitude_field='Latitude',
+                                      position_status_field='FixQuality',
+                                      pressure_field='WaterPres')
         self.assertIsNone(dc.transform(None))
 
     ############################
@@ -181,11 +181,11 @@ class TestDepthCorrectionTransform(unittest.TestCase):
         expected_results = RESULTS.copy()
 
         dc = DepthCorrectionTransform(corr_depth_name='Depth_Corr',
-                                        latitude_field='Latitude',
-                                        #depth_field='Depth',
-                                        pressure_field='WaterPres',
-                                        conv_coefficient=0.689475728, # psi-to-dbar
-                                        update_on_fields=['WaterPres'])
+                                      latitude_field='Latitude',
+                                      position_status_field='FixQuality',
+                                      pressure_field='WaterPres',
+                                      conv_coefficient=0.689475728, # psi-to-dbar
+                                      update_on_fields=['WaterPres'])
 
         parse = ParseTransform(
             field_patterns=[
