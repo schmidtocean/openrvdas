@@ -24,6 +24,7 @@ class DensityCorrectionTransform(DerivedDataTransform):
                  temperature_field,
                  pressure_field,
                  latitude_field,
+                 position_status_field,
                  longitude_field,
                  salinity_coefficient=1,
                  temperature_coefficient=1,
@@ -39,6 +40,7 @@ class DensityCorrectionTransform(DerivedDataTransform):
         temperature_field,
         pressure_field,
         latitude_field,
+        position_status_field,
         longitude_field,
                  Field names from which we should take values for
                  salinity, temperature, pressure latitude and longitude.
@@ -80,6 +82,7 @@ class DensityCorrectionTransform(DerivedDataTransform):
         self.temperature_field = temperature_field
         self.pressure_field = pressure_field
         self.latitude_field = latitude_field
+        self.position_status_field = position_status_field
         self.longitude_field = longitude_field
         
         self.salinity_coefficient = salinity_coefficient
@@ -104,6 +107,7 @@ class DensityCorrectionTransform(DerivedDataTransform):
         self.pressure_val = None
         self.pressure_val_time = 0
         self.latitude_val = None
+        self.position_status_val = None
         self.latitude_val_time = 0
         self.longitude_val = None
         self.longitude_val_time = 0
@@ -111,7 +115,7 @@ class DensityCorrectionTransform(DerivedDataTransform):
     ############################
     def fields(self):
         """Which fields are we interested in to produce transformed data?"""
-        return [self.salinity_field, self.temperature_field, self.pressure_field, self.latitude_field, self.longitude_field]
+        return [self.salinity_field, self.temperature_field, self.pressure_field, self.latitude_field, self.longitude_field, self.position_status_field]
 
     ############################
     def _metadata(self):
@@ -223,6 +227,12 @@ class DensityCorrectionTransform(DerivedDataTransform):
                     if self.longitude_field in self.update_on_fields:
                         update = True
 
+            if self.position_status_field in fields:
+                self.position_status_val = fields.get(self.position_status_field)
+                self.position_status_val_time = timestamp
+                if self.position_status_field in self.update_on_fields:
+                    update = True
+
             # Check if needed all values are present, and none are too old to use
             if self._values_too_old(timestamp):
                 continue
@@ -231,6 +241,10 @@ class DensityCorrectionTransform(DerivedDataTransform):
             # trigger a new corrected DO value, skip rest of computation.
             if not update:
                 logging.debug('No update needed')
+                continue
+
+            if self.position_status_val != 1:
+                logging.debug('Position status is not valid (%s); skipping calculation.', self.position_status_val)
                 continue
 
             logging.debug('Computing new density')
@@ -270,15 +284,16 @@ class DensityCorrectionTransform(DerivedDataTransform):
     def _values_too_old(self, timestamp):
         """Return true if any values are missing or too old to use."""
 
-        if None in (self.salinity_val, self.temperature_val, self.pressure_val):
+        if None in (self.salinity_val, self.temperature_val, self.pressure_val, self.latitude_val, self.longitude_val, self.position_status_val):
             logging.warning('Not all required values for density correction are present: '
-                          'time: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s',
+                          'time: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s, %s',
                           timestamp,
                           self.salinity_field, self.salinity_val,
                           self.temperature_field, self.temperature_val,
                           self.pressure_field, self.pressure_val,
                           self.latitude_field, self.latitude_val,
-                          self.longitude_field, self.longitude_val)
+                          self.longitude_field, self.longitude_val,
+                          self.position_status_field, self.position_status_val)
             return True
 
         salinity_max_age = self.max_field_age.get(self.salinity_field, None)
@@ -309,6 +324,12 @@ class DensityCorrectionTransform(DerivedDataTransform):
         if (longitude_max_age and timestamp - self.longitude_val_time > longitude_max_age):
             logging.debug('longitude_field too old - max age %g, age %g',
                           longitude_max_age, timestamp - self.longitude_val_time)
+            return True
+        
+        position_status_max_age = self.max_field_age.get(self.position_status_field, None)
+        if (position_status_max_age and timestamp - self.position_status_val_time > position_status_max_age):
+            logging.debug('position_status too old - max age %g, age %g',
+                          position_status_max_age, timestamp - self.position_status_val_time)
             return True
 
         # Everything is present, and nothing's too old...

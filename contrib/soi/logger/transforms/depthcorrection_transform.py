@@ -21,6 +21,7 @@ class DepthCorrectionTransform(DerivedDataTransform):
     def __init__(self,
                  corr_depth_name,
                  latitude_field,
+                 position_status_field,
                  depth_field=None,
                  pressure_field=None,
                  pressure_abs=False,
@@ -36,6 +37,10 @@ class DepthCorrectionTransform(DerivedDataTransform):
         pressure_field
                  Field names from which we should take values for
                  pressure OR depth.
+
+        position_status_field
+                 check position validity to avoid depth jumps due to
+                 zero-island position used for correction
 
         pressure_abs pressure provided is absolute vs relative sealevel,
                  default: false
@@ -69,6 +74,7 @@ class DepthCorrectionTransform(DerivedDataTransform):
             raise ValueError("conv_coefficient cannot be zero (0)")
 
         self.latitude_field = latitude_field
+        self.position_status_field = position_status_field
         self.pressure_field = pressure_field if pressure_field is not None else depth_field
         self.pressure_abs = pressure_abs
         self.conv_coefficient = conv_coefficient
@@ -83,6 +89,7 @@ class DepthCorrectionTransform(DerivedDataTransform):
 
         self.latitude_val = None
         self.latitude_val_time = 0
+        self.position_status_val = None
         self.pressure_val = None
         self.pressure_val_time = 0
 
@@ -175,8 +182,15 @@ class DepthCorrectionTransform(DerivedDataTransform):
                     if self.latitude_field in self.update_on_fields:
                         update = True
 
+            if self.position_status_field in fields:
+                self.position_status_val = fields.get(self.position_status_field)
+
             # Check if needed all values are present, and none are too old to use
             if self._values_too_old(timestamp):
+                continue
+
+            if self.position_status_val == 0:
+                logging.debug('PositionStatus is invalid; skipping depth correction.')
                 continue
 
             # If we've not seen anything that updates fields that would
@@ -220,11 +234,12 @@ class DepthCorrectionTransform(DerivedDataTransform):
     def _values_too_old(self, timestamp):
         """Return true if any values are missing or too old to use."""
 
-        if None in (self.pressure_val, self.latitude_val):
+        if None in (self.pressure_val, self.latitude_val, self.position_status_val):
             logging.warning('Not all required values for depth correction are present: '
-                          'time: %s, %s: %s, %s: %s',
+                          'time: %s, %s: %s, %s: %s, %s: %s',
                           timestamp,
                           self.latitude_field, self.latitude_val,
+                          self.position_status_field, self.position_status_val,
                           self.pressure_field, self.pressure_val)
             return True
 
