@@ -286,7 +286,7 @@ class DensityCorrectionTransform(DerivedDataTransform):
 
         if None in (self.salinity_val, self.temperature_val, self.pressure_val, self.latitude_val, self.longitude_val, self.position_status_val):
             logging.warning('Not all required values for density correction are present: '
-                          'time: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s, %s, %s',
+                          'time: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s: %s, %s, %s',
                           timestamp,
                           self.salinity_field, self.salinity_val,
                           self.temperature_field, self.temperature_val,
@@ -328,7 +328,7 @@ class DensityCorrectionTransform(DerivedDataTransform):
         
         position_status_max_age = self.max_field_age.get(self.position_status_field, None)
         if (position_status_max_age and timestamp - self.position_status_val_time > position_status_max_age):
-            logging.debug('position_status too old - max age %g, age, %g',
+            logging.debug('position_status too old - max age %g, age %g',
                           position_status_max_age, timestamp - self.position_status_val_time)
             return True
 
