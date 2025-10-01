@@ -175,15 +175,24 @@ class DepthCorrectionTransform(DerivedDataTransform):
                     if self.pressure_field in self.update_on_fields:
                         update = True
 
-            if self.latitude_field in fields:
-                if timestamp >= self.latitude_val_time:
-                    self.latitude_val = fields.get(self.latitude_field)
-                    self.latitude_val_time = timestamp
-                    if self.latitude_field in self.update_on_fields:
-                        update = True
-
             if self.position_status_field in fields:
                 self.position_status_val = fields.get(self.position_status_field)
+
+            if self.latitude_field in fields:
+                if timestamp >= self.latitude_val_time:
+                    if self.position_status_val == 0:
+                        logging.debug('PositionStatus is invalid; not updating latitude.')
+                    else:
+                        self.latitude_val = fields.get(self.latitude_field)
+                        self.latitude_val_time = timestamp
+                        if self.latitude_field in self.update_on_fields:
+                            update = True
+
+            # If we've not seen anything that updates fields that would
+            # trigger a new corrected depth value, skip rest of computation.
+            if not update:
+                logging.debug('No update needed')
+                continue
 
             # Check if needed all values are present, and none are too old to use
             if self._values_too_old(timestamp):
@@ -191,12 +200,6 @@ class DepthCorrectionTransform(DerivedDataTransform):
 
             if self.position_status_val == 0:
                 logging.debug('PositionStatus is invalid; skipping depth correction.')
-                continue
-
-            # If we've not seen anything that updates fields that would
-            # trigger a new corrected DO value, skip rest of computation.
-            if not update:
-                logging.debug('No update needed')
                 continue
 
             logging.debug('Computing new depth')
@@ -208,7 +211,7 @@ class DepthCorrectionTransform(DerivedDataTransform):
                 logging.info('Got invalid corrections')
                 continue
 
-            # If here, we've got a valid new DO result
+            # If here, we've got a valid new depth result
             correction_fields = {self.corr_depth_name: corr_depth}
 
             # Add in metadata if so specified and it's been long enough since
