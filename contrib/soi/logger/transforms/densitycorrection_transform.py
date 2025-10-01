@@ -233,18 +233,18 @@ class DensityCorrectionTransform(DerivedDataTransform):
                 if self.position_status_field in self.update_on_fields:
                     update = True
 
-            # Check if needed all values are present, and none are too old to use
-            if self._values_too_old(timestamp):
-                continue
-
             # If we've not seen anything that updates fields that would
-            # trigger a new corrected DO value, skip rest of computation.
+            # trigger a new corrected density value, skip rest of computation.
             if not update:
                 logging.debug('No update needed')
                 continue
 
             if self.position_status_val != 1:
                 logging.debug('Position status is not valid (%s); skipping calculation.', self.position_status_val)
+                continue
+
+            # Check if needed all values are present, and none are too old to use
+            if self._values_too_old(timestamp):
                 continue
 
             logging.debug('Computing new density')
@@ -260,7 +260,7 @@ class DensityCorrectionTransform(DerivedDataTransform):
 
             logging.debug("Density: %s", corr_density)
 
-            # If here, we've got a valid new DO result
+            # If here, we've got a valid new density result
             correction_fields = {self.corr_density_name: corr_density}
 
             # Add in metadata if so specified and it's been long enough since
