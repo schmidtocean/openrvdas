@@ -188,18 +188,18 @@ class DepthCorrectionTransform(DerivedDataTransform):
                         if self.latitude_field in self.update_on_fields:
                             update = True
 
+            # If we've not seen anything that updates fields that would
+            # trigger a new corrected depth value, skip rest of computation.
+            if not update:
+                logging.debug('No update needed')
+                continue
+
             # Check if needed all values are present, and none are too old to use
             if self._values_too_old(timestamp):
                 continue
 
             if self.position_status_val == 0:
                 logging.debug('PositionStatus is invalid; skipping depth correction.')
-                continue
-
-            # If we've not seen anything that updates fields that would
-            # trigger a new corrected depth value, skip rest of computation.
-            if not update:
-                logging.debug('No update needed')
                 continue
 
             logging.debug('Computing new depth')
