@@ -64,6 +64,42 @@ config_templates:
           bucket_name: <<bucket_name>>
           measurement_name: <<logger>>
 
+  udp_to_file_with_filebase_config_template:
+    <<: *udp_to_file_base
+    writers:
+    - class: LogfileWriter
+      kwargs:
+        header_filebase: <<header_filebase>>
+        filebase: <<filebase>>
+        split_char: ','
+        suffix: '.txt'
+
+  udp_to_file+influx_with_filebase_config_template:
+    <<: *udp_to_file_base
+    writers:
+    - class: LogfileWriter
+      kwargs:
+        header_filebase: <<header_filebase>>
+        filebase: <<filebase>>
+        split_char: ','
+        suffix: '.txt'
+    - class: ComposedWriter
+      transforms:
+      - class: PrefixTransform
+        kwargs:
+          prefix: <<logger>>
+      - class: ParseTransform
+        kwargs:
+          definition_path: <<definition_path>>
+      writers:
+      - class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+      - class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<bucket_name>>
+          measurement_name: <<logger>>
+
 ###################
 logger_templates:
   #################
@@ -119,6 +155,66 @@ logger_templates:
           definition_path: <<fkt_definition_path>>
           bucket_name: <<influxdb_default_bucket>>
 
+  udp_with_filebase_logger_template_fkt:
+    configs:
+      'off': {}
+      influx:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<fkt_definition_path>>
+          bucket_name: <<influxdb_default_bucket>>
+      influx_restricted:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<fkt_definition_path>>
+          bucket_name: <<influxdb_restricted_bucket>>
+      file:
+        config_template: udp_to_file_with_filebase_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          header_filebase: <<header_filebase>>
+          filebase: <<filebase>>
+      file+influx:
+        config_template: udp_to_file+influx_with_filebase_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<fkt_definition_path>>
+          bucket_name: <<influxdb_default_bucket>>
+          header_filebase: <<header_filebase>>
+          filebase: <<filebase>>
+
+  udp_with_filebase_winch_logger_template_fkt:
+    configs:
+      'off': {}
+      influx:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<fkt_definition_path>>
+          bucket_name: <<influxdb_winch_bucket>>
+      influx_restricted:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<fkt_definition_path>>
+          bucket_name: <<influxdb_winch_bucket>>
+      file:
+        config_template: udp_to_file_with_filebase_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          header_filebase: <<header_filebase>>
+          filebase: <<filebase>>
+      file+influx:
+        config_template: udp_to_file+influx_with_filebase_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<fkt_definition_path>>
+          bucket_name: <<influxdb_winch_bucket>>
+          header_filebase: <<header_filebase>>
+          filebase: <<filebase>>
+
   udp_logger_template_pt:
     configs:
       'off': {}
@@ -170,3 +266,63 @@ logger_templates:
           reader_udp_port: <<reader_udp_port>>
           definition_path: <<sb_definition_path>>
           bucket_name: <<influxdb_default_bucket>>
+
+  udp_with_filebase_logger_template_sb:
+    configs:
+      'off': {}
+      influx:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<sb_definition_path>>
+          bucket_name: <<influxdb_default_bucket>>
+      influx_restricted:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<sb_definition_path>>
+          bucket_name: <<influxdb_restricted_bucket>>
+      file:
+        config_template: udp_to_file_with_filebase_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          header_filebase: <<header_filebase>>
+          filebase: <<filebase>>
+      file+influx:
+        config_template: udp_to_file+influx_with_filebase_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<sb_definition_path>>
+          bucket_name: <<influxdb_default_bucket>>
+          header_filebase: <<header_filebase>>
+          filebase: <<filebase>>
+
+  udp_with_filebase_highfreq_logger_template_sb:
+    configs:
+      'off': {}
+      influx:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<sb_definition_path>>
+          bucket_name: <<influxdb_sprint_hf_bucket>>
+      influx_restricted:
+        config_template: udp_to_influx_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<sb_definition_path>>
+          bucket_name: <<influxdb_sprint_hf_bucket>>
+      file:
+        config_template: udp_to_file_with_filebase_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          header_filebase: <<header_filebase>>
+          filebase: <<filebase>>
+      file+influx:
+        config_template: udp_to_file+influx_with_filebase_config_template
+        variables:
+          reader_udp_port: <<reader_udp_port>>
+          definition_path: <<sb_definition_path>>
+          bucket_name: <<influxdb_sprint_hf_bucket>>
+          header_filebase: <<header_filebase>>
+          filebase: <<filebase>>

@@ -1,56 +1,65 @@
 ###################
 config_templates:
   #################
-  oxygen_corr_to_file_config_template: &oxygen_corr_to_file_config_template_base
+  density_corr_to_file_config_template: &density_corr_to_file_config_template_base
     readers:
     - class: CachedDataReader
       kwargs:
         data_server: <<cdw_port>>
         subscription:
           fields:
-            <<concentration_field>>:
+            <<salinity_field>>:
               seconds: 0
             <<temperature_field>>:
               seconds: 0
-            <<salinity_field>>:
-              seconds: 0
             <<pressure_field>>:
               seconds: 0
+            <<latitude_field>>:
+              seconds: 0
+            <<longitude_field>>:
+              seconds: 0
+            <<position_status_field>>:
+              seconds: 0
     transforms:
-    - class: DOCorrectionTransform
-      module: contrib.soi.logger.transforms.docorrection_transform
+    - class: DensityCorrectionTransform
+      module: contrib.soi.logger.transforms.densitycorrection_transform
       kwargs:
-        conc_field: <<concentration_field>>
-        temp_field: <<temperature_field>>
-        sal_field: <<salinity_field>>
+        corr_density_name: <<device>>_Density_Corr
+        latitude_field: <<latitude_field>>
+        longitude_field: <<latitude_field>>
+        position_status_field: <<position_status_field>>
+        pressure_coefficient: <<pressure_coefficient>>
         pressure_field: <<pressure_field>>
-        conv_coefficient: <<pressure_coefficient>>
-        corr_conc_name: <<device>>_Concentration_Corr
-        corr_sat_name: <<device>>_Saturation_Corr
+        salinity_coefficient: <<salinity_coefficient>>
+        salinity_field: <<salinity_field>>
+        temperature_coefficient: <<temperature_coefficient>>
+        temperature_field: <<temperature_field>>
         update_on_fields:
-        - <<concentration_field>>
-        max_field_age: 
-          <<pressure_field>>: 2
+        - <<salinity_field>>
+        - <<temperature_field>>
+        - <<pressure_field>>
+        max_field_age:
+          <<latitude_field>>: 600
     writers:
     - class: ComposedWriter
       transforms:
       - class: FormatTransform
         module: logger.transforms.format_transform
         kwargs:
-          format_str: <<device>>_Concentration_Corr,<<device>>_Saturation_Corr # device name needs to be uppercase
+          format_str: <<device>>_Density_Corr # device name needs to be uppercase
       - class: TimestampTransform
         kwargs:
           sep: ','
       writers:
       - class: LogfileWriter
         kwargs:
-          header: "timestamp,consentration_\u03BCmol/l,saturation_%"
+          header: "timestamp,density_kg/m^3"
           filebase: <<file_root>>/<<cruise>>_<<logger>>
           split_char: ','
           suffix: '.txt'
 
-  oxygen_corr_to_influx_config_template:
-    <<: *oxygen_corr_to_file_config_template_base
+  density_corr_to_influx_config_template:
+    <<: *density_corr_to_file_config_template_base
     writers:
     - class: CachedDataWriter
       kwargs:
@@ -60,8 +69,8 @@ config_templates:
         bucket_name: <<bucket_name>>
         measurement_name: <<measurement_name>>
 
-  oxygen_corr_to_file+influx_config_template:
-    <<: *oxygen_corr_to_file_config_template_base
+  density_corr_to_file+influx_config_template:
+    <<: *density_corr_to_file_config_template_base
     writers:
     - class: CachedDataWriter
       kwargs:
@@ -82,7 +91,7 @@ config_templates:
       writers:
       - class: LogfileWriter
         kwargs:
-          header: "timestamp,consentration_\u03BCmol/l,saturation_%"
+          header: "timestamp,density_kg/m^3"
           filebase: <<file_root>>/<<cruise>>_<<logger>>
           split_char: ','
           suffix: '.txt'
@@ -90,49 +99,65 @@ config_templates:
 ###################
 logger_templates:
   #################
-  corr_oxygen_logger_template:
+  corr_density_logger_template:
     configs:
       'off': {}
       influx:
-        config_template: oxygen_corr_to_influx_config_template
+        config_template: density_corr_to_influx_config_template
         variables:
           bucket_name: <<influxdb_default_bucket>>
-          consentration_field: <<concentration_field>>
           device: <<device>>
+          latitude_field: <<latitude_field>>
+          longitude_field: <<longitude_field>>
           measurement_name: <<measurement_name>>
-          pressure_coefficient: <<pressure_coefficient>>
+          position_status_field: <<position_status_field>>
+          pressure_coefficient: <<conv_coefficient>>
           pressure_field: <<pressure_field>>
+          salinity_coefficient: <<salinity_coefficient>>
           salinity_field: <<salinity_field>>
+          temperature_coefficient: <<temperature_coefficient>>
           temperature_field: <<temperature_field>>
       influx_restricted:
-        config_template: oxygen_corr_to_influx_config_template
+        config_template: density_corr_to_influx_config_template
         variables:
           bucket_name: <<influxdb_restricted_bucket>>
-          consentration_field: <<concentration_field>>
           device: <<device>>
+          latitude_field: <<latitude_field>>
+          longitude_field: <<longitude_field>>
           measurement_name: <<measurement_name>>
-          pressure_coefficient: <<pressure_coefficient>>
+          position_status_field: <<position_status_field>>
+          pressure_coefficient: <<conv_coefficient>>
           pressure_field: <<pressure_field>>
+          salinity_coefficient: <<salinity_coefficient>>
           salinity_field: <<salinity_field>>
+          temperature_coefficient: <<temperature_coefficient>>
           temperature_field: <<temperature_field>>
       file:
-        config_template: oxygen_corr_to_file_config_template
+        config_template: density_corr_to_file_config_template
         variables:
-          consentration_field: <<concentration_field>>
           device: <<device>>
+          latitude_field: <<latitude_field>>
+          longitude_field: <<longitude_field>>
           measurement_name: <<measurement_name>>
-          pressure_coefficient: <<pressure_coefficient>>
+          position_status_field: <<position_status_field>>
+          pressure_coefficient: <<conv_coefficient>>
           pressure_field: <<pressure_field>>
+          salinity_coefficient: <<salinity_coefficient>>
           salinity_field: <<salinity_field>>
+          temperature_coefficient: <<temperature_coefficient>>
           temperature_field: <<temperature_field>>
       file+influx:
-        config_template: oxygen_corr_to_file+influx_config_template
+        config_template: density_corr_to_file+influx_config_template
         variables:
           bucket_name: <<influxdb_default_bucket>>
-          consentration_field: <<concentration_field>>
           device: <<device>>
+          latitude_field: <<latitude_field>>
+          longitude_field: <<longitude_field>>
           measurement_name: <<measurement_name>>
-          pressure_coefficient: <<pressure_coefficient>>
+          position_status_field: <<position_status_field>>
+          pressure_coefficient: <<conv_coefficient>>
           pressure_field: <<pressure_field>>
+          salinity_coefficient: <<salinity_coefficient>>
           salinity_field: <<salinity_field>>
+          temperature_coefficient: <<temperature_coefficient>>
           temperature_field: <<temperature_field>>

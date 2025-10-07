@@ -1,0 +1,103 @@
+###################
+config_templates:
+  #################
+  ph_corr_to_file_config_template: &ph_corr_to_file_config_template_base
+    readers:
+    - class: CachedDataReader
+      kwargs:
+        data_server: <<cdw_port>>
+        subscription:
+          fields:
+            <<ph_field>>:
+              seconds: 0
+    transforms:
+    - class: SlopeCorrectionTransform
+      module: contrib.soi.logger.transforms.slopecorrection_transform
+      kwargs:
+        output_fields: {'<<ph_field>>': '<<logger>>'}
+    writers:
+    - class: ComposedWriter
+      transforms:
+      - class: FormatTransform
+        module: logger.transforms.format_transform
+        kwargs:
+          format_str: <<logger>>
+      - class: TimestampTransform
+        kwargs:
+          sep: ','
+      writers:
+      - class: LogfileWriter
+        kwargs:
+          header: "timestamp,ph"
+          filebase: <<file_root>>/<<cruise>>_<<logger>>
+          split_char: ','
+          suffix: '.txt'
+
+  ph_corr_to_influx_config_template:
+    <<: *ph_corr_to_file_config_template_base
+    writers:
+    - class: CachedDataWriter
+      kwargs:
+        data_server: <<cdw_port>>
+    - class: InfluxDBWriter
+      kwargs:
+        bucket_name: <<bucket_name>>
+        measurement_name: <<measurement_name>>
+
+  ph_corr_to_file+influx_config_template:
+    <<: *ph_corr_to_file_config_template_base
+    writers:
+    - class: CachedDataWriter
+      kwargs:
+        data_server: <<cdw_port>>
+    - class: InfluxDBWriter
+      kwargs:
+        bucket_name: <<bucket_name>>
+        measurement_name: <<measurement_name>>
+    - class: ComposedWriter
+      transforms:
+      - class: FormatTransform
+        module: logger.transforms.format_transform
+        kwargs:
+          format_str: <<logger>>
+      - class: TimestampTransform
+        kwargs:
+          sep: ','
+      writers:
+      - class: LogfileWriter
+        kwargs:
+          header: "timestamp,ph"
+          filebase: <<file_root>>/<<cruise>>_<<logger>>
+          split_char: ','
+          suffix: '.txt'
+
+###################
+logger_templates:
+  #################
+  corr_ph_logger_template:
+    configs:
+      'off': {}
+      influx:
+        config_template: ph_corr_to_influx_config_template
+        variables:
+          ph_field: <<ph_field>>
+          measurement_name: <<measurement_name>>
+          bucket_name: <<influxdb_default_bucket>>
+      influx_restricted:
+        config_template: ph_corr_to_influx_config_template
+        variables:
+          ph_field: <<ph_field>>
+          measurement_name: <<measurement_name>>
+          bucket_name: <<influxdb_restricted_bucket>>
+      file:
+        config_template: ph_corr_to_file_config_template
+        variables:
+          ph_field: <<ph_field>>
+          measurement_name: <<measurement_name>>
+          bucket_name: <<influxdb_restricted_bucket>>
+      file+influx:
+        config_template: ph_corr_to_file+influx_config_template
+        variables:
+          ph_field: <<ph_field>>
+          measurement_name: <<measurement_name>>
+          bucket_name: <<influxdb_restricted_bucket>>

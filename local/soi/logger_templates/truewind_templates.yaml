@@ -1,0 +1,163 @@
+###################
+config_templates:
+  #################
+  truewind_to_file_config_template: &truewind_to_file_base
+    readers:
+    - class: CachedDataReader
+      kwargs:
+        data_server: <<cdw_port>>
+        subscription:
+          fields:
+            <<heading_field>>:
+              seconds: 0
+            <<cog_field>>:
+              seconds: 0
+            <<sog_field>>:
+              seconds: 0
+            <<rel_wind_dir_field>>:
+              seconds: 0
+            <<rel_wind_spd_field>>:
+              seconds: 0
+    transforms:
+    - class: TrueWindsTransform
+      kwargs:
+        data_id: <<logger>>
+        convert_speed_factor: <<conv_coefficient>>
+        course_field: <<cog_field>>
+        heading_field: <<heading_field>>
+        speed_field: <<sog_field>>
+        wind_dir_field: <<rel_wind_dir_field>>
+        wind_speed_field: <<rel_wind_spd_field>>
+
+        # Output fields
+        apparent_dir_name: <<apparent_dir_name>>
+        true_dir_name: <<true_wind_dir_name>>
+        true_speed_name: <<true_wind_spd_name>>
+        update_on_fields:
+        - <<rel_wind_dir_field>>
+        max_field_age:
+          <<cog_field>>: 5
+          <<heading_field>>: 5
+          <<sog_field>>: 5
+          <<rel_wind_dir_field>>: 5
+          <<rel_wind_spd_field>>: 5
+        metadata_interval: 10
+    writers:
+    - class: ComposedWriter
+      kwargs:
+        transforms:
+        - class: NMEATransform
+          nmea_list:
+          - MWDTransform
+          kwargs:
+            true_wind_dir_field: <<true_wind_dir_name>>
+            true_wind_speed_kt_field: <<true_wind_spd_name>>
+            mwd_talker_id: <<device_talker>>
+        - class: TimestampTransform
+          kwargs:
+            sep: ','
+        writers:
+        - class: LogfileWriter
+          kwargs:
+            header_file: '<<header_dir>>/nmea_mwd2_hdr.txt'
+            filebase: '<<file_root>>/<<cruise>>_<<logger>>_true_mwd'
+            split_char: ','
+            suffix: '.txt'
+
+  truewind_to_influx_config_template:
+    <<: *truewind_to_file_base
+    writers:
+    - class: CachedDataWriter
+      kwargs:
+        data_server: <<cdw_port>>
+    - class: InfluxDBWriter
+      kwargs:
+        bucket_name: <<bucket_name>>
+        measurement_name: <<measurement_name>>
+
+  truewind_to_file+influx_config_template:
+    <<: *truewind_to_file_base
+    writers:
+    - class: ComposedWriter
+      kwargs:
+        transforms:
+        - class: NMEATransform
+          nmea_list:
+          - MWDTransform
+          kwargs:
+            true_wind_dir_field: <<true_wind_dir_name>>
+            true_wind_speed_kt_field: <<true_wind_spd_name>>
+            mwd_talker_id: <<device_talker>>
+        - class: TimestampTransform
+          kwargs:
+            sep: ','
+        writers:
+        - class: LogfileWriter
+          kwargs:
+            header_file: '<<header_dir>>/nmea_mwd2_hdr.txt'
+            filebase: '<<file_root>>/<<cruise>>_<<logger>>_true_mwd'
+            split_char: ','
+            suffix: '.txt'
+    - class: CachedDataWriter
+      kwargs:
+        data_server: <<cdw_port>>
+    - class: InfluxDBWriter
+      kwargs:
+        bucket_name: <<bucket_name>>
+        measurement_name: <<measurement_name>>
+
+
+###################
+logger_templates:
+  #################
+  truewind_logger_template:
+    configs:
+      'off': {}
+      influx:
+        config_template: truewind_to_influx_config_template
+        variables:
+          heading_field: <<heading_field>>
+          cog_field: <<cog_field>>
+          sog_field: <<sog_field>>
+          rel_wind_dir_field: <<rel_wind_dir_field>>
+          rel_wind_spd_field: <<rel_wind_spd_field>>
+          true_wind_spd_name: <<true_wind_spd_name>>
+          true_wind_spd_name: <<true_wind_spd_name>>
+          measurement_name: <<measurement_name>>
+      influx_restricted:
+        config_template: truewind_to_influx_config_template
+        variables:
+          heading_field: <<heading_field>>
+          cog_field: <<cog_field>>
+          sog_field: <<sog_field>>
+          rel_wind_dir_field: <<rel_wind_dir_field>>
+          rel_wind_spd_field: <<rel_wind_spd_field>>
+          true_wind_spd_name: <<true_wind_spd_name>>
+          true_wind_spd_name: <<true_wind_spd_name>>
+          measurement_name: <<measurement_name>>
+          bucket_name: <<influxdb_restricted_bucket>>
+      file:
+        config_template: truewind_to_file_config_template
+        variables:
+          heading_field: <<heading_field>>
+          cog_field: <<cog_field>>
+          sog_field: <<sog_field>>
+          rel_wind_dir_field: <<rel_wind_dir_field>>
+          rel_wind_spd_field: <<rel_wind_spd_field>>
+          true_wind_spd_name: <<true_wind_spd_name>>
+          true_wind_spd_name: <<true_wind_spd_name>>
+          measurement_name: <<measurement_name>>
+          device_talker: <<device_talker>>
+      file+influx:
+        config_template: truewind_to_file+influx_config_template
+        variables:
+          heading_field: <<heading_field>>
+          cog_field: <<cog_field>>
+          sog_field: <<sog_field>>
+          rel_wind_dir_field: <<rel_wind_dir_field>>
+          rel_wind_spd_field: <<rel_wind_spd_field>>
+          true_wind_spd_name: <<true_wind_spd_name>>
+          true_wind_spd_name: <<true_wind_spd_name>>
+          measurement_name: <<measurement_name>>
+          bucket_name: <<influxdb_default_bucket>>
+          device_talker: <<device_talker>>

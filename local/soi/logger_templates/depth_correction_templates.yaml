@@ -12,15 +12,18 @@ config_templates:
               seconds: 0
             <<latitude_field>>:
               seconds: 0
+            <<position_status_field>>:
+              seconds: 0
     transforms:
     - class: DepthCorrectionTransform
       module: contrib.soi.logger.transforms.depthcorrection_transform
       kwargs:
-        latitude_field: <<latitude_field>>
-        pressure_field: <<pressure_field>>
-        pressure_abs: <<pressure_abs>
         conv_coefficient: <<conv_coefficient>>
         corr_depth_name: <<device>>_Depth_Corr # device name needs to be uppercase
+        latitude_field: <<latitude_field>>
+        position_status_field: <<position_status_field>>
+        pressure_abs: <<pressure_abs>
+        pressure_field: <<pressure_field>>
         update_on_fields:
         - <<pressure_field>>
         max_field_age:
@@ -38,8 +41,8 @@ config_templates:
       writers:
       - class: LogfileWriter
         kwargs:
-          header_file: <<header_dir>>/corr_depth_corrected_hdr.txt
-          filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+          header: "timestamp,depth_m"
+          filebase: <<file_root>>/<<cruise>>_<<logger>>
           split_char: ','
           suffix: '.txt'
 
@@ -76,8 +79,8 @@ config_templates:
       writers:
       - class: LogfileWriter
         kwargs:
-          header_file: <<header_dir>>/corr_depth_corrected_hdr.txt
-          filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+          header: "timestamp,depth_m"
+          filebase: <<file_root>>/<<cruise>>_<<logger>>
           split_char: ','
           suffix: '.txt'
 
@@ -94,6 +97,7 @@ logger_templates:
           conv_coefficient: <<conv_coefficient>>
           device: <<device>>
           latitude_field: <<latitude_field>>
+          position_status_field: <<position_status_field>>
           measurement_name: <<measurement_name>>
           pressure_abs: <<pressure_abs>
           pressure_field: <<pressure_field>>
@@ -104,6 +108,7 @@ logger_templates:
           conv_coefficient: <<conv_coefficient>>
           device: <<device>>
           latitude_field: <<latitude_field>>
+          position_status_field: <<position_status_field>>
           measurement_name: <<measurement_name>>
           pressure_abs: <<pressure_abs>
           pressure_field: <<pressure_field>>
@@ -113,6 +118,7 @@ logger_templates:
           conv_coefficient: <<conv_coefficient>>
           device: <<device>>
           latitude_field: <<latitude_field>>
+          position_status_field: <<position_status_field>>
           measurement_name: <<measurement_name>>
           pressure_abs: <<pressure_abs>
           pressure_field: <<pressure_field>>
@@ -123,6 +129,7 @@ logger_templates:
           conv_coefficient: <<conv_coefficient>>
           device: <<device>>
           latitude_field: <<latitude_field>>
+          position_status_field: <<position_status_field>>
           measurement_name: <<measurement_name>>
           pressure_abs: <<pressure_abs>
           pressure_field: <<pressure_field>>
