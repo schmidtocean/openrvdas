@@ -7,6 +7,9 @@ config_templates:
       kwargs:
         port: <<reader_udp_port>>
     transforms:
+    - class: StripTransform
+      kwargs:
+        unprintable: True
     - class: TimestampTransform
       kwargs:
         sep: ','
