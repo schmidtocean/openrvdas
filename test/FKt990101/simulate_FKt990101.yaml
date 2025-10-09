@@ -247,11 +247,11 @@ seapath330_nav:
 speedlog_uhdas_1:
   class: UDP
   port: 58001
-  filebase: test/FKt990101/data/FKt990101_speedlog_uhdas_1-
+  filebase: test/FKt990101/data/FKt990101_speedlog_uhdas_1_vbw-
 speedlog_uhdas_2:
   class: UDP
   port: 38020
-  filebase: test/FKt990101/data/FKt990101_speedlog_uhdas_1-
+  filebase: test/FKt990101/data/FKt990101_speedlog_uhdas_1_vbw-
 temp_chilled:
   class: UDP
   port: 99999
