@@ -13,13 +13,16 @@ logger_templates:
               fields:
                 <<device_pressure_field_name>>:
                   seconds: 0
-                SB_Sprint_Latitude:
+                Seapath_Latitude:
+                  seconds: 0
+                Seapath_FixQuality:
                   seconds: 0
         transforms:
         - class: DepthCorrectionTransform
           module: contrib.soi.logger.transforms.depthcorrection_transform
           kwargs:
-            latitude_field: SB_Sprint_Latitude
+            latitude_field: Seapath_Latitude
+            position_status_field: Seapath_FixQuality
             pressure_field: <<device_pressure_field_name>>
             conv_coefficient: <<conv_coefficient>>
             pressure_abs: <<device_pressure_abs>
@@ -27,7 +30,7 @@ logger_templates:
             update_on_fields:
             - <<device_pressure_field_name>>
             max_field_age:
-              SB_Sprint_Latitude: 600
+              Seapath_Latitude: 600
         writers:
         - class: CachedDataWriter
           kwargs:
@@ -45,13 +48,16 @@ logger_templates:
               fields:
                 <<device_pressure_field_name>>:
                   seconds: 0
-                SB_Sprint_Latitude:
+                Seapath_Latitude:
+                  seconds: 0
+                Seapath_FixQuality:
                   seconds: 0
         transforms:
         - class: DepthCorrectionTransform
           module: contrib.soi.logger.transforms.depthcorrection_transform
           kwargs:
-            latitude_field: SB_Sprint_Latitude
+            latitude_field: Seapath_Latitude
+            position_status_field: Seapath_FixQuality
             pressure_field: <<device_pressure_field_name>>
             conv_coefficient: <<conv_coefficient>>
             pressure_abs: <<device_pressure_abs>
@@ -59,7 +65,7 @@ logger_templates:
             update_on_fields:
             - <<device_pressure_field_name>>
             max_field_age:
-              SB_Sprint_Latitude: 600
+              Seapath_Latitude: 600
         writers:
         - class: CachedDataWriter
           kwargs:
@@ -77,13 +83,13 @@ logger_templates:
               fields:
                 <<device_pressure_field_name>>:
                   seconds: 0
-                SB_Sprint_Latitude:
+                Seapath_Latitude:
                   seconds: 0
         transforms:
         - class: DepthCorrectionTransform
           module: contrib.soi.logger.transforms.depthcorrection_transform
           kwargs:
-            latitude_field: SB_Sprint_Latitude
+            latitude_field: Seapath_Latitude
             pressure_field: <<device_pressure_field_name>>
             pressure_abs: <<device_pressure_abs>
             conv_coefficient: <<conv_coefficient>>
@@ -91,7 +97,7 @@ logger_templates:
             update_on_fields:
             - <<device_pressure_field_name>>
             max_field_age:
-              SB_Sprint_Latitude: 600
+              Seapath_Latitude: 600
         - class: FormatTransform
           module: logger.transforms.format_transform
           kwargs:
@@ -115,13 +121,13 @@ logger_templates:
               fields:
                 <<device_pressure_field_name>>:
                   seconds: 0
-                SB_Sprint_Latitude:
+                Seapath_Latitude:
                   seconds: 0
         transforms:
         - class: DepthCorrectionTransform
           module: contrib.soi.logger.transforms.depthcorrection_transform
           kwargs:
-            latitude_field: SB_Sprint_Latitude
+            latitude_field: Seapath_Latitude
             pressure_field: <<device_pressure_field_name>>
             pressure_abs: <<device_pressure_abs>
             conv_coefficient: <<conv_coefficient>>
@@ -129,7 +135,7 @@ logger_templates:
             update_on_fields:
             - <<device_pressure_field_name>>
             max_field_age:
-              SB_Sprint_Latitude: 600
+              Seapath_Latitude: 600
         - class: FormatTransform
           module: logger.transforms.format_transform
           kwargs:
