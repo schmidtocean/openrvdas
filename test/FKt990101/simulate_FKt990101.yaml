@@ -210,7 +210,7 @@ sb_oxygen:
   filebase: test/FKt990101/data/FKt990101_sb_oxygen-
 sb_paro:
   class: UDP
-  port: 10004
+  port: 39005
   filebase: test/FKt990101/data/FKt990101_sb_paro-
 sb_paro_dbt:
   class: UDP
@@ -291,4 +291,4 @@ winch_mermac:
 windsonic_fm:
   class: UDP
   port: 40011
-  filebase: test/FKt990101/data/FKt990101_windsonic_fm-
+  filebase: test/FKt990101/data/FKt990101_windsonic_fm_mwv-
