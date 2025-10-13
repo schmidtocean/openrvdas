@@ -1,5 +1,23 @@
+# ---------------------------------------------------------------------------
+# Template: corr_logger_template_winddir
+#
+# Description:
+#   Defines a logger that utilises WindDirCorrectionTransform to perform a
+#   zero-line orientation correction to a wind direction sensor.
+#   It reads a specified raw field, applies the transform, and writes data to
+#   db and or file.
+#
+# Required Logger Variables:
+#   - wind_dir_field:      (string) raw wind direction data field
+#   - apparent_dir_name:   (string) name for the new corrected data field
+#   - zero_line_reference: (number) orientation offset in degrees (e.g., 180)
+#   - measurement_name:    (string) measurement name for InfluxDB writers
+#
+# ---------------------------------------------------------------------------
 logger_templates:
   corr_logger_template_winddir:
+
+    # Common base defining the core read/transform logic
     common_base: &common_base
       readers:
       - class: CachedDataReader
@@ -17,6 +35,7 @@ logger_templates:
           apparent_dir_name: <<apparent_dir_name>>
           zero_line_reference: <<zero_line_reference>>
 
+    # Available reusable writer components
     component_writers:
       cached: &cached_writer
         class: CachedDataWriter
@@ -27,6 +46,11 @@ logger_templates:
         kwargs:
           bucket_name: <<influxdb_default_bucket>>
           measurement_name: <<measurement_name>>
+      influx_restricted: &influx_writer_restricted
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_restricted_bucket>>
+          measurement_name: <<measurement_name>>
       file: &file_writer
         class: LogfileWriter
         kwargs:
@@ -35,6 +59,7 @@ logger_templates:
           split_char: ','
           suffix: '.txt'
 
+    # Add writers to base config
     configs:
       'off': {}
 
@@ -48,10 +73,7 @@ logger_templates:
         <<: *common_base
         writers:
         - *cached_writer
-        - class: InfluxDBWriter
-          kwargs:
-            bucket_name: <<influxdb_restricted_bucket>>
-            measurement_name: <<measurement_name>>
+        - *influx_writer_restricted
 
       file:
         <<: *common_base
