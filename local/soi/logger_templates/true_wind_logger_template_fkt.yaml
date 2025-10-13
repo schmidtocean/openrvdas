@@ -1,68 +1,137 @@
-###################
+# ---------------------------------------------------------------------------
+# Template: true_wind_logger_template_fkt
+#
+# Description:
+#   Calculates true wind data from vessel navigation and relative wind sensor
+#   readings. Outputs structured data for databases and uses a ComposedWriter
+#   to apply NMEA MWD formatting for text file output.
+#
+# Required Logger Variables:
+#   - course_true:         (string) Field name for true course
+#   - heading_true:        (string) Field name for true heading
+#   - speed_over_ground:   (string) Field name for speed over ground in knots
+#   - rel_wind_dir:        (string) Field name for relative wind direction
+#   - rel_wind_speed:      (string) Field name for relative wind speed
+#   - convert_speed_factor:(number) Factor to convert rel_wind_speed to knots
+#   - max_field_age:       (number) Max age in seconds for subscription fields
+#   - apparent_dir_name:   (string) Output field name for apparent wind direction
+#   - true_dir_name:       (string) Output field name for true wind direction
+#   - true_speed_name:     (string) Output field name for true wind speed in knots
+#   - measurement_name:    (string) Measurement name for InfluxDB writers
+#   - mwd_talker_id:       (string) The NMEA talker ID (e.g., "PFMWD")
+# ---------------------------------------------------------------------------
 logger_templates:
-  #################
-  # Derived true winds logger
   true_wind_logger_template_fkt:
+
+    # Common base defining the core read/transform logic
+    # Output is always structured data
+    common_base: &common_base
+      readers:
+      - class: CachedDataReader
+        kwargs:
+          data_server: <<cdw_port>>
+          subscription:
+            fields:
+              <<course_true>>:      {seconds: 0}
+              <<heading_true>>:     {seconds: 0}
+              <<speed_over_ground>>: {seconds: 0}
+              <<rel_wind_dir>>:     {seconds: 0}
+              <<rel_wind_speed>>:   {seconds: 0}
+      transforms:
+      - class: TrueWindsTransform
+        kwargs:
+          data_id: <<logger>>
+          convert_speed_factor: <<convert_speed_factor>>
+          course_field: <<course_true>>
+          heading_field: <<heading_true>>
+          speed_field: <<speed_over_ground>>
+          wind_dir_field: <<rel_wind_dir>>
+          wind_speed_field: <<rel_wind_speed>>
+          apparent_dir_name: <<apparent_dir_name>>
+          true_dir_name: <<true_dir_name>>
+          true_speed_name: <<true_speed_name>>
+          update_on_fields:
+          - <<rel_wind_dir>>
+          max_field_age:
+            <<course_true>>: <<max_field_age>>
+            <<heading_true>>: <<max_field_age>>
+            <<speed_over_ground>>: <<max_field_age>>
+            <<rel_wind_dir>>: <<max_field_age>>
+            <<rel_wind_speed>>: <<max_field_age>>
+          metadata_interval: 10
+
+    # Available reusable writer components
+    component_writers:
+      # Simple writers that consume structured data
+      cached: &cached_writer
+        class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+      influx: &influx_writer
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_default_bucket>>
+          measurement_name: <<measurement_name>>
+      influx_restricted: &influx_writer_restricted
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_restricted_bucket>>
+          measurement_name: <<measurement_name>>
+
+      # Base file writer definition (to be wrapped by the ComposedWriter)
+      file: &file_writer
+        class: LogfileWriter
+        kwargs:
+          header_file: <<header_dir>>/nmea_mwd2_hdr.txt
+          filebase: <<file_root>>/<<cruise>>_<<measurement_name>>
+          split_char: ','
+          suffix: '.txt'
+
+      # ComposedWriter to format structured data into an NMEA MWD string for file output
+      file_from_structured_nmea: &file_from_structured_nmea
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: NMEATransform
+            nmea_list:
+            - MWDTransform
+            kwargs:
+              true_wind_dir_field: <<true_dir_name>>
+              true_wind_speed_kt_field: <<true_speed_name>>
+              mwd_talker_id: <<mwd_talker_id>>
+          - class: TimestampTransform
+            kwargs:
+              sep: ','
+          writers:
+          - *file_writer # Uses the base file writer component
+
+    # Compose logger from defined components
     configs:
       'off': {}
 
-      'influx': &true_winds_influx
-        readers:
-        - class: CachedDataReader
-          kwargs:
-            data_server: <<cdw_port>>
-            subscription:
-              fields:
-                <<course_true>>:
-                  seconds: 0
-                <<heading_true>>:
-                  seconds: 0
-                <<speed_over_ground>>:
-                  seconds: 0
-                <<rel_wind_dir>>:
-                  seconds: 0
-                <<rel_wind_speed>>:
-                  seconds: 0
-        transforms:
-        - class: TrueWindsTransform
-          kwargs:
-            data_id: <<logger>>
-            convert_speed_factor: <<convert_speed_factor>>
-            course_field: <<course_true>>
-            heading_field: <<heading_true>>
-            speed_field: <<speed_over_ground>>
-            wind_dir_field: <<rel_wind_dir>>
-            wind_speed_field: <<rel_wind_speed>>
-
-            # Output fields
-            apparent_dir_name: <<apparent_dir_name>>
-            true_dir_name: <<true_dir_name>>
-            true_speed_name: <<true_speed_name>>
-            update_on_fields:
-            - <<rel_wind_dir>>
-            max_field_age:
-              <<course_true>>: <<max_field_age>>
-              <<heading_true>>: <<max_field_age>>
-              <<speed_over_ground>>: <<max_field_age>>
-              <<rel_wind_dir>>: <<max_field_age>>
-              <<rel_wind_speed>>: <<max_field_age>>
-            metadata_interval: 10
+      # Writes structured data directly to InfluxDB and cdw
+      influx:
+        <<: *common_base
         writers:
-        - class: CachedDataWriter
-          kwargs:
-            data_server: <<cdw_port>>
-        - class: InfluxDBWriter
-          kwargs:
-            bucket_name: <<influxdb_default_bucket>>
-            measurement_name: <<measurement_name>>
+        - *cached_writer
+        - *influx_writer
 
       influx_restricted:
-        <<: *true_winds_influx
+        <<: *common_base
         writers:
-        - class: CachedDataWriter
-          kwargs:
-            data_server: <<cdw_port>>
-        - class: InfluxDBWriter
-          kwargs:
-            bucket_name: <<influxdb_restricted_bucket>>
-            measurement_name: <<measurement_name>>
+        - *cached_writer
+        - *influx_writer_restricted
+
+      # Takes structured data, formats it and writes to file
+      file:
+        <<: *common_base
+        writers:
+        - *file_from_structured_nmea
+
+      # Writes to both destinations applying formatting only for the file
+      file+influx:
+        <<: *common_base
+        writers:
+        - *cached_writer
+        - *influx_writer
+        - *file_from_structured_nmea
