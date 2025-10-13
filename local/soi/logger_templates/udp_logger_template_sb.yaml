@@ -62,7 +62,7 @@ logger_templates:
             filebase: <<file_root>>/<<cruise>>_<<logger>>
             split_char: ','
             suffix: '.txt'
-      file/influx:
+      file+influx:
         readers:
         - class: UDPReader
           kwargs:

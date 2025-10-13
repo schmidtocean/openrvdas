@@ -112,7 +112,7 @@ logger_templates:
             filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
             split_char: ','
             suffix: '.txt'
-      file/influx:
+      file+influx:
         readers:
         - class: CachedDataReader
           kwargs:
