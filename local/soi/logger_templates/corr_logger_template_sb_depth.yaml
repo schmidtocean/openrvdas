@@ -85,15 +85,18 @@ logger_templates:
                   seconds: 0
                 Seapath_Latitude:
                   seconds: 0
+                Seapath_FixQuality:
+                  seconds: 0
         transforms:
         - class: DepthCorrectionTransform
           module: contrib.soi.logger.transforms.depthcorrection_transform
           kwargs:
             latitude_field: Seapath_Latitude
+            position_status_field: Seapath_FixQuality
             pressure_field: <<device_pressure_field_name>>
-            pressure_abs: <<device_pressure_abs>
             conv_coefficient: <<conv_coefficient>>
-            corr_depth_name: <<device>>_Depth_Corr
+            pressure_abs: <<device_pressure_abs>
+            corr_depth_name: <<device>>_Depth_Corr # device name needs to be uppercase
             update_on_fields:
             - <<device_pressure_field_name>>
             max_field_age:
@@ -101,7 +104,7 @@ logger_templates:
         - class: FormatTransform
           module: logger.transforms.format_transform
           kwargs:
-            format_str: <<device>>_Depth_Corr # device name needs to be uppercase
+            format_str: <<device>>_Depth_Corr
         - class: TimestampTransform
           kwargs:
             sep: ','
@@ -123,15 +126,18 @@ logger_templates:
                   seconds: 0
                 Seapath_Latitude:
                   seconds: 0
+                Seapath_FixQuality:
+                  seconds: 0
         transforms:
         - class: DepthCorrectionTransform
           module: contrib.soi.logger.transforms.depthcorrection_transform
           kwargs:
             latitude_field: Seapath_Latitude
+            position_status_field: Seapath_FixQuality
             pressure_field: <<device_pressure_field_name>>
-            pressure_abs: <<device_pressure_abs>
             conv_coefficient: <<conv_coefficient>>
-            corr_depth_name: <<device>>_Depth_Corr
+            pressure_abs: <<device_pressure_abs>
+            corr_depth_name: <<device>>_Depth_Corr # device name needs to be uppercase
             update_on_fields:
             - <<device_pressure_field_name>>
             max_field_age:
@@ -139,7 +145,7 @@ logger_templates:
         - class: FormatTransform
           module: logger.transforms.format_transform
           kwargs:
-            format_str: <<device>>_Depth_Corr # device name needs to be uppercase
+            format_str: <<device>>_Depth_Corr
         - class: TimestampTransform
           kwargs:
             sep: ','

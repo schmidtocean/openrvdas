@@ -34,6 +34,14 @@ logger_templates:
           wind_dir_field: <<wind_dir_field>>
           apparent_dir_name: <<apparent_dir_name>>
           zero_line_reference: <<zero_line_reference>>
+      - class: FormatTransform
+        module: logger.transforms.format_transform
+        kwargs:
+          format_str: <<device>>_WindDir_Corr
+      - class: TimestampTransform
+        kwargs:
+          sep: ','
+
 
     # Available reusable writer components
     component_writers:
