@@ -1,0 +1,66 @@
+logger_templates:
+  corr_logger_template_winddir:
+    common_base: &common_base
+      readers:
+      - class: CachedDataReader
+        kwargs:
+          data_server: <<cdw_port>>
+          subscription:
+            fields:
+              <<wind_dir_field>>:
+                seconds: 0
+      transforms:
+      - class: WindDirCorrectionTransform
+        module: contrib.soi.logger.transforms.winddircorrection_transform
+        kwargs:
+          wind_dir_field: <<wind_dir_field>>
+          apparent_dir_name: <<apparent_dir_name>>
+          zero_line_reference: <<zero_line_reference>>
+
+    component_writers:
+      cached: &cached_writer
+        class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+      influx: &influx_writer
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_default_bucket>>
+          measurement_name: <<measurement_name>>
+      file: &file_writer
+        class: LogfileWriter
+        kwargs:
+          header_file: <<header_dir>>/<<logger>>_hdr.txt
+          filebase: <<file_root>>/<<cruise>>_<<logger>>
+          split_char: ','
+          suffix: '.txt'
+
+    configs:
+      'off': {}
+
+      influx:
+        <<: *common_base
+        writers:
+        - *cached_writer
+        - *influx_writer
+
+      influx_restricted:
+        <<: *common_base
+        writers:
+        - *cached_writer
+        - class: InfluxDBWriter
+          kwargs:
+            bucket_name: <<influxdb_restricted_bucket>>
+            measurement_name: <<measurement_name>>
+
+      file:
+        <<: *common_base
+        writers:
+        - *file_writer
+
+      file+influx:
+        <<: *common_base
+        writers:
+        - *cached_writer
+        - *influx_writer
+        - *file_writer
