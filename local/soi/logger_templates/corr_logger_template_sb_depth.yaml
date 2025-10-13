@@ -26,7 +26,7 @@ logger_templates:
             pressure_field: <<device_pressure_field_name>>
             conv_coefficient: <<conv_coefficient>>
             pressure_abs: <<device_pressure_abs>
-            corr_depth_name: <<device>>_Depth_Corr # device name needs to be uppercase
+            corr_depth_name: <<device>>_Depth_Corr
             update_on_fields:
             - <<device_pressure_field_name>>
             max_field_age:
@@ -38,7 +38,7 @@ logger_templates:
         - class: InfluxDBWriter
           kwargs:
             bucket_name: <<influxdb_default_bucket>>
-            measurement_name: <<measurement_name>> # mesurement name needs to be lowercase
+            measurement_name: <<measurement_name>>
       influx_restricted:
         readers:
         - class: CachedDataReader
@@ -73,7 +73,7 @@ logger_templates:
         - class: InfluxDBWriter
           kwargs:
             bucket_name: <<influxdb_restricted_bucket>>
-            measurement_name: <<measurement_name>> # needs to be lowercase
+            measurement_name: <<measurement_name>>
       file:
         readers:
         - class: CachedDataReader
@@ -96,7 +96,7 @@ logger_templates:
             pressure_field: <<device_pressure_field_name>>
             conv_coefficient: <<conv_coefficient>>
             pressure_abs: <<device_pressure_abs>
-            corr_depth_name: <<device>>_Depth_Corr # device name needs to be uppercase
+            corr_depth_name: <<device>>_Depth_Corr
             update_on_fields:
             - <<device_pressure_field_name>>
             max_field_age:
@@ -104,7 +104,7 @@ logger_templates:
         - class: FormatTransform
           module: logger.transforms.format_transform
           kwargs:
-            format_str: <<device>>_Depth_Corr
+            format_str: '{<<device>>_Depth_Corr}'
         - class: TimestampTransform
           kwargs:
             sep: ','
@@ -112,7 +112,7 @@ logger_templates:
         - class: LogfileWriter
           kwargs:
             header_file: <<header_dir>>/depth_corrected_hdr.txt
-            filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+            filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_depth_corr
             split_char: ','
             suffix: '.txt'
       file+influx:
@@ -137,15 +137,19 @@ logger_templates:
             pressure_field: <<device_pressure_field_name>>
             conv_coefficient: <<conv_coefficient>>
             pressure_abs: <<device_pressure_abs>
-            corr_depth_name: <<device>>_Depth_Corr # device name needs to be uppercase
+            corr_depth_name: <<device>>_Depth_Corr
             update_on_fields:
             - <<device_pressure_field_name>>
             max_field_age:
               Seapath_Latitude: 600
+        - class: InfluxDBWriter
+          kwargs:
+            bucket_name: <<influxdb_default_bucket>>
+            measurement_name: <<measurement_name>>
         - class: FormatTransform
           module: logger.transforms.format_transform
           kwargs:
-            format_str: <<device>>_Depth_Corr
+            format_str: '{<<device>>_Depth_Corr}'
         - class: TimestampTransform
           kwargs:
             sep: ','
@@ -153,10 +157,6 @@ logger_templates:
         - class: LogfileWriter
           kwargs:
             header_file: <<header_dir>>/depth_corrected_hdr.txt
-            filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+            filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_depth_corr
             split_char: ','
             suffix: '.txt'
-        - class: InfluxDBWriter
-          kwargs:
-            bucket_name: <<influxdb_default_bucket>>
-            measurement_name: <<measurement_name>> # needs to be lowercase

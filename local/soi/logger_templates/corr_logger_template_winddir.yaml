@@ -4,8 +4,9 @@
 # Description:
 #   Defines a logger that utilises WindDirCorrectionTransform to perform a
 #   zero-line orientation correction to a wind direction sensor.
-#   It reads a specified raw field, applies the transform, and writes data to
-#   db and or file.
+#   It reads a specified raw field, applies the transform, then
+#   outputs structured data for databases and uses a ComposedWriter to
+#   apply formatting for text file output.
 #
 # Required Logger Variables:
 #   - wind_dir_field:      (string) raw wind direction data field
@@ -18,6 +19,7 @@ logger_templates:
   corr_logger_template_winddir:
 
     # Common base defining the core read/transform logic
+    # Its output is always structured data.
     common_base: &common_base
       readers:
       - class: CachedDataReader
@@ -34,17 +36,10 @@ logger_templates:
           wind_dir_field: <<wind_dir_field>>
           apparent_dir_name: <<apparent_dir_name>>
           zero_line_reference: <<zero_line_reference>>
-      - class: FormatTransform
-        module: logger.transforms.format_transform
-        kwargs:
-          format_str: <<device>>_WindDir_Corr
-      - class: TimestampTransform
-        kwargs:
-          sep: ','
-
 
     # Available reusable writer components
     component_writers:
+      # Simple writers that consume structured data
       cached: &cached_writer
         class: CachedDataWriter
         kwargs:
@@ -59,6 +54,8 @@ logger_templates:
         kwargs:
           bucket_name: <<influxdb_restricted_bucket>>
           measurement_name: <<measurement_name>>
+
+      # Base file writer definition (to be wrapped by the ComposedWriter)
       file: &file_writer
         class: LogfileWriter
         kwargs:
@@ -67,10 +64,26 @@ logger_templates:
           split_char: ','
           suffix: '.txt'
 
-    # Add writers to base config
+      # ComposedWriter to format structured data into a string for file output
+      file_from_structured: &file_from_structured
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: FormatTransform
+            module: logger.transforms.format_transform
+            kwargs:
+              format_str: '{<<apparent_dir_name>>}'
+          - class: TimestampTransform
+            kwargs:
+              sep: ','
+          writers:
+          - *file_writer # Uses the base file writer component
+
+    # Compose logger from defined components
     configs:
       'off': {}
 
+      # Writes structured data directly to InfluxDB and cdw
       influx:
         <<: *common_base
         writers:
@@ -83,14 +96,16 @@ logger_templates:
         - *cached_writer
         - *influx_writer_restricted
 
+      # Takes structured data, formats it and writes to file
       file:
         <<: *common_base
         writers:
-        - *file_writer
+        - *file_from_structured
 
+      # Writes to both destinations applying formatting only for the file
       file+influx:
         <<: *common_base
         writers:
         - *cached_writer
         - *influx_writer
-        - *file_writer
+        - *file_from_structured
