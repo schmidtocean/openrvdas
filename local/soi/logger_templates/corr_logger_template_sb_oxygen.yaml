@@ -1,38 +1,58 @@
-###################
+# ---------------------------------------------------------------------------
+# Template: corr_logger_template_sb_oxygen
+#
+# Description:
+#   Defines a logger that utilises DOCorrectionTransform to calculate
+#   corrected dissolved oxygen concentration and saturation from temperature,
+#   salinity, and pressure readings. Outputs structured data for databases
+#   and uses a ComposedWriter to apply formatting for text file output.
+#
+# Required Logger Variables:
+#   - ctd_water_temp_field: (string) The water temperature data field.
+#   - ctd_salinity_field:   (string) The salinity data field.
+#   - ctd_depth_field:      (string) The pressure (depth) data field.
+#   - corr_conc_field:      (string) The name for the new corrected concentration field.
+#   - corr_sat_field:       (string) The name for the new corrected saturation field.
+#   - measurement_name:     (string) The measurement name for InfluxDB writers.
+#
+# ---------------------------------------------------------------------------
 logger_templates:
-  #################
   corr_logger_template_sb_oxygen:
+
+    # The common base holds the shared reader and core transform logic.
+    # Its output is always structured data.
+    common_base: &common_base
+      readers:
+      - class: CachedDataReader
+        kwargs:
+          data_server: <<cdw_port>>
+          subscription:
+            fields:
+              SB_Oxygen_Concentration:    {seconds: 0}
+              <<ctd_water_temp_field>>: {seconds: 0}
+              <<ctd_salinity_field>>:   {seconds: 0}
+              <<ctd_depth_field>>:      {seconds: 0}
+      transforms:
+      - class: DOCorrectionTransform
+        module: contrib.soi.logger.transforms.docorrection_transform
+        kwargs:
+          conc_field: SB_Oxygen_Concentration
+          temp_field: <<ctd_water_temp_field>>
+          sal_field: <<ctd_salinity_field>>
+          pressure_field: <<ctd_depth_field>>
+          corr_conc_name: <<corr_conc_field>>
+          corr_sat_name: <<corr_sat_field>>
+          update_on_fields:
+          - SB_Oxygen_Concentration
+          max_field_age:
+            <<ctd_depth_field>>: 2
+
     configs:
       'off': {}
+
+      # Writes structured data directly to InfluxDB and cache.
       influx:
-        readers:
-        - class: CachedDataReader
-          kwargs:
-            data_server: <<cdw_port>>
-            subscription:
-              fields:
-                SB_Oxygen_Concentration:
-                  seconds: 0
-                <<ctd_water_temp_field>>:
-                  seconds: 0
-                <<ctd_salinity_field>>:
-                  seconds: 0
-                <<ctd_depth_field>>:
-                  seconds: 0
-        transforms:
-        - class: DOCorrectionTransform
-          module: contrib.soi.logger.transforms.docorrection_transform
-          kwargs:
-            conc_field: SB_Oxygen_Concentration
-            temp_field: <<ctd_water_temp_field>>
-            sal_field: <<ctd_salinity_field>>
-            pressure_field: <<ctd_depth_field>>
-            corr_conc_name: <<corr_conc_field>>
-            corr_sat_name: <<corr_conc_field>>
-            update_on_fields:
-            - SB_Oxygen_Concentration
-            max_field_age: 
-              <<ctd_depth_field>>: 2
+        <<: *common_base
         writers:
         - class: CachedDataWriter
           kwargs:
@@ -40,4 +60,55 @@ logger_templates:
         - class: InfluxDBWriter
           kwargs:
             bucket_name: <<influxdb_default_bucket>>
-            measurement_name: sb_oxygen
+            measurement_name: <<measurement_name>>
+
+      # Takes structured data, formats it, and writes to a file.
+      file:
+        <<: *common_base
+        writers:
+        - class: ComposedWriter
+          kwargs:
+            transforms:
+            - class: FormatTransform
+              module: logger.transforms.format_transform
+              kwargs:
+                format_str: '{<<corr_conc_field>>},{<<corr_sat_field>>}'
+            - class: TimestampTransform
+              kwargs:
+                sep: ','
+            writers:
+            - class: LogfileWriter
+              kwargs:
+                header_file: <<header_dir>>/oxygen_corrected_hdr.txt
+                filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+                split_char: ','
+                suffix: '.txt'
+
+      # Writes to both destinations by defining all writers inline.
+      file+influx:
+        <<: *common_base
+        writers:
+        - class: CachedDataWriter
+          kwargs:
+            data_server: <<cdw_port>>
+        - class: InfluxDBWriter
+          kwargs:
+            bucket_name: <<influxdb_default_bucket>>
+            measurement_name: <<measurement_name>>
+        - class: ComposedWriter
+          kwargs:
+            transforms:
+            - class: FormatTransform
+              module: logger.transforms.format_transform
+              kwargs:
+                format_str: '{<<corr_conc_field>>},{<<corr_sat_field>>}'
+            - class: TimestampTransform
+              kwargs:
+                sep: ','
+            writers:
+            - class: LogfileWriter
+              kwargs:
+                header_file: <<header_dir>>/oxygen_corrected_hdr.txt
+                filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+                split_char: ','
+                suffix: '.txt'
