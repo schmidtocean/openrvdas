@@ -1,0 +1,108 @@
+# ---------------------------------------------------------------------------
+# Template: corr_logger_template_slope
+#
+# Description:
+#   Defines a logger that utilises SlopeCorrectionTransform to apply a
+#   slope and offset to a field, or to simply rename it. It reads a
+#   specified raw field, applies the transform, then outputs structured
+#   data for databases and uses a ComposedWriter to apply formatting
+#   for text file output.
+#
+# Required Logger Variables:
+#   - input_field:         (string) The raw data field to read
+#   - output_field:        (string) The name for the new corrected data field
+#   - measurement_name:    (string) The measurement name for InfluxDB writers
+#
+# ---------------------------------------------------------------------------
+logger_templates:
+  corr_logger_template_slope:
+
+    # Common base defining the core read/transform logic
+    # Output is always structured data
+    common_base: &common_base
+      readers:
+      - class: CachedDataReader
+        kwargs:
+          data_server: <<cdw_port>>
+          subscription:
+            fields:
+              <<input_field>>:
+                seconds: 0
+      transforms:
+      - class: SlopeCorrectionTransform
+        module: contrib.soi.logger.transforms.slopecorrection_transform
+        kwargs:
+          output_fields: {'<<input_field>>': '<<output_field>>'}
+
+    # Available reusable writer components
+    component_writers:
+      # Simple writers that consume structured data
+      cached: &cached_writer
+        class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+      influx: &influx_writer
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_default_bucket>>
+          measurement_name: <<measurement_name>>
+      influx_restricted: &influx_writer_restricted
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_restricted_bucket>>
+          measurement_name: <<measurement_name>>
+
+      # Base file writer definition (to be wrapped by the ComposedWriter)
+      file: &file_writer
+        class: LogfileWriter
+        kwargs:
+          header_file: <<header_dir>>/<<logger>>_hdr.txt
+          filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+          split_char: ','
+          suffix: '.txt'
+
+      # ComposedWriter to format structured data into a string for file output
+      file_from_structured: &file_from_structured
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: FormatTransform
+            module: logger.transforms.format_transform
+            kwargs:
+              format_str: '{<<output_field>>}'
+          - class: TimestampTransform
+            kwargs:
+              sep: ','
+          writers:
+          - *file_writer # Uses the base file writer component
+
+    # Compose logger from defined components
+    configs:
+      'off': {}
+
+      # Writes structured data directly to InfluxDB and cdw
+      influx:
+        <<: *common_base
+        writers:
+        - *cached_writer
+        - *influx_writer
+
+      influx_restricted:
+        <<: *common_base
+        writers:
+        - *cached_writer
+        - *influx_writer_restricted
+
+      # Takes structured data, formats it and writes to file
+      file:
+        <<: *common_base
+        writers:
+        - *file_from_structured
+
+      # Writes to both destinations applying formatting only for the file
+      file+influx:
+        <<: *common_base
+        writers:
+        - *cached_writer
+        - *influx_writer
+        - *file_from_structured
