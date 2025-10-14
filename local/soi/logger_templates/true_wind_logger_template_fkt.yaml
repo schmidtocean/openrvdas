@@ -34,7 +34,7 @@ logger_templates:
             fields:
               <<course_true>>:      {seconds: 0}
               <<heading_true>>:     {seconds: 0}
-              <<speed_over_ground>>:{seconds: 0}
+              <<speed_over_ground>>: {seconds: 0}
               <<rel_wind_dir>>:     {seconds: 0}
               <<rel_wind_speed>>:   {seconds: 0}
       transforms:
