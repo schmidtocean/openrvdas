@@ -8,12 +8,12 @@
 #   and uses a ComposedWriter to apply formatting for text file output.
 #
 # Required Logger Variables:
-#   - ctd_water_temp_field: (string) The water temperature data field.
-#   - ctd_salinity_field:   (string) The salinity data field.
-#   - ctd_depth_field:      (string) The pressure (depth) data field.
-#   - corr_conc_field:      (string) The name for the new corrected concentration field.
-#   - corr_sat_field:       (string) The name for the new corrected saturation field.
-#   - measurement_name:     (string) The measurement name for InfluxDB writers.
+#   - ctd_water_temp_field: (string) The water temperature data field
+#   - ctd_salinity_field:   (string) The salinity data field
+#   - ctd_depth_field:      (string) The pressure (depth) data field
+#   - corr_conc_field:      (string) The name for the new corrected concentration field
+#   - corr_sat_field:       (string) The name for the new corrected saturation field
+#   - measurement_name:     (string) The measurement name for InfluxDB writers
 #
 # ---------------------------------------------------------------------------
 logger_templates:
@@ -47,68 +47,75 @@ logger_templates:
           max_field_age:
             <<ctd_depth_field>>: 2
 
+    # Available reusable writer components
+    component_writers:
+      # Simple writers that consume structured data
+      cached: &cached_writer
+        class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+      influx: &influx_writer
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_default_bucket>>
+          measurement_name: <<measurement_name>>
+      influx_restricted: &influx_writer_restricted
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_restricted_bucket>>
+          measurement_name: <<measurement_name>>
+
+      # Base file writer definition (to be wrapped by the ComposedWriter)
+      file: &file_writer
+        class: LogfileWriter
+        kwargs:
+          header_file: <<header_dir>>/oxygen_corrected_hdr.txt
+          filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+          split_char: ','
+          suffix: '.txt'
+
+      # ComposedWriter to format structured data into a string for file output
+      file_from_structured: &file_from_structured
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: FormatTransform
+            module: logger.transforms.format_transform
+            kwargs:
+              format_str: '{<<corr_conc_field>>},{<<corr_sat_field>>}'
+          - class: TimestampTransform
+            kwargs:
+              sep: ','
+          writers:
+          - *file_writer # Uses the base file writer component
+
+    # Compose logger from defined components
     configs:
       'off': {}
 
-      # Writes structured data directly to InfluxDB and cache.
+      # Writes structured data directly to InfluxDB and cache
       influx:
         <<: *common_base
         writers:
-        - class: CachedDataWriter
-          kwargs:
-            data_server: <<cdw_port>>
-        - class: InfluxDBWriter
-          kwargs:
-            bucket_name: <<influxdb_default_bucket>>
-            measurement_name: <<measurement_name>>
+        - *cached_writer
+        - *influx_writer
 
-      # Takes structured data, formats it, and writes to a file.
+      influx_restricted:
+        <<: *common_base
+        writers:
+        - *cached_writer
+        - *influx_writer_restricted
+
+      # Takes structured data, formats it, and writes to a file
       file:
         <<: *common_base
         writers:
-        - class: ComposedWriter
-          kwargs:
-            transforms:
-            - class: FormatTransform
-              module: logger.transforms.format_transform
-              kwargs:
-                format_str: '{<<corr_conc_field>>},{<<corr_sat_field>>}'
-            - class: TimestampTransform
-              kwargs:
-                sep: ','
-            writers:
-            - class: LogfileWriter
-              kwargs:
-                header_file: <<header_dir>>/oxygen_corrected_hdr.txt
-                filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
-                split_char: ','
-                suffix: '.txt'
+        - *file_from_structured
 
-      # Writes to both destinations by defining all writers inline.
+      # Writes to both destinations applying formatting only for the file
       file+influx:
         <<: *common_base
         writers:
-        - class: CachedDataWriter
-          kwargs:
-            data_server: <<cdw_port>>
-        - class: InfluxDBWriter
-          kwargs:
-            bucket_name: <<influxdb_default_bucket>>
-            measurement_name: <<measurement_name>>
-        - class: ComposedWriter
-          kwargs:
-            transforms:
-            - class: FormatTransform
-              module: logger.transforms.format_transform
-              kwargs:
-                format_str: '{<<corr_conc_field>>},{<<corr_sat_field>>}'
-            - class: TimestampTransform
-              kwargs:
-                sep: ','
-            writers:
-            - class: LogfileWriter
-              kwargs:
-                header_file: <<header_dir>>/oxygen_corrected_hdr.txt
-                filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
-                split_char: ','
-                suffix: '.txt'
+        - *cached_writer
+        - *influx_writer
+        - *file_from_structured
