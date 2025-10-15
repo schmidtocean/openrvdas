@@ -92,7 +92,7 @@ logger_templates:
 
     # Compose logger from defined components
     configs:
-      off: {}
+      'off': {}
 
       # Writes structured data directly to InfluxDB and cdw
       influx:

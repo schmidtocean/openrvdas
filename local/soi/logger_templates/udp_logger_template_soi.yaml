@@ -1,98 +1,101 @@
-###################
+# ---------------------------------------------------------------------------
+# Template: udp_logger_template_soi
+#
+# Description:
+#   A generic template for reading raw UDP data streams. It timestamps,
+#   parses the data based on a provided definition file, and can write
+#   to both InfluxDB and file.
+#
+# Required Logger Variables:
+#   - reader_udp_port:   (number) The UDP port to listen on
+#   - bucket_name:       (string) The InfluxDB bucket for database output
+# ---------------------------------------------------------------------------
 logger_templates:
-  #################
   udp_logger_template_soi:
+
+    # The common base holds the shared reader and initial transforms
+    # Its output is a timestamped string, suitable for file logging
+    base: &base
+      readers:
+      - class: UDPReader
+        kwargs:
+          port: <<reader_udp_port>>
+      transforms:
+      - class: StripTransform
+        kwargs:
+          unprintable: True
+      - class: TimestampTransform
+        kwargs:
+          sep: ','
+
+    # Available reusable writer components
+    writers: &writers
+      # Simple writers that will be used inside the ComposedWriter
+      cached: &cached_writer
+        class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+      influx: &influx_writer
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_default_bucket>>
+          measurement_name: <<logger>>
+      influx_restricted: &influx_writer_restricted
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_restricted_bucket>>
+          measurement_name: <<logger>>
+
+      # Base file writer definition
+      file: &file_writer
+        class: LogfileWriter
+        kwargs:
+          header_file: <<header_dir>>/<<logger>>_hdr.txt
+          filebase: <<file_root>>/<<cruise>>_<<logger>>
+          split_char: ','
+          suffix: '.txt'
+
+      # ComposedWriter to parse the string from the base and send to Influx
+      influx_from_string: &influx_from_string
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: PrefixTransform
+            kwargs:
+              prefix: <<logger>>
+          - class: ParseTransform
+            kwargs:
+              definition_path: local/soi/all_devices.yaml
+              record_format: '{data_id:w} {timestamp:ti},{field_string}'
+          writers:
+          - *cached_writer
+          - *influx_writer
+
+    # Compose logger from defined components
     configs:
       'off': {}
+
+      # Writes to InfluxDB by taking the base string and re-parsing it
       influx:
-        readers:
-        - class: UDPReader
-          kwargs:
-            port: <<reader_udp_port>>
-        transforms:
-        - class: TimestampTransform
-        - class: PrefixTransform
-          kwargs:
-            prefix: <<logger>>
-        - class: ParseTransform
-          kwargs:
-            definition_path: local/soi/all_devices.yaml
+        <<: *base
         writers:
-        - class: CachedDataWriter
-          kwargs:
-            data_server: <<cdw_port>>
-        - class: InfluxDBWriter
-          kwargs:
-            bucket_name: <<influxdb_default_bucket>>
-            measurement_name: <<logger>>
+        - *influx_from_string
+
       influx_restricted:
-        readers:
-        - class: UDPReader
-          kwargs:
-            port: <<reader_udp_port>>
-        transforms:
-        - class: TimestampTransform
-        - class: PrefixTransform
-          kwargs:
-            prefix: <<logger>>
-        - class: ParseTransform
-          kwargs:
-            definition_path: local/soi/all_devices.yaml
+        <<: *base
         writers:
-        - class: CachedDataWriter
-          kwargs:
-            data_server: <<cdw_port>>
-        - class: InfluxDBWriter
-          kwargs:
-            bucket_name: <<influxdb_restricted_bucket>>
-            measurement_name: <<logger>>
+        - *cached_writer
+        - *influx_writer_restricted
+
+      # Writes the raw, timestamped string directly to a file
       file:
-        readers:
-        - class: UDPReader
-          kwargs:
-            port: <<reader_udp_port>>
-        transforms:
-        - class: TimestampTransform
-          kwargs:
-            sep: ','
+        <<: *base
         writers:
-        - class: LogfileWriter
-          kwargs:
-            header_file: <<header_dir>>/<<logger>>_hdr.txt
-            filebase: <<file_root>>/<<cruise>>_<<logger>>
-            split_char: ','
-            suffix: '.txt'
+        - *file_writer
+
+      # Writes to both destinations
       file+influx:
-        readers:
-        - class: UDPReader
-          kwargs:
-            port: <<reader_udp_port>>
-        transforms:
-        - class: TimestampTransform
-          kwargs:
-            sep: ','
+        <<: *base
         writers:
-        - class: LogfileWriter
-          kwargs:
-            header_file: <<header_dir>>/<<logger>>_hdr.txt
-            filebase: <<file_root>>/<<cruise>>_<<logger>>
-            split_char: ','
-            suffix: '.txt'
-        - class: ComposedWriter
-          kwargs:
-            transforms:
-            - class: PrefixTransform
-              kwargs:
-                prefix: '<<logger>>'
-            - class: ParseTransform
-              kwargs:
-                definition_path: local/soi/all_devices.yaml
-                record_format: '{data_id:w} {timestamp:ti},{field_string}'
-            writers:
-            - class: CachedDataWriter
-              kwargs:
-                data_server:  <<cdw_port>>
-            - class: InfluxDBWriter
-              kwargs:
-                bucket_name: <<influxdb_default_bucket>>
-                measurement_name: <<logger>>
+        - *file_writer
+        - *influx_from_string

@@ -19,7 +19,7 @@ logger_templates:
 
     # Common base defining the core read/transform logic
     # Output is always structured data
-    common_base: &common_base
+    base: &base
       readers:
       - class: CachedDataReader
         kwargs:
@@ -35,7 +35,7 @@ logger_templates:
           output_fields: {'<<input_field>>': '<<output_field>>'}
 
     # Available reusable writer components
-    component_writers:
+    writers:
       # Simple writers that consume structured data
       cached: &cached_writer
         class: CachedDataWriter
@@ -82,26 +82,26 @@ logger_templates:
 
       # Writes structured data directly to InfluxDB and cdw
       influx:
-        <<: *common_base
+        <<: *base
         writers:
         - *cached_writer
         - *influx_writer
 
       influx_restricted:
-        <<: *common_base
+        <<: *base
         writers:
         - *cached_writer
         - *influx_writer_restricted
 
       # Takes structured data, formats it and writes to file
       file:
-        <<: *common_base
+        <<: *base
         writers:
         - *file_from_structured
 
       # Writes to both destinations applying formatting only for the file
       file+influx:
-        <<: *common_base
+        <<: *base
         writers:
         - *cached_writer
         - *influx_writer
