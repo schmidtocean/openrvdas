@@ -8,14 +8,16 @@
 #   and uses a ComposedWriter to apply formatting for text file output.
 #
 # Required Logger Variables:
-#   - ctd_water_temp_field: (string) The water temperature data field
-#   - ctd_salinity_field:   (string) The salinity data field
-#   - ctd_depth_field:      (string) The pressure (depth) data field
-#   - corr_conc_field:      (string) The name for the new corrected concentration field
-#   - corr_sat_field:       (string) The name for the new corrected saturation field
-#   - measurement_name:     (string) The measurement name for InfluxDB writers
+#   oxygen_conc_field     : oxygen concentration input field (e.g., SB_Oxygen_Concentration)
+#   ctd_water_temp_field  : CTD temperature field
+#   ctd_salinity_field    : CTD salinity field
+#   ctd_depth_field       : CTD depth field
+#   corr_conc_field       : corrected concentration output field
+#   corr_sat_field        : corrected saturation output field
+#   measurement_name      : Influx measurement
 #
 # ---------------------------------------------------------------------------
+
 logger_templates:
   corr_logger_template_sb_oxygen:
 
@@ -28,24 +30,27 @@ logger_templates:
           data_server: <<cdw_port>>
           subscription:
             fields:
-              SB_Oxygen_Concentration:    {seconds: 0}
+              <<oxygen_conc_field>>: {seconds: 0}
               <<ctd_water_temp_field>>: {seconds: 0}
               <<ctd_salinity_field>>:   {seconds: 0}
               <<ctd_depth_field>>:      {seconds: 0}
+
       transforms:
       - class: DOCorrectionTransform
         module: contrib.soi.logger.transforms.docorrection_transform
         kwargs:
-          conc_field: SB_Oxygen_Concentration
-          temp_field: <<ctd_water_temp_field>>
-          sal_field: <<ctd_salinity_field>>
+          conc_field:     <<oxygen_conc_field>>
+          temp_field:     <<ctd_water_temp_field>>
+          sal_field:      <<ctd_salinity_field>>
           pressure_field: <<ctd_depth_field>>
           corr_conc_name: <<corr_conc_field>>
-          corr_sat_name: <<corr_sat_field>>
+          corr_sat_name:  <<corr_sat_field>>
           update_on_fields:
-          - SB_Oxygen_Concentration
+          - <<oxygen_conc_field>>
           max_field_age:
-            <<ctd_depth_field>>: 2
+            <<ctd_depth_field>>:      2
+            <<ctd_water_temp_field>>: 2
+            <<ctd_salinity_field>>:   2
 
     # Available reusable writer components
       # Simple writers that consume structured data
