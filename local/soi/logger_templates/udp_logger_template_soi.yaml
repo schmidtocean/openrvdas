@@ -1,7 +1,7 @@
 ###################
 logger_templates:
   #################
-  udp_logger_template_fkt:
+  udp_logger_template_soi:
     configs:
       'off': {}
       influx:
@@ -16,7 +16,7 @@ logger_templates:
             prefix: <<logger>>
         - class: ParseTransform
           kwargs:
-            definition_path: local/soi/soi_devices.yaml
+            definition_path: local/soi/all_devices.yaml
         writers:
         - class: CachedDataWriter
           kwargs:
@@ -37,7 +37,7 @@ logger_templates:
             prefix: <<logger>>
         - class: ParseTransform
           kwargs:
-            definition_path: local/soi/soi_devices.yaml
+            definition_path: local/soi/all_devices.yaml
         writers:
         - class: CachedDataWriter
           kwargs:
@@ -86,7 +86,7 @@ logger_templates:
                 prefix: '<<logger>>'
             - class: ParseTransform
               kwargs:
-                definition_path: local/soi/soi_devices.yaml
+                definition_path: local/soi/all_devices.yaml
                 record_format: '{data_id:w} {timestamp:ti},{field_string}'
             writers:
             - class: CachedDataWriter
