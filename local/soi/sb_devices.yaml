@@ -3,9 +3,6 @@
 #
 # See README.md in this directory
 
-includes:
-  - local/soi/devices/*.yaml
-
 devices:
   ######################################
   sb_ctd_sbe49:

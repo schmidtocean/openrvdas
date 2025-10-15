@@ -1,0 +1,17 @@
+# --------------------------------------------------------------------
+# Master device definition file
+#
+# This file serves as the single entry point for all device definitions
+# It first loads device types library from the /devices
+# directory, and then merges in the specific device lists for each
+# vehicle(sb/fkt) and category(pt)
+# --------------------------------------------------------------------
+includes:
+  # Load device types
+  - local/soi/devices/*.yaml
+
+  # Load installed devices
+  - local/soi/sb_devices.yaml
+  - local/soi/fkt_devices.yaml
+  - local/soi/emp_devices.yaml
+  - local/soi/pt_devices.yaml

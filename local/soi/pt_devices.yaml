@@ -3,9 +3,6 @@
 # all particpant devices whould start with pt_{devicename} so they are easily identified
 # See README.md in this directory
 
-includes:
-  - local/soi/devices/*.yaml
-
 devices:
   ######################################
   pt_whoi_mag:
