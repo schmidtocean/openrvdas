@@ -19,7 +19,7 @@ logger_templates:
   corr_logger_template_winddir:
 
     # Common base defining the core read/transform logic
-    # Its output is always structured data.
+    # Its output is always structured data
     base: &base
       readers:
       - class: CachedDataReader

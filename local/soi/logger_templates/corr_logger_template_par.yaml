@@ -1,0 +1,139 @@
+# ---------------------------------------------------------------------------
+# Template: corr_logger_template_par
+#
+# Description:
+#   Reads araw analog voltage from a MOXA E12xx device
+#   Provides three outputs:
+#     1. Log file with raw voltage
+#     2. Database entry with calculated PAR irradiance
+#     3. Second log file with calculated
+#
+# Required Logger Variables:
+#   - moxa_address, moxa_analog_channel, par_prefix,
+#     coefficient, voltage_field, irradiance_name
+# ---------------------------------------------------------------------------
+logger_templates:
+  corr_logger_template_par:
+
+    # Common base defining the core read/transform logic
+    # Its output is always structured data
+    base: &base
+      readers:
+      - class: MOXAioLogikE12xxReader
+        module: contrib.soi.logger.readers.moxa_iologik_e12xx_reader
+        kwargs:
+          address: <<moxa_address>>
+          analog_channel: <<moxa_analog_channel>>
+      transforms:
+      - class: TimestampTransform
+        kwargs:
+          sep: ','
+
+    # Available reusable writer components
+    writers: &writers
+      # Database writers
+      cached: &cached_writer
+        class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+      influx: &influx_writer
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<bucket_name>>
+          measurement_name: <<logger>>
+
+      # File writers for two different files
+      raw_file_writer: &raw_file_writer
+        class: LogfileWriter
+        kwargs:
+          header_file: <<header_dir>>/<<device>>_hdr.txt
+          filebase: <<file_root>>/<<cruise>>_<<logger>>
+          split_char: ','
+          suffix: '.txt'
+      corr_file_writer: &corr_file_writer
+        class: LogfileWriter
+        kwargs:
+          header_file: <<header_dir>>/par_corr_hdr.txt
+          filebase: <<file_root>>/<<cruise>>_<<logger>>_corr
+          split_char: ','
+          suffix: '.txt'
+
+      # ComposedWriter for the database path
+      database_path: &database_path
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: PrefixTransform
+            kwargs: {prefix: <<par_prefix>>}
+          - class: ParseTransform
+            kwargs:
+              definition_path: <<definition_path>>
+              record_format: '{data_id:w} {timestamp:ti},{field_string}'
+          - class: BiosphericalParConversionTransform
+            module: contrib.soi.logger.transforms.biosphericalparconversion_transform
+            kwargs:
+              coefficient: <<coefficient>>
+              voltage_field: <<voltage_field>>
+              irradiance_name: <<irradiance_name>>
+          writers:
+          - *cached_writer
+          - *influx_writer
+      
+      # ComposedWriter for the corrected file path
+      corr_file_path: &corr_file_path
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          # Perform the same calculation as the database path
+          - class: PrefixTransform
+            kwargs: {prefix: <<par_prefix>>}
+          - class: ParseTransform
+            kwargs:
+              definition_path: <<definition_path>>
+              record_format: '{data_id:w} {timestamp:ti},{field_string}'
+          - class: BiosphericalParConversionTransform
+            module: contrib.soi.logger.transforms.biosphericalparconversion_transform
+            kwargs:
+              coefficient: <<coefficient>>
+              voltage_field: <<voltage_field>>
+              irradiance_name: <<irradiance_name>>
+          # Add formatting transforms for the file
+          - class: FormatTransform
+            module: logger.transforms.format_transform
+            kwargs:
+              format_str: '{<<irradiance_name>>}'
+          - class: TimestampTransform
+            kwargs:
+              sep: ','
+          writers:
+          - *corr_file_writer
+
+    # The configs now provide more specific options
+    configs:
+      off: {}
+
+      # Writes only the raw voltage to a file
+      file_raw:
+        <<: *base
+        writers:
+        - *raw_file_writer
+
+      # Calculates and writes only the corrected irradiance to a file
+      file_corr:
+        <<: *base
+        writers:
+        - *corr_file_path
+      
+      # Calculates and writes only to the database
+      influx:
+        <<: *base
+        writers:
+        - *database_path
+
+      # This is the full configuration that produces all three outputs
+      file+influx:
+        <<: *base
+        writers:
+        - *raw_file_writer
+        - *database_path
+        - *corr_file_path
