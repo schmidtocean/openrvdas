@@ -271,12 +271,11 @@ function update_cruise_definition(timestamp, cruise_definition) {
 
     var config_td = document.createElement('td');
     config_td.setAttribute('id', logger_name + '_config_td');
-    config_td.setAttribute('class', 'button_td');
+    config_td.setAttribute('style', 'height:30px;width:75px;');
 
     var button = document.createElement('button');
     button.setAttribute('id', logger_name + '_config_button');
     button.setAttribute('type', 'submit');
-    button.setAttribute('class', 'logger_button')
     button.innerHTML = logger.active;
 
     button.setAttribute('onclick',
@@ -288,7 +287,8 @@ function update_cruise_definition(timestamp, cruise_definition) {
     var stderr_div = document.createElement('div');
 
     stderr_div.setAttribute('id', logger_name + '_stderr');
-    stderr_div.setAttribute('class', 'stderr_window')
+    stderr_div.setAttribute('style', 'height:30px;width:450px;background-color:white;padding:0px;overflow-y:auto;resize:both;');
+    stderr_div.style.fontSize = 'x-small';
     stderr_td.appendChild(stderr_div);
     tr.appendChild(stderr_td);
     table.appendChild(tr);
@@ -352,19 +352,18 @@ function update_logger_status(timestamp, logger_status) {
       continue;
     }
     button.innerHTML = status.config;
-    button.className = "logger_button";
     if (status.status == 'RUNNING') {
-      button.classList.add("btn-success");
+      button.style.backgroundColor = "lightgreen";
     } else if (status.status == 'EXITED') {
-      button.classList.add("btn-secondary");
+      button.style.backgroundColor = "lightgray";
     } else if (status.status == "STARTING") {
-      button.classList.add("btn-warning");
+      button.style.backgroundColor = "khaki";
     } else if (status.status == "BACKOFF") {
-      button.classList.add("btn-danger");
+      button.style.backgroundColor = "gold";
     } else if (status.status == 'FATAL') {
-      button.classList.add("btn-danger");
+      button.style.backgroundColor = "red";
     } else {
-      button.classList.add("btn-unknown");
+      button.style.backgroundColor = "white";
     }
   }
 }
@@ -400,11 +399,11 @@ function flag_now_timeout() {
 // flag all loggers in yellow to show that we're not confident of
 // their state.
 function flag_status_timeout() {
-  document.getElementById('status_time_td').classList.add("text-danger");
+  document.getElementById('status_time_td').style.backgroundColor ='yellow';
   for (var logger in global_loggers) {
     var config_button = document.getElementById(logger + '_config_button');
     if (config_button) {
-      config_button.classList="logger_button btn-danger";
+      config_button.style.backgroundColor = 'yellow';
     } else {
       console.log('Couldnt find logger ' + logger);
     }
@@ -415,7 +414,7 @@ function reset_status_timeout() {
   document.getElementById('time_td').innerHTML = now;
   var status_time_td = document.getElementById('status_time_td');
   status_time_td.innerHTML = now;
-  status_time_td.classList.remove("text-danger")
+  status_time_td.style.backgroundColor = 'white';
   clearInterval(status_timeout_timer);
   status_timeout_timer = setInterval(flag_status_timeout,
                                      STATUS_TIMEOUT_INTERVAL);
@@ -426,14 +425,14 @@ function reset_status_timeout() {
 // from the data server. If no update in 5 seconds, change background
 // color to yellow
 function flag_server_timeout() {
-  document.getElementById('server_time_td').classList.add("text-danger");
+  document.getElementById('server_time_td').style.backgroundColor ='yellow';
 }
 function reset_server_timeout() {
   var now = date_str();
   document.getElementById('time_td').innerHTML = now;
   var status_time_td = document.getElementById('server_time_td');
   status_time_td.innerHTML = now;
-  status_time_td.classList.remove("text-danger")
+  status_time_td.style.backgroundColor = 'white';
   clearInterval(server_timeout_timer);
   server_timeout_timer = setInterval(flag_server_timeout,
                                      SERVER_TIMEOUT_INTERVAL);

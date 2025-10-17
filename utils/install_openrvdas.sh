@@ -325,7 +325,6 @@ function set_hostname {
         #sudo scutil --set LocalHostName $HOSTNAME
         #sudo scutil --set ComputerName $HOSTNAME
         #dscacheutil -flushcache
-        return
 
     # If we're on CentOS/RHEL
     elif [ $OS_TYPE == 'CentOS' ]; then
@@ -401,7 +400,7 @@ function install_packages {
         echo 'Installing XCode Tools'
         xcode-select --install || echo "XCode Tools already installed"
         pushd /tmp
-        HOMEBREW_VERSION=4.5.13
+        HOMEBREW_VERSION=4.1.21
         HOMEBREW_TARGET=Homebrew-${HOMEBREW_VERSION}.pkg
         HOMEBREW_PATH=https://github.com/Homebrew/brew/releases/download/${HOMEBREW_VERSION}/${HOMEBREW_TARGET}
 
@@ -696,16 +695,15 @@ http {
             autoindex on;
         }
         location /js {
-            alias ${INSTALL_ROOT}/openrvdas/display/js; # display pages
+            alias /${INSTALL_ROOT}/openrvdas/display/js; # display pages
             default_type application/javascript;
         }
         location /css {
-            alias ${INSTALL_ROOT}/openrvdas/display/css; # display pages
+            alias /${INSTALL_ROOT}/openrvdas/display/css; # display pages
             default_type text/css;
         }
         location /static {
-            alias ${INSTALL_ROOT}/openrvdas/django_gui/static; # project static files
-            types { text/css css; text/javascript js; }
+            alias ${INSTALL_ROOT}/openrvdas/static; # project static files
             autoindex on;
         }
         location /docs {
@@ -809,7 +807,7 @@ function setup_uwsgi {
 
     # MacOS
     if [ $OS_TYPE == 'MacOS' ]; then
-        ETC_HOME=/opt/homebrew/etc
+        ETC_HOME=/usr/local/etc
 
     # CentOS/RHEL and Ubuntu/Debian
     elif [ $OS_TYPE == 'CentOS' ] || [ $OS_TYPE == 'Ubuntu' ]; then
@@ -866,13 +864,6 @@ function setup_supervisor {
         GUI_COMMENT=';'
     fi
 
-    if [[ $OS_TYPE == 'MacOS' ]];then
-        MAC_COMMENT=';'
-    else
-        MAC_COMMENT=''
-    fi
-
-
     VENV_BIN=${INSTALL_ROOT}/openrvdas/venv/bin
     if [ $OPENRVDAS_AUTOSTART = 'yes' ]; then
         AUTOSTART=true
@@ -893,14 +884,13 @@ function setup_supervisor {
 
     # MacOS
     if [ $OS_TYPE == 'MacOS' ]; then
-        ETC_HOME=/opt/homebrew/etc
+        ETC_HOME=/usr/local/etc
         HTTP_HOST=127.0.0.1
-        NGINX_BIN=/opt/homebrew/bin/nginx
-        SUPERVISOR_DIR=/opt/homebrew/etc/supervisor.d
+        NGINX_BIN=/usr/local/bin/nginx
+        SUPERVISOR_DIR=/usr/local/etc/supervisor.d/
         SUPERVISOR_SUFFIX='ini'
-        SUPERVISOR_SOCK=/opt/homebrew/var/run/supervisor.sock
+        SUPERVISOR_SOCK=/usr/local/var/run/supervisor.sock
         COMMENT_SOCK_OWNER=';'
-        mkdir -p ${SUPERVISOR_DIR}
 
     # CentOS/RHEL
     elif [ $OS_TYPE == 'CentOS' ]; then
@@ -939,17 +929,17 @@ function setup_supervisor {
     cat > $TEMP_FILE <<EOF
 ; First, override the default socket permissions to allow user
 ; $RVDAS_USER to run supervisorctl
-${MAC_COMMENT}[unix_http_server]
-${MAC_COMMENT}file=$SUPERVISOR_SOCK   ; (the path to the socket file)
-${MAC_COMMENT}chmod=0770              ; socket file mode (default 0700)
-${MAC_COMMENT}${COMMENT_SOCK_OWNER}chown=nobody:${RVDAS_GROUP}
+[unix_http_server]
+file=$SUPERVISOR_SOCK   ; (the path to the socket file)
+chmod=0770              ; socket file mode (default 0700)
+${COMMENT_SOCK_OWNER}chown=nobody:${RVDAS_GROUP}
 EOF
 
     if [ $SUPERVISORD_WEBINTERFACE == 'yes' ]; then
         cat >> $TEMP_FILE <<EOF
 
 [inet_http_server]
-port=127.0.0.1:${SUPERVISORD_WEBINTERFACE_PORT}
+port=${SUPERVISORD_WEBINTERFACE_PORT}
 EOF
         if [ $SUPERVISORD_WEBINTERFACE_AUTH == 'yes' ]; then
             SUPERVISORD_WEBINTERFACE_HASH=`echo -n ${SUPERVISORD_WEBINTERFACE_PASS} | sha1sum | awk '{printf("{SHA}%s",$1)}'`
@@ -1535,18 +1525,17 @@ echo "#########################################################################"
 echo "Restarting services: supervisor"
     # If we're on MacOS
     if [ $OS_TYPE == 'MacOS' ]; then
-        #sudo mkdir -p /usr/local/var/run/
-        #sudo chown $RVDAS_USER /usr/local/var/run
-        #sudo chgrp $RVDAS_GROUP /usr/local/var/run
+        sudo mkdir -p /usr/local/var/run/
+        sudo chown $RVDAS_USER /usr/local/var/run
+        sudo chgrp $RVDAS_GROUP /usr/local/var/run
 
         echo "NOTE: on MacOS, supervisord will not be started automatically."
         echo "To run it, try"
-        echo "brew services run supervisor"
-        #echo "    sudo /opt/openrvdas/venv/bin/supervisord \\"
-        #echo "       -c /usr/local/etc/supervisord.conf"
-        #echo
+        echo "    sudo /opt/openrvdas/venv/bin/supervisord \\"
+        echo "       -c /usr/local/etc/supervisord.conf"
+        echo
         read -p "Hit return to continue. " DUMMY_VAR
-        
+
     # Linux
     elif [ $OS_TYPE == 'CentOS' ] || [ $OS_TYPE == 'Ubuntu' ]; then
         sudo mkdir -p /var/run/supervisor/
