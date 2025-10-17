@@ -695,15 +695,16 @@ http {
             autoindex on;
         }
         location /js {
-            alias /${INSTALL_ROOT}/openrvdas/display/js; # display pages
+            alias ${INSTALL_ROOT}/openrvdas/display/js; # display pages
             default_type application/javascript;
         }
         location /css {
-            alias /${INSTALL_ROOT}/openrvdas/display/css; # display pages
+            alias ${INSTALL_ROOT}/openrvdas/display/css; # display pages
             default_type text/css;
         }
         location /static {
-            alias ${INSTALL_ROOT}/openrvdas/static; # project static files
+            alias ${INSTALL_ROOT}/openrvdas/django_gui/static; # project static files
+            types { text/css css; text/javascript js; }
             autoindex on;
         }
         location /docs {
@@ -891,6 +892,7 @@ function setup_supervisor {
         SUPERVISOR_SUFFIX='ini'
         SUPERVISOR_SOCK=/usr/local/var/run/supervisor.sock
         COMMENT_SOCK_OWNER=';'
+        mkdir -p ${SUPERVISOR_DIR}
 
     # CentOS/RHEL
     elif [ $OS_TYPE == 'CentOS' ]; then
