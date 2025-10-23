@@ -51,7 +51,7 @@ logger_templates:
       raw_file_writer: &raw_file_writer
         class: LogfileWriter
         kwargs:
-          header_file: <<header_dir>>/<<device>>_hdr.txt
+          header_file: <<header_dir>>/par_hdr.txt
           filebase: <<file_root>>/<<cruise>>_<<logger>>
           split_char: ','
           suffix: '.txt'

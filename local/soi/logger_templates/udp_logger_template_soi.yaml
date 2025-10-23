@@ -8,7 +8,7 @@
 # Required Logger Variables:
 #   - reader_udp_port: (number) The UDP port to listen on
 #   - filebase:        (string or map) The base path/name for the data file(s)
-#   - header_filebase: (string or map) The base path/name for the header file(s)
+#   - header_file: (string or map) The base path/name for the header file(s)
 # ---------------------------------------------------------------------------
 logger_templates:
   udp_logger_template_soi:
@@ -49,7 +49,7 @@ logger_templates:
       file: &file_writer
         class: LogfileWriter
         kwargs:
-          header_filebase: <<header_filebase>>
+          header_file: <<header_file>>
           filebase: <<filebase>>
           split_char: ','
           suffix: '.txt'
