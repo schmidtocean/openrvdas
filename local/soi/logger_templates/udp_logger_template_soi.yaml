@@ -7,8 +7,9 @@
 #   to both InfluxDB and file.
 #
 # Required Logger Variables:
-#   - reader_udp_port:   (number) The UDP port to listen on
-#   - bucket_name:       (string) The InfluxDB bucket for database output
+#   - reader_udp_port:     (number) The UDP port to listen on
+#   - bucket_name:         (string) The InfluxDB bucket for database output
+#   - header_device_type:  (string) device type to use for header file
 # ---------------------------------------------------------------------------
 logger_templates:
   udp_logger_template_soi:
@@ -50,7 +51,7 @@ logger_templates:
       file: &file_writer
         class: LogfileWriter
         kwargs:
-          header_file: <<header_dir>>/<<logger>>_hdr.txt
+          header_file: <<header_dir>>/<<header_device_type>>_hdr.txt
           filebase: <<file_root>>/<<cruise>>_<<logger>>
           split_char: ','
           suffix: '.txt'

@@ -39,7 +39,12 @@ logger_templates:
       influx: &influx_writer
         class: InfluxDBWriter
         kwargs:
-          bucket_name: <<bucket_name>>
+          influxdb_default_bucket: <<influxdb_default_bucket>>
+          measurement_name: <<logger>>
+      influx_restricted: &influx_writer_restricted
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_restricted_bucket>>
           measurement_name: <<logger>>
 
       # File writers for two different files
@@ -110,25 +115,27 @@ logger_templates:
 
     # The configs now provide more specific options
     configs:
-      off: {}
+      'off': {}
 
       # Writes only the raw voltage to a file
-      file_raw:
+      # Calculates and writes corrected irradiance to a file
+      file:
         <<: *base
         writers:
         - *raw_file_writer
-
-      # Calculates and writes only the corrected irradiance to a file
-      file_corr:
-        <<: *base
-        writers:
         - *corr_file_path
-      
+
       # Calculates and writes only to the database
       influx:
         <<: *base
         writers:
         - *database_path
+
+      influx_restricted:
+        <<: *base
+        writers:
+        - *cached_writer
+        - *influx_writer_restricted
 
       # This is the full configuration that produces all three outputs
       file+influx:
