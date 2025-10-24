@@ -584,6 +584,24 @@ devices:
       SpeedKt: "POSMV_SpeedKt"
 
   ######################################
+  posmv_motion:
+    category: "device"
+    device_type: "POSMV"
+    serial_number: "14/00110"
+    description: "Motion from POSMV $PASHR"
+
+    fields:
+      FixQuality: "POSMV_FixQuality"
+      GPSTime: "POSMV_GPSTime"
+      HeadingAccuracy: "POSMV_HeadingAccuracy"
+      HeadingTrue: "POSMV_HeadingTrue"
+      IMUStatus: "POSMV_IMUStatus"
+      Pitch: "POSMV_Pitch"
+      PitchAccuracy: "POSMV_PitchAccuracy"
+      Roll: "POSMV_Roll"
+      RollAccuracy: "POSMV_RollAccuracy"
+
+  ######################################
   rad_fm_port:
     category: "device"
     device_type: "Rad"
