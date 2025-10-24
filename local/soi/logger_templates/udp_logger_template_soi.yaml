@@ -2,13 +2,14 @@
 # Template: udp_logger_template_soi
 #
 # Description:
-#   A generic template for reading raw UDP data streams. It timestamps,
-#   parses the data, and can write to InfluxDB and file.
+#   A generic template for reading raw UDP data streams
+#   Cleans incoming data by replacing tabs with spaces and stripping unprintables
+#   It timestamps, parses the data, and can write to InfluxDB and file
 #
 # Required Logger Variables:
 #   - reader_udp_port: (number) The UDP port to listen on
 #   - filebase:        (string or map) The base path/name for the data file(s)
-#   - header_file: (string or map) The base path/name for the header file(s)
+#   - header_file:     (string or map) The base path/name for the header file(s)
 # ---------------------------------------------------------------------------
 logger_templates:
   udp_logger_template_soi:
@@ -20,6 +21,10 @@ logger_templates:
         kwargs:
           port: <<reader_udp_port>>
       transforms:
+      - class: RegexReplaceTransform
+        kwargs:
+          patterns:
+            "\t": " "
       - class: StripTransform
         kwargs:
           unprintable: True

@@ -260,7 +260,6 @@ Oxygen:
 
     # MEASUREMENT	4831	582	O2Concentration[uM]	253.819	AirSaturation[%]	100.806	Temperature[Deg.C]	26.317	CalPhase[Deg]	31.137	TCPhase[Deg]	31.137	C1RPh[Deg]	39.489	C2RPh[Deg]	8.352	C1Amp[mV]	598.5	C2Amp[mV]	677.0	RawTemp[mV]	-116.1
     Oxygen: "MEASUREMENT{:s}{Measurement_1:og}{:s}{Measurement_2:og}{:s}{:S}{:s}{Concentration:og}{:s}{:S}{:s}{Saturation:og}{:s}{:S}{:s}{Temperature:og}{:s}{:S}{:s}{CalPhase:og}{:s}{:S}{:s}{TCPhase:og}{:s}{:S}{:s}{C1_RPH:og}{:s}{:S}{:s}{C2_RPH:og}{:s}{:S}{:s}{C1_AMP:og}{:s}{:S}{:s}{C2_AMP:og}{:s}{:S}{:s}{TempRawVoltage:og}"
-    OxygenStripped: "MEASUREMENT{Measurement_1:og}{Measurement_2:og}{:S}{Concentration:og}{:S}{Saturation:og}{:S}{Temperature:og}{:S}{CalPhase:og}{:S}{TCPhase:og}{:S}{C1_RPH:og}{:S}{C2_RPH:og}{:S}{C1_AMP:og}{:S}{C2_AMP:og}{:S}{TempRawVoltage:og}"
     OxygenNoInlineTAB: "{Measurement_1:og}\t{Measurement_2:og}\t\t{Concentration:og}\t\t{Saturation:og}\t\t{Temperature:og}\t"
     OxygenNoInline: "{Measurement_1:og}\t{Measurement_2:og}\t\t{Concentration:og}\t\t{Saturation:og}\t\t{Temperature:og}"
     OxygenNoInlineSpace: "{Measurement_1:og}{:s}{Measurement_2:og}{:s}{Concentration:og}{:s}{Saturation:og}{:s}{Temperature:og}{:s}"

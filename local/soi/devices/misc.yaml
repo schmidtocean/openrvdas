@@ -41,8 +41,10 @@ Fluorometer:
 
   #99/99/99 99:99:99 695 159 534
   format:
-    NoChl: "{Date:S}\t{Time:S}\t{NU:d}\t{ChlSigRaw:d}\t{Therm:d}"
-    WithChl: "{Date:S}\t{Time:S}\t{ChlSig:g}\t{NU:d}\t{ChlSigRaw:d}\t{Therm:d}"
+    NoChlSpace: "{Date:S} {Time:S} {NU:d} {ChlSigRaw:d} {Therm:d}"
+    WithChlSpace: "{Date:S} {Time:S} {ChlSig:g} {NU:d} {ChlSigRaw:d} {Therm:d}"
+    NoChlTab: "{Date:S}\t{Time:S}\t{NU:d}\t{ChlSigRaw:d}\t{Therm:d}"
+    WithChlTab: "{Date:S}\t{Time:S}\t{ChlSig:g}\t{NU:d}\t{ChlSigRaw:d}\t{Therm:d}"
 
   fields:
     ChlSig:
@@ -388,7 +390,9 @@ SBE_CST:
   description: "SBE C-Star Transmissometer"
 
   # CST-0000 12683 00000 00000 99.999 527
-  format: "CST-{SN:S}\t{RefCount:g}\t{SigCount:g}\t{CorrSigCount:g}\t{CalcBeams:g}\t{Therm:g}"
+  format: 
+    space: "CST-{SN:S} {RefCount:g} {SigCount:g} {CorrSigCount:g} {CalcBeams:g} {Therm:g}"
+    tab: "CST-{SN:S}\t{RefCount:g}\t{SigCount:g}\t{CorrSigCount:g}\t{CalcBeams:g}\t{Therm:g}"
 
   fields:
     SN:
