@@ -1,1 +1,0 @@
-Timestamp,Header,Heading_deg,T*CheckSum

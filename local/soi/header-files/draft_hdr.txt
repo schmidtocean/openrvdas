@@ -1,1 +1,0 @@
-Timestamp,Header,DraftFwd_m,DraftAft_m,CRC*CheckSum

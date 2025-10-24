@@ -1,1 +1,0 @@
-Timestamp,Header,flowrate_l/min
