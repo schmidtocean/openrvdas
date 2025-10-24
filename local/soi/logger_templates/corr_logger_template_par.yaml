@@ -23,7 +23,7 @@ logger_templates:
         module: contrib.soi.logger.readers.moxa_iologik_e12xx_reader
         kwargs:
           address: <<moxa_address>>
-          analog_channel: <<moxa_analog_channel>>
+          analog_channels: <<moxa_analog_channel>>
       transforms:
       - class: TimestampTransform
         kwargs:
