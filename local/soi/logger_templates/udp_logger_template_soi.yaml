@@ -69,7 +69,7 @@ logger_templates:
               prefix: <<logger>>
           - class: ParseTransform
             kwargs:
-              definition_path: local/soi/all_devices.yaml
+              definition_path: <<definition_path>>
               record_format: '{data_id:w} {timestamp:ti},{field_string}'
           writers:
           - *cached_writer
