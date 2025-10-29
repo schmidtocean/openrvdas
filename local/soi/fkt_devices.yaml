@@ -243,23 +243,6 @@ devices:
       Humidity: "MET4_FM_Humidity"
 
   ######################################
-  moxa_ioLogik_1:
-    category: "device"
-    device_type: "MOXA_ioLogik_EL12xx"
-    serial_number: ""
-    description: "MOXA ioLogik EL12xx #1"
-
-    fields:
-      aiValueRaw0: "MOXA_ioLogik_1_aiValueRaw0"
-      aiValueScaled0: "MOXA_ioLogik_1_aiValueScaled0"
-      aiValueRaw1: "MOXA_ioLogik_1_aiValueRaw1"
-      aiValueScaled1: "MOXA_ioLogik_1_aiValueScaled1"
-      aiValueRaw2: "MOXA_ioLogik_1_aiValueRaw2"
-      aiValueScaled2: "MOXA_ioLogik_1_aiValueScaled2"
-      aiValueRaw3: "MOXA_ioLogik_1_aiValueRaw3"
-      aiValueScaled3: "MOXA_ioLogik_1_aiValueScaled3"
-
-  ######################################
   minisvs_aft:
     category: "device"
     device_type: "MiniSVST"
@@ -283,24 +266,24 @@ devices:
 ######################################
   par_fm_port:
     category: "device"
-    device_type: "Par"
+    device_type: "ParBiospherical"
     serial_number: ""
     description: ""
 
     fields:
-      Voltage1: "Par_Voltage1"
-      Irradiance1: "Par_Irradiance1"
+      Voltage1: "Par_Voltage"
+      Irradiance1: "Par_Irradiance"
 
 ######################################
   par_fm_stb:
     category: "device"
-    device_type: "Par"
+    device_type: "ParBiospherical"
     serial_number: ""
     description: ""
 
     fields:
-      Voltage1: "Par_Voltage1"
-      Irradiance1: "Par_Irradiance1"
+      Voltage1: "Par_Voltage"
+      Irradiance1: "Par_Irradiance"
       
 
   ######################################

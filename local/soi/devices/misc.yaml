@@ -196,35 +196,15 @@ ParBiospherical:
   category: "device_type"
   description: "Par - Biospherical Instruments"
 
-  format: "{:g},{:g},{:g},{Voltage:g}"
+  format: "{AnalogChannel:g},{:g},{:g},{Voltage:g}"
 
   fields:
+    AnalogChannel:
+      units: ""
+      description: "AI on Moxa"
     Voltage:
       units: "v"
       description: "Raw Voltage"
-
-######################################
-Par:
-  category: "device_type"
-  description: "Par"
-
-  format: 
-    FKclassic: "$FKPVS,{Voltage1:g},{Voltage2:g}*{CheckSum:x}"
-    FKt: "$FKPVS,{Voltage1:g}*{CheckSum:x}"
-
-  fields:
-    Voltage1:
-      units: "v"
-      description: "Voltage 1"
-    Voltage2:
-      units: "v"
-      description: "Voltage 2"
-    Irradiance1:
-      units: "\u03BCE/cm**2sec"
-      description: "Irradiance 1"
-    Irradiance:
-      units: "\u03BCE/cm**2sec"
-      description: "Irradiance 2"
 
 ######################################
 sunburst_pH:

@@ -39,7 +39,7 @@ logger_templates:
       influx: &influx_writer
         class: InfluxDBWriter
         kwargs:
-          influxdb_default_bucket: <<influxdb_default_bucket>>
+          bucket_name: <<influxdb_default_bucket>>
           measurement_name: <<logger>>
       influx_restricted: &influx_writer_restricted
         class: InfluxDBWriter
