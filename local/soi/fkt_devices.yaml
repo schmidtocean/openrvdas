@@ -281,7 +281,7 @@ devices:
       SoundVelocity: "MiniSVS_Fwd_SoundVelocity"
 
 ######################################
-  par:
+  par_fm_port:
     category: "device"
     device_type: "Par"
     serial_number: ""
@@ -289,9 +289,18 @@ devices:
 
     fields:
       Voltage1: "Par_Voltage1"
-      Voltage2: "Par_Voltage2"
       Irradiance1: "Par_Irradiance1"
-      Irradiance2: "Par_Irradiance2"
+
+######################################
+  par_fm_stb:
+    category: "device"
+    device_type: "Par"
+    serial_number: ""
+    description: ""
+
+    fields:
+      Voltage1: "Par_Voltage1"
+      Irradiance1: "Par_Irradiance1"
       
 
   ######################################

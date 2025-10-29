@@ -59,7 +59,7 @@ logger_templates:
       file: &file_writer
         class: LogfileWriter
         kwargs:
-          header_file: <<header_dir>>/<<logger>>_hdr.txt
+          header_file: <<header_dir>>/wind_dir_corrected_hdr.txt
           filebase: <<file_root>>/<<cruise>>_<<logger>>
           split_char: ','
           suffix: '.txt'
