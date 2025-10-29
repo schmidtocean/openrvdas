@@ -4,14 +4,16 @@
 # Description:
 #   A generic template for reading raw UDP data streams
 #   It timestamps, parses the data, and can write to InfluxDB and file
+#   Splits message to records on char
 #
 # Required Logger Variables:
 #   - reader_udp_port: (number) The UDP port to listen on
 #   - filebase:        (string or map) The base path/name for the data file(s)
 #   - header_file:     (string or map) The base path/name for the header file(s)
+#   - split_transform_separator:      (string) The char to split input on
 # ---------------------------------------------------------------------------
 logger_templates:
-  udp_logger_template_soi:
+  udp_logger_template_soi_split:
 
     # The common base holds the shared reader and initial transforms
     base: &base
@@ -19,8 +21,11 @@ logger_templates:
       - class: UDPReader
         kwargs:
           port: <<reader_udp_port>>
-          eol: '\n'
       transforms:
+      - class: SplitTransform
+        module: logger.transforms.split_transform
+        kwargs:
+          sep: <<split_transform_separator>>
       - class: TimestampTransform
         kwargs:
           sep: ','
