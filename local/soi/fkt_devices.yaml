@@ -576,7 +576,7 @@ devices:
       StatusSternSOG: "UHDAS_2_StatusSternSOG"
 
   ######################################
-  hipap_port_1:
+  hipap_port:
     category: "device"
     device_type: "HiPAP"
     serial_number: "unknown"
