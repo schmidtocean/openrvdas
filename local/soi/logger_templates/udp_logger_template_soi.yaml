@@ -8,6 +8,7 @@
 #
 # Required Logger Variables:
 #   - reader_udp_port: (number) The UDP port to listen on
+#   - device_name      (string) The device name to map to
 #   - filebase:        (string or map) The base path/name for the data file(s)
 #   - header_file:     (string or map) The base path/name for the header file(s)
 # ---------------------------------------------------------------------------
@@ -43,12 +44,12 @@ logger_templates:
         class: InfluxDBWriter
         kwargs:
           bucket_name: <<influxdb_default_bucket>>
-          measurement_name: <<logger>>
+          measurement_name: <<device_name>>
       influx_restricted: &influx_writer_restricted
         class: InfluxDBWriter
         kwargs:
           bucket_name: <<influxdb_restricted_bucket>>
-          measurement_name: <<logger>>
+          measurement_name: <<device_name>>
 
       # File writer definition
       file: &file_writer
@@ -66,7 +67,7 @@ logger_templates:
           transforms:
           - class: PrefixTransform
             kwargs:
-              prefix: <<logger>>
+              prefix: <<device_name>>
           - class: ParseTransform
             kwargs:
               definition_path: <<definition_path>>
