@@ -10,7 +10,6 @@
 #   - reader_udp_port: (number) The UDP port to listen on
 #   - filebase:        (string or map) The base path/name for the data file(s)
 #   - header_file:     (string or map) The base path/name for the header file(s)
-#   - split_transform_separator:      (string) The char to split input on
 # ---------------------------------------------------------------------------
 logger_templates:
   udp_logger_template_soi_split:
@@ -24,8 +23,6 @@ logger_templates:
       transforms:
       - class: SplitTransform
         module: logger.transforms.split_transform
-        kwargs:
-          sep: <<split_transform_separator>>
       - class: TimestampTransform
         kwargs:
           sep: ','
