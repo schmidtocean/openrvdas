@@ -70,6 +70,22 @@ logger_templates:
           - *cached_writer
           - *influx_writer
 
+      # ComposedWriter to parse string from base and send to Restricted Bucket
+      influx_restricted_from_string: &influx_restricted_from_string
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: PrefixTransform
+            kwargs:
+              prefix: <<logger>>
+          - class: ParseTransform
+            kwargs:
+              definition_path: <<definition_path>>
+              record_format: '{data_id:w} {timestamp:ti},{field_string}'
+          writers:
+          - *cached_writer
+          - *influx_writer_restricted
+
     # Compose logger from defined components
     configs:
       'off': {}
@@ -83,8 +99,7 @@ logger_templates:
       influx_restricted:
         <<: *base
         writers:
-        - *cached_writer
-        - *influx_writer_restricted
+        - *influx_restricted_from_string
 
       # Writes the raw, timestamped string directly to a file
       file:

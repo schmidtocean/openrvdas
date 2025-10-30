@@ -60,7 +60,7 @@ logger_templates:
           split_char: ','
           suffix: '.txt'
 
-      # ComposedWriter to parse the string from the base and send to Influx
+# ComposedWriter to parse string from base and send to Influx
       influx_from_string: &influx_from_string
         class: ComposedWriter
         kwargs:
@@ -75,6 +75,22 @@ logger_templates:
           writers:
           - *cached_writer
           - *influx_writer
+          
+      # ComposedWriter to parse string from base and send to Restricted Bucket
+      influx_restricted_from_string: &influx_restricted_from_string
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: PrefixTransform
+            kwargs:
+              prefix: <<device_name>>
+          - class: ParseTransform
+            kwargs:
+              definition_path: <<definition_path>>
+              record_format: '{data_id:w} {timestamp:ti},{field_string}'
+          writers:
+          - *cached_writer
+          - *influx_writer_restricted
 
     # Compose logger from defined components
     configs:
@@ -89,8 +105,7 @@ logger_templates:
       influx_restricted:
         <<: *base
         writers:
-        - *cached_writer
-        - *influx_writer_restricted
+        - *influx_restricted_from_string
 
       # Writes the raw, timestamped string directly to a file
       file:

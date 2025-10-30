@@ -8,6 +8,7 @@
 #   It timestamps, parses the data, and can write to InfluxDB and file
 #
 # Required Logger Variables:
+#   - device_name      (string) The device name to map to
 #   - reader_udp_port: (number) The UDP port to listen on
 #   - filebase:        (string or map) The base path/name for the data file(s)
 #   - header_file:     (string or map) The base path/name for the header file(s)
@@ -52,12 +53,12 @@ logger_templates:
         class: InfluxDBWriter
         kwargs:
           bucket_name: <<influxdb_default_bucket>>
-          measurement_name: <<logger>>
+          measurement_name: <<device_name>>
       influx_restricted: &influx_writer_restricted
         class: InfluxDBWriter
         kwargs:
           bucket_name: <<influxdb_restricted_bucket>>
-          measurement_name: <<logger>>
+          measurement_name: <<device_name>>
 
       # File writer definition
       file: &file_writer
@@ -75,7 +76,7 @@ logger_templates:
           transforms:
           - class: PrefixTransform
             kwargs:
-              prefix: <<logger>>
+              prefix: <<device_name>>
           - class: ParseTransform
             kwargs:
               definition_path: <<definition_path>>
@@ -83,6 +84,22 @@ logger_templates:
           writers:
           - *cached_writer
           - *influx_writer
+
+      # ComposedWriter to parse string from base and send to Restricted Bucket
+      influx_restricted_from_string: &influx_restricted_from_string
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: PrefixTransform
+            kwargs:
+              prefix: <<device_name>>
+          - class: ParseTransform
+            kwargs:
+              definition_path: <<definition_path>>
+              record_format: '{data_id:w} {timestamp:ti},{field_string}'
+          writers:
+          - *cached_writer
+          - *influx_writer_restricted
 
     # Compose logger from defined components
     configs:
@@ -97,8 +114,7 @@ logger_templates:
       influx_restricted:
         <<: *base
         writers:
-        - *cached_writer
-        - *influx_writer_restricted
+        - *influx_restricted_from_string
 
       # Writes the raw, timestamped string directly to a file
       file:
