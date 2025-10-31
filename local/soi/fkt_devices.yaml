@@ -486,13 +486,13 @@ devices:
       SpeedKm: "Seapath_SpeedKm"
       SpeedKt: "Seapath_SpeedKt"
       #GST vars
-      AltitudeStd: "POSMV_AltitudeStd"
-      LatitudeStd: "POSMV_LatitudeStd"
-      LongitudeStd: "POSMV_LongitudeStd"
-      Orientation: "POSMV_Orientation"
-      RMS: "POSMV_RMS"
-      SemiMajorStd: "POSMV_SemiMajorStd"
-      SemiMinorStd: "POSMV_SemiMinorStd"
+      AltitudeStd: "Seapath_AltitudeStd"
+      LatitudeStd: "Seapath_LatitudeStd"
+      LongitudeStd: "Seapath_LongitudeStd"
+      Orientation: "Seapath_Orientation"
+      RMS: "Seapath_RMS"
+      SemiMajorStd: "Seapath_SemiMajorStd"
+      SemiMinorStd: "Seapath_SemiMinorStd"
 
   ######################################
   transmissometer_1:
