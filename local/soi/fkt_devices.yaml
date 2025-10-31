@@ -366,6 +366,14 @@ devices:
       RollPitchQual: "POSMV_RollPitchQual"
       SpeedKm: "POSMV_SpeedKm"
       SpeedKt: "POSMV_SpeedKt"
+      #GST vars
+      AltitudeStd: "POSMV_AltitudeStd"
+      LatitudeStd: "POSMV_LatitudeStd"
+      LongitudeStd: "POSMV_LongitudeStd"
+      Orientation: "POSMV_Orientation"
+      RMS: "POSMV_RMS"
+      SemiMajorStd: "POSMV_SemiMajorStd"
+      SemiMinorStd: "POSMV_SemiMinorStd"
 
   ######################################
   posmv_motion:
@@ -477,6 +485,14 @@ devices:
       RollPitchQual: "Seapath_RollPitchQual"
       SpeedKm: "Seapath_SpeedKm"
       SpeedKt: "Seapath_SpeedKt"
+      #GST vars
+      AltitudeStd: "POSMV_AltitudeStd"
+      LatitudeStd: "POSMV_LatitudeStd"
+      LongitudeStd: "POSMV_LongitudeStd"
+      Orientation: "POSMV_Orientation"
+      RMS: "POSMV_RMS"
+      SemiMajorStd: "POSMV_SemiMajorStd"
+      SemiMinorStd: "POSMV_SemiMinorStd"
 
   ######################################
   transmissometer_1:
