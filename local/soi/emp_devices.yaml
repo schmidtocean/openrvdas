@@ -79,3 +79,26 @@ devices:
       Svc_Age: "Svc_Age"
       UTM_Zone: "UTM_Zone"
       RemMissionTime: "RemMissionVehicleTime"
+
+      # NMEA IN GGA Fields
+      GPSTime: "GPSTime"
+      FixQuality: "FixQuality"
+      NumSats: "NumSats"
+      HDOP: "HDOP"
+      AntennaHeight: "AntennaHeight"
+      GeoidHeight: "GeoidHeight"
+      LastDGPSUpdate: "LastDGPSUpdate"
+      DGPSStationID: "DGPSStationID"
+      CheckSum: "CheckSum"
+
+      # NMEA IN GST Fields
+      RMS: "RMS"
+      SemiMajorStd: "SemiMajorStd"
+      SemiMinorStd: "SemiMinorStd"
+      Orientation: "Orientation"
+      LatitudeStd: "LatitudeStd"
+      LongitudeStd: "LongitudeStd"
+      AltitudeStd: "AltitudeStd"
+
+      # NMEA IN HDT Fields
+      HeadingTrue: "HeadingTrue"

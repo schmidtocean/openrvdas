@@ -46,6 +46,11 @@ Hugin:
     - "$PSIMGPS,{Timestamp:of},{Field2:od},{Latitude:nlat_dir},{Longitude:nlat_dir},{FixType:od},{Field6:of}"
     - "$PSIMGPS,{Timestamp:nc},{Field2:nc},{Latitude:nc},{Longitude:nc},{FixType:nc},{Field6:nc}"
     ########
+
+    # NMEA IN Strings
+    GGA: "${:.2}GGA,{GPSTime:f},{Latitude:nlat_dir},{Longitude:nlat_dir},{FixQuality:d},{NumSats:d},{HDOP:of},{AntennaHeight:of},M,{GeoidHeight:of},M,{LastDGPSUpdate:of},{DGPSStationID:od}*{CheckSum:x}"
+    GST: "${:.2}GST,{GPSTime:f},{RMS:of},{SemiMajorStd:of},{SemiMinorStd:of},{Orientation:of},{LatitudeStd:of},{LongitudeStd:of},{AltitudeStd:of}*{CheckSum:x}"
+    HDT: "${:.2}HDT,{HeadingTrue:f},T*{CheckSum:x}"
   # Metadata from Hugin ICD
   fields:
     VehicleClass:
@@ -217,3 +222,55 @@ Hugin:
     Checksum:
       units: "hex"
       description: "Optional NMEA checksum"
+    # Added fields from NMEA IN Strings
+    GPSTime:
+      units: "HHMMSS.sss"
+      description: "GPS Time of Day (UTC)"
+    FixQuality:
+      units: "code"
+      description: "GPS Fix Quality (0=Invalid, 1=GPS, 2=DGPS, etc.)"
+    NumSats:
+      units: "count"
+      description: "Number of satellites"
+    HDOP:
+      units: "na"
+      description: "Horizontal Dilution of Precision"
+    AntennaHeight:
+      units: "meters"
+      description: "Antenna height above/below mean sea level"
+    GeoidHeight:
+      units: "meters"
+      description: "Height of geoid (mean sea level) above WGS84 ellipsoid"
+    LastDGPSUpdate:
+      units: "seconds"
+      description: "Age of DGPS data"
+    DGPSStationID:
+      units: "id"
+      description: "DGPS reference station ID"
+    CheckSum:
+      units: "hex"
+      description: "NMEA checksum (as used in format string)"
+    RMS:
+      units: "meters"
+      description: "RMS value of the standard deviation of the range inputs"
+    SemiMajorStd:
+      units: "meters"
+      description: "Standard deviation of semi-major axis of error ellipse"
+    SemiMinorStd:
+      units: "meters"
+      description: "Standard deviation of semi-minor axis of error ellipse"
+    Orientation:
+      units: "degrees"
+      description: "Orientation of semi-major axis of error ellipse (degrees from True North)"
+    LatitudeStd:
+      units: "meters"
+      description: "Standard deviation of latitude error"
+    LongitudeStd:
+      units: "meters"
+      description: "Standard deviation of longitude error"
+    AltitudeStd:
+      units: "meters"
+      description: "Standard deviation of altitude error"
+    HeadingTrue:
+      units: "degrees"
+      description: "True heading"
