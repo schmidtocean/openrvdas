@@ -16,9 +16,9 @@ devices:
       Time: "VehicleTime"
       VehicleClass: "VehicleClass"
       VehicleID: "VehicleID"
-      Latitude: "Latitude"
+      LatitudeDD: "LatitudeDD"
       LatHemi: "LatHemi"
-      Longitude: "Longitude"
+      LongitudeDD: "LongitudeDD"
       LonHemi: "LonHemi"
       Depth: "Depth"
       DepthRef: "DepthRef"
@@ -102,3 +102,7 @@ devices:
 
       # NMEA IN HDT Fields
       HeadingTrue: "HeadingTrue"
+
+      # Derived vars
+      Latitude: "Latitude"
+      Longitude: "Longitude"

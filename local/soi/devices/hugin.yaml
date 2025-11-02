@@ -12,7 +12,7 @@ Hugin:
     # Handles AUV position and depth telegrams (Latitude, Longitude, Depth)
     # Example: $PFFILLD,964009759,59.483966,N,010.479030,E,137.6,C,2.4,2.4,,SI
     # ’ --string ‘$PKMSLLD,1750965608,H,9999,00.000446,S,000.000053,W,0.0,C,10.0,10.0,,EG’
-    PKMSLLD: "$PKMSLLD,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{Latitude:nlat_dir},{Longitude:nlat_dir},{Depth:of},{DepthRef:ow},{LatStdDev:of},{LonStdDev:of},{DepthStdDev:of},{SourceType:ow}"
+    PKMSLLD: "$PKMSLLD,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{LatitudeDD:of},{LatHemi:ow},{LongitudeDD:of},{LonHemi:ow},{Depth:of},{DepthRef:ow},{LatStdDev:of},{LonStdDev:of},{DepthStdDev:of},{SourceType:ow}"
 
     # Handles AUV orientation, altitude, and velocity telegrams (Attitude, Altitude, Velocity)
     # Example: $PFFIAAV,964009759,330.0,329.5,-16.0,-0.6,61.0,1.95,0.00
