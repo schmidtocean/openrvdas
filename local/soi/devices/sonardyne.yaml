@@ -5,9 +5,9 @@ Sonardyne:
   # If device type can output multiple formats, include them as a
   # list. Parser will use the first one that matches the whole line.
   format:
-   # $GPGGA,143913.696,,,,,0,00,0.3,-1001.561,M,0.0,M,0.0,0007*67
-   # $GPGGA,172952.297,1852.64912,N,06634.66999,W,2,00,29.3,-4219.756,M,0.0,M,0.0,0001*73
-   # $GPGGA,141117.648,0458.95762,N,08218.99002,W,2,00,0.3,-998.288,M,0.0,M,0.0,0013*7B
+    # $GPGGA,143913.696,,,,,0,00,0.3,-1001.561,M,0.0,M,0.0,0007*67
+    # $GPGGA,172952.297,1852.64912,N,06634.66999,W,2,00,29.3,-4219.756,M,0.0,M,0.0,0001*73
+    # $GPGGA,141117.648,0458.95762,N,08218.99002,W,2,00,0.3,-998.288,M,0.0,M,0.0,0013*7B
     # GGA_FALKOR: "$GPGGA,{:os},0000*{:x}"
     GGA_ALPHA: "$GPGGA,{GPSTime:f},{Latitude_ALPHA:nlat_dir},{Longitude_ALPHA:nlat_dir},{:d},{:d},{HDOP:of},{Depth_ALPHA:of},M,{:of},M,{:of},0000*{:x}"
     GGA_BRAVO: "$GPGGA,{GPSTime:f},{Latitude_BRAVO:nlat_dir},{Longitude_BRAVO:nlat_dir},{:d},{:d},{HDOP:of},{Depth_BRAVO:of},M,{:of},M,{:of},0002*{:x}"
