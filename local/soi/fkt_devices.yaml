@@ -271,8 +271,8 @@ devices:
     description: ""
 
     fields:
-      Voltage1: "Par_Voltage"
-      Irradiance1: "Par_Irradiance"
+      Voltage: "Par_FM_PORT_Voltage"
+      Irradiance: "Par_FM_PORT_Irradiance"
 
 ######################################
   par_fm_stb:
@@ -282,8 +282,8 @@ devices:
     description: ""
 
     fields:
-      Voltage1: "Par_Voltage"
-      Irradiance1: "Par_Irradiance"
+      Voltage: "Par_FM_STB_Voltage"
+      Irradiance: "Par_FM_STB_Irradiance"
       
 
   ######################################
