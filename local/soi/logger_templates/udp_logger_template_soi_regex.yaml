@@ -1,0 +1,130 @@
+# ---------------------------------------------------------------------------
+# Template: udp_logger_template_soi_regex
+#
+# Description:
+#   A generic template for reading raw UDP data streams
+#   Cleans incoming data by replacing tabs with spaces and stripping unprintables
+#   Applies a regex filter - only matching records returned
+#   It timestamps, parses the data, and can write to InfluxDB and file
+#
+# Required Logger Variables:
+#   - device_name      (string) The device name to map to
+#   - reader_udp_port: (number) The UDP port to listen on
+#   - filebase:        (string or map) The base path/name for the data file(s)
+#   - header_file:     (string or map) The base path/name for the header file(s)
+#   - regex_filter_pattern (string) only record matching regex pattern returned
+#   - regex_filter_negate (bool) If negate=True, only return records that don't match the pattern
+# ---------------------------------------------------------------------------
+logger_templates:
+  udp_logger_template_soi_regex:
+
+    # The common base holds the shared reader and initial transforms
+    base: &base
+      readers:
+      - class: UDPReader
+        kwargs:
+          port: <<reader_udp_port>>
+      transforms:
+      - class: RegexReplaceTransform
+        kwargs:
+          patterns:
+            "\t": " "
+      - class: StripTransform
+        kwargs:
+          unprintable: True
+      - class: RegexFilterTransform
+        kwargs:
+          pattern:
+            <<regex_filter_pattern>>
+          negate:
+            <<regex_filter_negate>>
+      - class: TimestampTransform
+        kwargs:
+          sep: ','
+
+    # Available reusable writer components
+    writers: &writers
+      # Simple writers that will be used inside the ComposedWriter
+      cached: &cached_writer
+        class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+      influx: &influx_writer
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_default_bucket>>
+          measurement_name: <<device_name>>
+      influx_restricted: &influx_writer_restricted
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_restricted_bucket>>
+          measurement_name: <<device_name>>
+
+      # File writer definition
+      file: &file_writer
+        class: LogfileWriter
+        kwargs:
+          header_file: <<header_file>>
+          filebase: <<filebase>>
+          split_char: ','
+          suffix: '.txt'
+
+      # ComposedWriter to parse the string from the base and send to Influx
+      influx_from_string: &influx_from_string
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: PrefixTransform
+            kwargs:
+              prefix: <<device_name>>
+          - class: ParseTransform
+            kwargs:
+              definition_path: <<definition_path>>
+              record_format: '{data_id:w} {timestamp:ti},{field_string}'
+          writers:
+          - *cached_writer
+          - *influx_writer
+
+      # ComposedWriter to parse string from base and send to Restricted Bucket
+      influx_restricted_from_string: &influx_restricted_from_string
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: PrefixTransform
+            kwargs:
+              prefix: <<device_name>>
+          - class: ParseTransform
+            kwargs:
+              definition_path: <<definition_path>>
+              record_format: '{data_id:w} {timestamp:ti},{field_string}'
+          writers:
+          - *cached_writer
+          - *influx_writer_restricted
+
+    # Compose logger from defined components
+    configs:
+      'off': {}
+
+      # Writes to InfluxDB
+      influx:
+        <<: *base
+        writers:
+        - *influx_from_string
+
+      influx_restricted:
+        <<: *base
+        writers:
+        - *influx_restricted_from_string
+
+      # Writes the raw, timestamped string directly to a file
+      file:
+        <<: *base
+        writers:
+        - *file_writer
+
+      # Writes to both destinations
+      file+influx:
+        <<: *base
+        writers:
+        - *file_writer
+        - *influx_from_string

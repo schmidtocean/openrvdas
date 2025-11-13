@@ -3,9 +3,6 @@
 #
 # See README.md in this directory
 
-includes:
-  - local/soi/devices/*.yaml
-
 devices:
   ######################################
   sb_ctd_sbe49:
@@ -122,8 +119,6 @@ devices:
       Depth_xducer_m: "SB_Miniips_Depth_xducer_m"
       Xducer_offset_m: "SB_Miniips_Xducer_offset_m"
       Pressure_psi: "SB_Miniips_Pressure_psi"
-  
-
 
   ######################################
   sb_oxygen:
@@ -144,20 +139,6 @@ devices:
       C2_RPH: "SB_Oxygen_C2_RPH"
       C1_AMP: "SB_Oxygen_C1_AMP"
       C2_AMP: "SB_Oxygen_C2_AMP"
-
-  #######################################
-  # pt_uaf_oxygen:
-  #   category: "device"
-  #   device_type: "Oxygen"
-  #   serial_number: "unknown"
-  #   description: ""
-
-  #   fields:
-  #     Concentration: "PT_SB_Oxygen_Concentration"
-  #     Saturation: "PT_SB_Oxygen_Saturation"
-  #     Temperature: "PT_SB_Oxygen_Temperature"
-  
-  
   
   ######################################
   sb_paro:
@@ -239,11 +220,7 @@ devices:
       Heading_stddev: "SB_Sprint_PSONNAV_HeadingStatus"
       OrientStatus: "SB_Sprint_PSONNAV_OrientStatus"
       SensorStatus: "SB_Sprint_PSONNAV_SensorStatus"
-  
-  
-  
-  
-  
+
   ######################################
   sb_winch:
     category: "device"
@@ -257,4 +234,3 @@ devices:
       Tension: "SB_Winch_Tension"
       Rate: "SB_Winch_Rate"
       Payout: "SB_Winch_Payout"
-

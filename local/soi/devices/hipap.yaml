@@ -10,68 +10,26 @@ HiPAP:
   format:
     # Handles SSBL position telegrams
     # Example: $PSIMSSB,164710.938,M01,A,,C,N,M,-29.656,-19.177,158.877,0.185,T,0.100151,
-    PSIMSSB:
     # Local coord format
     # Example: $PSIMSSB,164736.202,M01,A,,C,N,M,-29.681,-19.123,58.876,0.185,T,0.100151,
-    - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat},{Y_coord:nlat},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},{AddlVal2:of},"
-    - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat},{Y_coord:nlat},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},"
+    # - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat},{Y_coord:nlat},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},{AddlVal2:of},"
+    # - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat},{Y_coord:nlat},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},"
     # Geographic coord format
     # Example: $PSIMSSB,130248.934,M01,A,,D,N,M,3641.63178,S,07305.80905,W,458.876,0.185,N,,
-    - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},{AddlVal2:of},"
-    - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},"
-    - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},{AddlVal2:of},,{Val4:od},{Val5:od}"
+    # - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},{AddlVal2:of},"
+    # - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},"
+    PSIMSSB_ALPHA: "$PSIMSSB,{GPSTime_ALPHA:f},M08,{Status_ALPHA:w},{ErrorCode_ALPHA:ow},{CoordSys_ALPHA:w},{Orientation_ALPHA:w},{SWFilter_ALPHA:w},{X_coord_ALPHA:nlat_dir},{Y_coord_ALPHA:nlat_dir},{Depth_ALPHA:f},{Accuracy_ALPHA:f},{AddlInfo_ALPHA:w},{AddlVal1_ALPHA:of},{AddlVal2_ALPHA:of},,{Val4_ALPHA:od},{Val5_ALPHA:od}"
+    PSIMSSB_BRAVO: "$PSIMSSB,{GPSTime_BRAVO:f},M01,{Status_BRAVO:w},{ErrorCode_BRAVO:ow},{CoordSys_BRAVO:w},{Orientation_BRAVO:w},{SWFilter_BRAVO:w},{X_coord_BRAVO:nlat_dir},{Y_coord_BRAVO:nlat_dir},{Depth_BRAVO:f},{Accuracy_BRAVO:f},{AddlInfo_BRAVO:w},{AddlVal1_BRAVO:of},{AddlVal2_BRAVO:of},,{Val4_BRAVO:od},{Val5_BRAVO:od}"
     # Handles sensor values telegrams for head attitude
     # Example: $PSIMSNS,164711.822,M01,1,1,-0.10,0.18,0.00,20.44,,d1,0.006,,M121
     # Example2:$PSIMSNS,193747.229,,1,1,0.35,-0.20,0.00,16.12,,60,0.000,,M121"
     PSIMSNS:
     - "$PSIMSNS,{GPSTime:f},{TransceiverNum:ow},{TransducerNum:od},{SensorStatus:od},{Roll:of},{Pitch:of},{Heave:of},{Heading:of},,{SensorID:ow},{SensorValue:of},,{SystemID:ow}"
     - "$PSIMSNS,{GPSTime:f},,{TransducerNum:od},{SensorStatus:od},{Roll:of},{Pitch:of},{Heave:of},{Heading:of},,{SensorID:ow},{SensorValue:of},,{SystemID:ow}"
-    # Optional and likely unused feed-through ship position GGA message from HiPAP
-    # Example: $INGGA,130625.01,3641.615694,S,07305.796228,W,2,32,0.4,27.58,M,20.51,M,10.0,0919*5F
-    GGA: "${:.2}GGA,{GPSTime:f},{Latitude:nlat_dir},{Longitude:nlat_dir},{FixQuality:d},{NumSats:d},{HDOP:of},{AntennaHeight:of},M,{GeoidHeight:of},M,{LastDGPSUpdate:of},{DGPSStationID:od}*{CheckSum:x}"
   ########
   # Metadata for the parsed values.
   fields:
-    GPSTime:
-      units: "UTC"
-      description: "Coordinated Universal Time (hhmmss.ss)"
-    BeaconID:
-      units: "ID"
-      description: "Transponder code (e.g., M01, B33)"
-    Status:
-      units: "code"
-      description: "Measurement status: A for OK, V for not OK"
-    ErrorCode:
-      units: "code"
-      description: "Three-character error code if status is V"
-    CoordSys:
-      units: "code"
-      description: "Coordinate system: C=Cartesian, P=Polar, U=UTM"
-    Orientation:
-      units: "code"
-      description: "Coordinate orientation: H=Vessel Head Up, N=North, E=East"
-    SWFilter:
-      units: "code"
-      description: "Software filter status: M=Measured, F=Filtered, P=Predicted"
-    X_coord:
-      units: "meters or degrees"
-      description: "X coordinate (e.g., Starboard, North, Eastings), meaning depends on CoordSys and Orientation fields"
-    Y_coord:
-      units: "meters or degrees"
-      description: "Y coordinate (e.g., Forwards, East, Northings), meaning depends on CoordSys and Orientation fields"
-    Depth:
-      units: "meters"
-      description: "Depth of beacon in meters"
-    Accuracy:
-      units: "meters"
-      description: "Expected accuracy of the position"
-    AddlInfo:
-      units: "code"
-      description: "Additional information: N=None, C=Compass, I=Inclinometer"
-    AddlVal1:
-      description: "First additional value (e.g., Tp compass or Tp x inclination)"
-    AddlVal2:
-      description: "Second additional value (e.g., Tp y inclination)"
+    # PSIMSNS Fields
     TransceiverNum:
       units: "ID"
       description: "Transceiver number"
@@ -100,3 +58,89 @@ HiPAP:
     SystemID:
       units: "ID"
       description: "Unknown system ID from example"
+
+    # PSIMSSB_ALPHA Fields
+    GPSTime_ALPHA:
+      units: "UTC"
+      description: "Coordinated Universal Time (hhmmss.ss) for ALPHA"
+    Status_ALPHA:
+      units: "code"
+      description: "Measurement status for ALPHA: A for OK, V for not OK"
+    ErrorCode_ALPHA:
+      units: "code"
+      description: "Three-character error code for ALPHA if status is V"
+    CoordSys_ALPHA:
+      units: "code"
+      description: "Coordinate system for ALPHA: C=Cartesian, P=Polar, U=UTM"
+    Orientation_ALPHA:
+      units: "code"
+      description: "Coordinate orientation for ALPHA: H=Vessel Head Up, N=North, E=East"
+    SWFilter_ALPHA:
+      units: "code"
+      description: "Software filter status for ALPHA: M=Measured, F=Filtered, P=Predicted"
+    X_coord_ALPHA:
+      units: "meters or degrees"
+      description: "X coordinate for ALPHA (e.g., Starboard, North, Eastings)"
+    Y_coord_ALPHA:
+      units: "meters or degrees"
+      description: "Y coordinate for ALPHA (e.g., Forwards, East, Northings)"
+    Depth_ALPHA:
+      units: "meters"
+      description: "Depth of beacon in meters for ALPHA"
+    Accuracy_ALPHA:
+      units: "meters"
+      description: "Expected accuracy of the position for ALPHA"
+    AddlInfo_ALPHA:
+      units: "code"
+      description: "Additional information for ALPHA: N=None, C=Compass, I=Inclinometer"
+    AddlVal1_ALPHA:
+      description: "First additional value for ALPHA (e.g., Tp compass or Tp x inclination)"
+    AddlVal2_ALPHA:
+      description: "Second additional value for ALPHA (e.g., Tp y inclination)"
+    Val4_ALPHA:
+      description: "Additional ordinal value 4 for ALPHA"
+    Val5_ALPHA:
+      description: "Additional ordinal value 5 for ALPHA"
+
+    # PSIMSSB_BRAVO Fields
+    GPSTime_BRAVO:
+      units: "UTC"
+      description: "Coordinated Universal Time (hhmmss.ss) for BRAVO"
+    Status_BRAVO:
+      units: "code"
+      description: "Measurement status for BRAVO: A for OK, V for not OK"
+    ErrorCode_BRAVO:
+      units: "code"
+      description: "Three-character error code for BRAVO if status is V"
+    CoordSys_BRAVO:
+      units: "code"
+      description: "Coordinate system for BRAVO: C=Cartesian, P=Polar, U=UTM"
+    Orientation_BRAVO:
+      units: "code"
+      description: "Coordinate orientation for BRAVO: H=Vessel Head Up, N=North, E=East"
+    SWFilter_BRAVO:
+      units: "code"
+      description: "Software filter status for BRAVO: M=Measured, F=Filtered, P=Predicted"
+    X_coord_BRAVO:
+      units: "meters or degrees"
+      description: "X coordinate for BRAVO (e.g., Starboard, North, Eastings)"
+    Y_coord_BRAVO:
+      units: "meters or degrees"
+      description: "Y coordinate for BRAVO (e.g., Forwards, East, Northings)"
+    Depth_BRAVO:
+      units: "meters"
+      description: "Depth of beacon in meters for BRAVO"
+    Accuracy_BRAVO:
+      units: "meters"
+      description: "Expected accuracy of the position for BRAVO"
+    AddlInfo_BRAVO:
+      units: "code"
+      description: "Additional information for BRAVO: N=None, C=Compass, I=Inclinometer"
+    AddlVal1_BRAVO:
+      description: "First additional value for BRAVO (e.g., Tp compass or Tp x inclination)"
+    AddlVal2_BRAVO:
+      description: "Second additional value for BRAVO (e.g., Tp y inclination)"
+    Val4_BRAVO:
+      description: "Additional ordinal value 4 for BRAVO"
+    Val5_BRAVO:
+      description: "Additional ordinal value 5 for BRAVO"

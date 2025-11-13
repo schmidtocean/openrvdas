@@ -210,7 +210,7 @@ sb_oxygen:
   filebase: test/FKt990101/data/FKt990101_sb_oxygen-
 sb_paro:
   class: UDP
-  port: 10004
+  port: 39005
   filebase: test/FKt990101/data/FKt990101_sb_paro-
 sb_paro_dbt:
   class: UDP
@@ -247,11 +247,11 @@ seapath330_nav:
 speedlog_uhdas_1:
   class: UDP
   port: 58001
-  filebase: test/FKt990101/data/FKt990101_speedlog_uhdas_1-
+  filebase: test/FKt990101/data/FKt990101_speedlog_uhdas_1_vbw-
 speedlog_uhdas_2:
   class: UDP
   port: 38020
-  filebase: test/FKt990101/data/FKt990101_speedlog_uhdas_1-
+  filebase: test/FKt990101/data/FKt990101_speedlog_uhdas_1_vbw-
 temp_chilled:
   class: UDP
   port: 99999
@@ -291,4 +291,4 @@ winch_mermac:
 windsonic_fm:
   class: UDP
   port: 40011
-  filebase: test/FKt990101/data/FKt990101_windsonic_fm-
+  filebase: test/FKt990101/data/FKt990101_windsonic_fm_mwv-

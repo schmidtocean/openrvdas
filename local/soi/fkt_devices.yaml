@@ -3,41 +3,7 @@
 #
 # See README.md in this directory
 
-includes:
-  - local/soi/devices/*.yaml
-
 devices:
-  ######################################
-  bridgedata:
-    category: "device"
-    device_type: "BridgeData"
-    serial_number: "unknown"
-    description: ""
-
-    fields:
-      AntennaHeight: "BridgeData_AntennaHeight"
-      CourseMag: "BridgeData_CourseMag"
-      CourseTrue: "BridgeData_CourseTrue"
-      DGPSStationID: "BridgeData_DGPSStationID"
-      FixQuality: "BridgeData_FixQuality"
-      GeoidHeight: "BridgeData_GeoidHeight"
-      GPSDate: "BridgeData_GPSDate"
-      GPSDay: "BridgeData_GPSDay"
-      GPSMonth: "BridgeData_GPSMonth"
-      GPSTime: "BridgeData_GPSTime"
-      GPSYear: "BridgeData_GPSYear"
-      HDOP: "BridgeData_HDOP"
-      HeadingTrue: "BridgeData_HeadingTrue"
-      LastDGPSUpdate: "BridgeData_LastDGPSUpdate"
-      Latitude: "BridgeData_Latitude"
-      LocalHours: "BridgeData_LocalHours"
-      LocalZone: "BridgeData_LocalZone"
-      Longitude: "BridgeData_Longitude"
-      Mode: "BridgeData_Mode"
-      NumSats: "BridgeData_NumSats"
-      RateOfTurn: "BridgeData_RateOfTurn"
-      SpeedKm: "BridgeData_SpeedKm"
-      SpeedKt: "BridgeData_SpeedKt"
 
   ######################################
   ctd_sbe911:
@@ -66,38 +32,6 @@ devices:
       # Salinity2: "CTD_SBE911_Salinity2"
       # SoundVelocity: "CTD_SBE911_SoundVelocity"
       # SoundVelocity2: "CTD_SBE911_SoundVelocity2"
-
-  ######################################
-  cnav3050:
-    category: "device"
-    device_type: "CNAV3050"
-    serial_number: "unknown"
-    description: ""
-
-    fields:
-      AntennaHeight: "CNAV3050_AntennaHeight"
-      CourseMag: "CNAV3050_CourseMag"
-      CourseTrue: "CNAV3050_CourseTrue"
-      DGPSStationID: "CNAV3050_DGPSStationID"
-      FixQuality: "CNAV3050_FixQuality"
-      GeoidHeight: "CNAV3050_GeoidHeight"
-      GPSDate: "CNAV3050_GPSDate"
-      GPSDay: "CNAV3050_GPSDay"
-      GPSMonth: "CNAV3050_GPSMonth"
-      GPSTime: "CNAV3050_GPSTime"
-      GPSYear: "CNAV3050_GPSYear"
-      HDOP: "CNAV3050_HDOP"
-      LastDGPSUpdate: "CNAV3050_LastDGPSUpdate"
-      Latitude: "CNAV3050_Latitude"
-      LocalHours: "CNAV3050_LocalHours"
-      LocalZone: "CNAV3050_LocalZone"
-      Longitude: "CNAV3050_Longitude"
-      MagneticVar: "CNAV3050_MagneticVar"
-      MagneticVarEorW: "CNAV3050_MagneticVarEorW"
-      Mode: "CNAV3050_Mode"
-      NumSats: "CNAV3050_NumSats"
-      SpeedKm: "CNAV3050_SpeedKm"
-      SpeedKt: "CNAV3050_SpeedKt"
 
   ######################################
   dpsi1:
@@ -148,18 +82,6 @@ devices:
       SemiMinorStd: "DPSi1_SemiMinorStd"
       SpeedKm: "DPSi1_SpeedKm"
       SpeedKt: "DPSi1_SpeedKt"
-
-  ######################################
-  draft:
-    category: "device"
-    device_type: "Draft"
-    serial_number: "unknown"
-    description: ""
-
-    fields:
-      DraftFwd: "Draft_DraftFwd"
-      DraftAft: "Draft_DraftAft"
-      CRC: "Draft_CRC"
 
   ######################################
   ea640:
@@ -247,45 +169,6 @@ devices:
       Xducer_offset_m: "EM712_Xducer_offset_m"
 
   ######################################
-  eml224:
-    category: "device"
-    device_type: "EML_SpeedLog"
-    serial_number: "unknown"
-    description: ""
-
-    fields:
-      VvelSOW: "EML224_VvelSOW"
-      UvelSOW: "EML224_UvelSOW"
-      StatusSOW: "EML224_StatusSOW"
-      VvelSOG: "EML224_VvelSOG"
-      UvelSOG: "EML224_UvelSOG"
-      StatusSOG: "EML224_StatusSOG"
-      SternSOW: "EML224_SternSOW"
-      StatusSternSOW: "EML224_StatusSternSOW"
-      SternSOG: "EML224_SternSOG"
-      StatusSternSOG: "EML224_StatusSternSOG"
-
-  ######################################
-  flowrate_aft:
-    category: "device"
-    device_type: "Flowmeter"
-    serial_number: "unknown"
-    description: ""
-
-    fields:
-      Flowrate: "Aft_Flowrate"
-
-  ######################################
-  flowrate_fwd:
-    category: "device"
-    device_type: "Flowmeter"
-    serial_number: "unknown"
-    description: ""
-
-    fields:
-      Flowrate: "Fwd_Flowrate"
-
-  ######################################
   fluorometer_1:
     category: "device"
     device_type: "Fluorometer"
@@ -360,95 +243,6 @@ devices:
       Humidity: "MET4_FM_Humidity"
 
   ######################################
-  moxa_ioLogik_1:
-    category: "device"
-    device_type: "MOXA_ioLogik_EL12xx"
-    serial_number: ""
-    description: "MOXA ioLogik EL12xx #1"
-
-    fields:
-      aiValueRaw0: "MOXA_ioLogik_1_aiValueRaw0"
-      aiValueScaled0: "MOXA_ioLogik_1_aiValueScaled0"
-      aiValueRaw1: "MOXA_ioLogik_1_aiValueRaw1"
-      aiValueScaled1: "MOXA_ioLogik_1_aiValueScaled1"
-      aiValueRaw2: "MOXA_ioLogik_1_aiValueRaw2"
-      aiValueScaled2: "MOXA_ioLogik_1_aiValueScaled2"
-      aiValueRaw3: "MOXA_ioLogik_1_aiValueRaw3"
-      aiValueScaled3: "MOXA_ioLogik_1_aiValueScaled3"
-
-  ######################################
-  mpp_fm:
-    category: "device"
-    device_type: "MetPakPro"
-    serial_number: ""
-    description: "MetPakPro - Fwd Mast"
-
-    fields:
-      NodeLetter: "MPP_FM_NodeLetter"
-      WindDir: "MPP_FM_WindDir"
-      WindSpd: "MPP_FM_WindSpd"
-      AirPres: "MPP_FM_AirPres"
-      Humidity: "MPP_FM_Humidity"
-      AirTemp: "MPP_FM_AirTemp"
-      DewPoint: "MPP_FM_DewPoint"
-      SupplyVoltage: "MPP_FM_SupplyVoltage"
-      SupplyCode: "MPP_FM_SupplyCode"
-
-  ######################################
-  mpp_wh_port:
-    category: "device"
-    device_type: "MetPakPro"
-    serial_number: ""
-    description: "MetPakPro - Wheelhouse - Port side"
-
-    fields:
-      NodeLetter: "MPP_WH_Port_NodeLetter"
-      WindDir: "MPP_WH_Port_WindDir"
-      WindSpd: "MPP_WH_Port_WindSpd"
-      AirPres: "MPP_WH_Port_AirPres"
-      Humidity: "MPP_WH_Port_Humidity"
-      AirTemp: "MPP_WH_Port_AirTemp"
-      DewPoint: "MPP_WH_Port_DewPoint"
-      SupplyVoltage: "MPP_WH_Port_SupplyVoltage"
-      SupplyCode: "MPP_WH_Port_SupplyCode"
-
-  ######################################
-  mpp_wh_stb:
-    category: "device"
-    device_type: "MetPakPro"
-    serial_number: ""
-    description: "MetPakPro - Wheelhouse - Starboard side"
-
-    fields:
-      NodeLetter: "MPP_WH_Stb_NodeLetter"
-      WindDir: "MPP_WH_Stb_WindDir"
-      WindSpd: "MPP_WH_Stb_WindSpd"
-      AirPres: "MPP_WH_Stb_AirPres"
-      Humidity: "MPP_WH_Stb_Humidity"
-      AirTemp: "MPP_WH_Stb_AirTemp"
-      DewPoint: "MPP_WH_Stb_DewPoint"
-      SupplyVoltage: "MPP_WH_Stb_SupplyVoltage"
-      SupplyCode: "MPP_WH_Stb_SupplyCode"
-
-  ######################################
-  mpp_mm_aft:
-    category: "device"
-    device_type: "MetPakPro"
-    serial_number: ""
-    description: "MetPakPro - Main Mast - Aft"
-
-    fields:
-      NodeLetter: "MPP_MM_Aft_NodeLetter"
-      WindDir: "MPP_MM_Aft_WindDir"
-      WindSpd: "MPP_MM_Aft_WindSpd"
-      AirPres: "MPP_MM_Aft_AirPres"
-      Humidity: "MPP_MM_Aft_Humidity"
-      AirTemp: "MPP_MM_Aft_AirTemp"
-      DewPoint: "MPP_MM_Aft_DewPoint"
-      SupplyVoltage: "MPP_MM_Aft_SupplyVoltage"
-      SupplyCode: "MPP_MM_Aft_SupplyCode"
-
-  ######################################
   minisvs_aft:
     category: "device"
     device_type: "MiniSVST"
@@ -469,41 +263,28 @@ devices:
     fields:
       SoundVelocity: "MiniSVS_Fwd_SoundVelocity"
 
-  ######################################
-  par_fm_test:
-    category: "device"
-    device_type: "Par"
-    serial_number: ""
-    description: ""
-
-    fields:
-      Voltage1: "Par_Voltage1"
-
-      
 ######################################
-  par:
-    category: "device"
-    device_type: "Par"
-    serial_number: ""
-    description: ""
-
-    fields:
-      Voltage1: "Par_Voltage1"
-      Voltage2: "Par_Voltage2"
-      Irradiance1: "Par_Irradiance1"
-      Irradiance2: "Par_Irradiance2"
-      
-
-  ######################################
-  par_biospherical:
+  par_fm_port:
     category: "device"
     device_type: "ParBiospherical"
     serial_number: ""
     description: ""
 
     fields:
-      Voltage: "Par_Voltage"
+      Voltage: "Par_FM_PORT_Voltage"
+      Irradiance: "Par_FM_PORT_Irradiance"
 
+######################################
+  par_fm_stb:
+    category: "device"
+    device_type: "ParBiospherical"
+    serial_number: ""
+    description: ""
+
+    fields:
+      Voltage: "Par_FM_STB_Voltage"
+      Irradiance: "Par_FM_STB_Irradiance"
+      
 
   ######################################
   pH_sunburst_1:
@@ -585,6 +366,32 @@ devices:
       RollPitchQual: "POSMV_RollPitchQual"
       SpeedKm: "POSMV_SpeedKm"
       SpeedKt: "POSMV_SpeedKt"
+      #GST vars
+      AltitudeStd: "POSMV_AltitudeStd"
+      LatitudeStd: "POSMV_LatitudeStd"
+      LongitudeStd: "POSMV_LongitudeStd"
+      Orientation: "POSMV_Orientation"
+      RMS: "POSMV_RMS"
+      SemiMajorStd: "POSMV_SemiMajorStd"
+      SemiMinorStd: "POSMV_SemiMinorStd"
+
+  ######################################
+  posmv_motion:
+    category: "device"
+    device_type: "POSMV"
+    serial_number: "14/00110"
+    description: "Motion from POSMV $PASHR"
+
+    fields:
+      FixQuality: "POSMV_FixQuality"
+      GPSTime: "POSMV_GPSTime"
+      HeadingAccuracy: "POSMV_HeadingAccuracy"
+      HeadingTrue: "POSMV_HeadingTrue"
+      IMUStatus: "POSMV_IMUStatus"
+      Pitch: "POSMV_Pitch"
+      PitchAccuracy: "POSMV_PitchAccuracy"
+      Roll: "POSMV_Roll"
+      RollAccuracy: "POSMV_RollAccuracy"
 
   ######################################
   rad_fm_port:
@@ -637,23 +444,6 @@ devices:
       Accum: "RAINGAUGE_FM_Accum"
 
   ######################################
-  sbp29:
-    category: "device"
-    device_type: "SBP29"
-    serial_number: "unknown"
-    description: ""
-
-    fields:
-      Depth_f: "SBP29_Depth_f"
-      Depth_F: "SBP29_Depth_F"
-      Depth_m: "SBP29_Depth_m"
-      Depth_xducer_f: "SBP29_Depth_xducer_f"
-      Depth_xducer_F: "SBP29_Depth_xducer_F"
-      Depth_xducer_m: "SBP29_Depth_xducer_m"
-      MaxRange_m: "SBP29_MaxRange_m"
-      Xducer_offset_m: "SBP29_Xducer_offset_m"
-
-  ######################################
   seapath380:
     category: "device"
     device_type: "Seapath"
@@ -695,6 +485,14 @@ devices:
       RollPitchQual: "Seapath_RollPitchQual"
       SpeedKm: "Seapath_SpeedKm"
       SpeedKt: "Seapath_SpeedKt"
+      #GST vars
+      AltitudeStd: "Seapath_AltitudeStd"
+      LatitudeStd: "Seapath_LatitudeStd"
+      LongitudeStd: "Seapath_LongitudeStd"
+      Orientation: "Seapath_Orientation"
+      RMS: "Seapath_RMS"
+      SemiMajorStd: "Seapath_SemiMajorStd"
+      SemiMinorStd: "Seapath_SemiMinorStd"
 
   ######################################
   transmissometer_1:
@@ -794,97 +592,72 @@ devices:
       StatusSternSOG: "UHDAS_2_StatusSternSOG"
 
   ######################################
-  hipap_port_1:
+  hipap_port:
     category: "device"
     device_type: "HiPAP"
     serial_number: "unknown"
     description: ""
 
     fields:
-      GPSTime: "HiPAP_Port_1_GPSTime"
-      BeaconID: "HiPAP_Port_1_BeaconID"
-      ErrorCode: "HiPAP_Port_1_ErrorCode"
-      Latitude: "HiPAP_Port_1_Latitude"
-      Longitude: "HiPAP_Port_1_Longitude"
-      Depth: "HiPAP_Port_1_Depth"
-      Altitude: "HiPAP_Port_1_Altitude"
-      FixQuality: "HiPAP_Port_1_FixQuality"
-      NumSats: "HiPAP_Port_1_NumSats"
-      HDOP: "HiPAP_Port_1_HDOP"
-      AntennaHeight: "HiPAP_Port_1_AntennaHeight"
-      GeoidHeight: "HiPAP_Port_1_GeoidHeight"
-      LastDGPSUpdate: "HiPAP_Port_1_LastDGPSUpdate"
-      DGPSStationID: "HiPAP_Port_1_DGPSStationID"
-      Status: "HiPAP_Port_1_Status"
-      CoordSys: "HiPAP_Port_1_CoordSys"
-      Orientation: "HiPAP_Port_1_Orientation"
-      SWFilter: "HiPAP_Port_1_SWFilter"
-      X_coord: "HiPAP_Port_1_X_coord"
-      Y_coord: "HiPAP_Port_1_Y_coord"
-      Accuracy: "HiPAP_Port_1_Accuracy"
-      AddlInfo: "HiPAP_Port_1_AddlInfo"
-      AddlVal1: "HiPAP_Port_1_AddlVal1"
-      AddlVal2: "HiPAP_Port_1_AddlVal2"
-      TransceiverNum: "HiPAP_Port_1_TransceiverNum"
-      TransducerNum: "HiPAP_Port_1_TransducerNum"
-      SensorStatus: "HiPAP_Port_1_SensorStatus"
-      Roll: "HiPAP_Port_1_Roll"
-      Pitch: "HiPAP_Port_1_Pitch"
-      Heave: "HiPAP_Port_1_Heave"
-      Heading: "HiPAP_Port_1_Heading"
-      SensorID: "HiPAP_Port_1_SensorID"
-      SensorValue: "HiPAP_Port_1_SensorValue"
-      SystemID: "HiPAP_Port_1_SystemID"
-      CheckSum: "HiPAP_Port_1_CheckSum"
+      # Original PSIMSNS and common fields
+      GPSTime: "HiPAP_Port_GPSTime"
+      BeaconID: "HiPAP_Port_BeaconID"
+      ErrorCode: "HiPAP_Port_ErrorCode"
+      Status: "HiPAP_Port_Status"
+      CoordSys: "HiPAP_Port_CoordSys"
+      Orientation: "HiPAP_Port_Orientation"
+      SWFilter: "HiPAP_Port_SWFilter"
+      X_coord: "HiPAP_Port_X_coord"
+      Y_coord: "HiPAP_Port_Y_coord"
+      Depth: "HiPAP_Port_Depth"
+      Accuracy: "HiPAP_Port_Accuracy"
+      AddlInfo: "HiPAP_Port_AddlInfo"
+      AddlVal1: "HiPAP_Port_AddlVal1"
+      AddlVal2: "HiPAP_Port_AddlVal2"
+      TransceiverNum: "HiPAP_Port_TransceiverNum"
+      TransducerNum: "HiPAP_Port_TransducerNum"
+      SensorStatus: "HiPAP_Port_SensorStatus"
+      Roll: "HiPAP_Port_Roll"
+      Pitch: "HiPAP_Port_Pitch"
+      Heave: "HiPAP_Port_Heave"
+      Heading: "HiPAP_Port_Heading"
+      SensorID: "HiPAP_Port_SensorID"
+      SensorValue: "HiPAP_Port_SensorValue"
+      SystemID: "HiPAP_Port_SystemID"
 
-  ######################################
-  hipap_stb_2:
-    category: "device"
-    device_type: "HiPAP"
-    serial_number: "unknown"
-    description: ""
+      # PSIMSSB_ALPHA fields
+      GPSTime_ALPHA: "HiPAP_Port_GPSTime_ALPHA"
+      Status_ALPHA: "HiPAP_Port_Status_ALPHA"
+      ErrorCode_ALPHA: "HiPAP_Port_ErrorCode_ALPHA"
+      CoordSys_ALPHA: "HiPAP_Port_CoordSys_ALPHA"
+      Orientation_ALPHA: "HiPAP_Port_Orientation_ALPHA"
+      SWFilter_ALPHA: "HiPAP_Port_SWFilter_ALPHA"
+      X_coord_ALPHA: "HiPAP_Port_X_coord_ALPHA"
+      Y_coord_ALPHA: "HiPAP_Port_Y_coord_ALPHA"
+      Depth_ALPHA: "HiPAP_Port_Depth_ALPHA"
+      Accuracy_ALPHA: "HiPAP_Port_Accuracy_ALPHA"
+      AddlInfo_ALPHA: "HiPAP_Port_AddlInfo_ALPHA"
+      AddlVal1_ALPHA: "HiPAP_Port_AddlVal1_ALPHA"
+      AddlVal2_ALPHA: "HiPAP_Port_AddlVal2_ALPHA"
+      Val4_ALPHA: "HiPAP_Port_Val4_ALPHA"
+      Val5_ALPHA: "HiPAP_Port_Val5_ALPHA"
 
-    fields:
-      # Common Field
-      GPSTime: "HiPAP_Stb_2_GPSTime"
-
-      # PSIMSSB Fields
-      BeaconID: "HiPAP_Stb_2_BeaconID"
-      Status: "HiPAP_Stb_2_Status"
-      ErrorCode: "HiPAP_Stb_2_ErrorCode"
-      CoordSys: "HiPAP_Stb_2_CoordSys"
-      Orientation: "HiPAP_Stb_2_Orientation"
-      SWFilter: "HiPAP_Stb_2_SWFilter"
-      X_coord: "HiPAP_Stb_2_X_coord"
-      Y_coord: "HiPAP_Stb_2_Y_coord"
-      Depth: "HiPAP_Stb_2_Depth"
-      Accuracy: "HiPAP_Stb_2_Accuracy"
-      AddlInfo: "HiPAP_Stb_2_AddlInfo"
-      AddlVal1: "HiPAP_Stb_2_AddlVal1"
-      AddlVal2: "HiPAP_Stb_2_AddlVal2"
-
-      # PSIMSNS Fields
-      TransceiverNum: "HiPAP_Stb_2_TransceiverNum"
-      TransducerNum: "HiPAP_Stb_2_TransducerNum"
-      SensorStatus: "HiPAP_Stb_2_SensorStatus"
-      Roll: "HiPAP_Stb_2_Roll"
-      Pitch: "HiPAP_Stb_2_Pitch"
-      Heave: "HiPAP_Stb_2_Heave"
-      Heading: "HiPAP_Stb_2_Heading"
-      SensorID: "HiPAP_Stb_2_SensorID"
-      SensorValue: "HiPAP_Stb_2_SensorValue"
-      SystemID: "HiPAP_Stb_2_SystemID"
-
-      # GGA Message Fields
-      Latitude: "HiPAP_Stb_2_Latitude"
-      Longitude: "HiPAP_Stb_2_Longitude"
-      FixQuality: "HiPAP_Stb_2_FixQuality"
-      NumSats: "HiPAP_Stb_2_NumSats"
-      HDOP: "HiPAP_Stb_2_HDOP"
-      AntennaHeight: "HiPAP_Stb_2_AntennaHeight"
-      GeoidHeight: "HiPAP_Stb_2_GeoidHeight"
-      LastDGPSUpdate: "HiPAP_Stb_2_LastDGPSUpdate"
-      DGPSStationID: "HiPAP_Stb_2_DGPSStationID"
+      # PSIMSSB_BRAVO fields
+      GPSTime_BRAVO: "HiPAP_Port_GPSTime_BRAVO"
+      Status_BRAVO: "HiPAP_Port_Status_BRAVO"
+      ErrorCode_BRAVO: "HiPAP_Port_ErrorCode_BRAVO"
+      CoordSys_BRAVO: "HiPAP_Port_CoordSys_BRAVO"
+      Orientation_BRAVO: "HiPAP_Port_Orientation_BRAVO"
+      SWFilter_BRAVO: "HiPAP_Port_SWFilter_BRAVO"
+      X_coord_BRAVO: "HiPAP_Port_X_coord_BRAVO"
+      Y_coord_BRAVO: "HiPAP_Port_Y_coord_BRAVO"
+      Depth_BRAVO: "HiPAP_Port_Depth_BRAVO"
+      Accuracy_BRAVO: "HiPAP_Port_Accuracy_BRAVO"
+      AddlInfo_BRAVO: "HiPAP_Port_AddlInfo_BRAVO"
+      AddlVal1_BRAVO: "HiPAP_Port_AddlVal1_BRAVO"
+      AddlVal2_BRAVO: "HiPAP_Port_AddlVal2_BRAVO"
+      Val4_BRAVO: "HiPAP_Port_Val4_BRAVO"
+      Val5_BRAVO: "HiPAP_Port_Val5_BRAVO"
 
 ######################################
   usbl:

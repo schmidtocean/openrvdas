@@ -1,0 +1,128 @@
+# ---------------------------------------------------------------------------
+# Template: corr_logger_template_sb_oxygen
+#
+# Description:
+#   Defines a logger that utilises DOCorrectionTransform to calculate
+#   corrected dissolved oxygen concentration and saturation from temperature,
+#   salinity, and pressure readings. Outputs structured data for databases
+#   and uses a ComposedWriter to apply formatting for text file output.
+#
+# Required Logger Variables:
+#   oxygen_conc_field     : oxygen concentration input field (e.g., SB_Oxygen_Concentration)
+#   ctd_water_temp_field  : CTD temperature field
+#   ctd_salinity_field    : CTD salinity field
+#   ctd_depth_field       : CTD depth field
+#   corr_conc_field       : corrected concentration output field
+#   corr_sat_field        : corrected saturation output field
+#   measurement_name      : Influx measurement
+#
+# ---------------------------------------------------------------------------
+
+logger_templates:
+  corr_logger_template_sb_oxygen:
+
+    # The common base holds the shared reader and core transform logic.
+    # Its output is always structured data.
+    base: &base
+      readers:
+      - class: CachedDataReader
+        kwargs:
+          data_server: <<cdw_port>>
+          subscription:
+            fields:
+              <<oxygen_conc_field>>: {seconds: 0}
+              <<ctd_water_temp_field>>: {seconds: 0}
+              <<ctd_salinity_field>>:   {seconds: 0}
+              <<ctd_depth_field>>:      {seconds: 0}
+
+      transforms:
+      - class: DOCorrectionTransform
+        module: contrib.soi.logger.transforms.docorrection_transform
+        kwargs:
+          conc_field:     <<oxygen_conc_field>>
+          temp_field:     <<ctd_water_temp_field>>
+          sal_field:      <<ctd_salinity_field>>
+          pressure_field: <<ctd_depth_field>>
+          corr_conc_name: <<corr_conc_field>>
+          corr_sat_name:  <<corr_sat_field>>
+          update_on_fields:
+          - <<oxygen_conc_field>>
+          max_field_age:
+            <<ctd_depth_field>>:      2
+            <<ctd_water_temp_field>>: 2
+            <<ctd_salinity_field>>:   2
+
+    # Available reusable writer components
+      # Simple writers that consume structured data
+    writers: &writers
+      cached: &cached_writer
+        class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+
+      influx: &influx_writer
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_default_bucket>>
+          measurement_name: <<measurement_name>>
+
+      influx_restricted: &influx_writer_restricted
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_restricted_bucket>>
+          measurement_name: <<measurement_name>>
+
+      # Base file writer definition (to be wrapped by the ComposedWriter)
+      file: &file_writer
+        class: LogfileWriter
+        kwargs:
+          header_file: <<header_dir>>/oxygen_corrected_hdr.txt
+          filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+          split_char: ','
+          suffix: '.txt'
+
+      # ComposedWriter to format structured data into a string for file output
+      file_from_structured: &file_from_structured
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: FormatTransform
+            module: logger.transforms.format_transform
+            kwargs:
+              format_str: '{<<corr_conc_field>>},{<<corr_sat_field>>}'
+          - class: TimestampTransform
+            kwargs:
+              sep: ','
+          writers:
+          - *file_writer # Uses the base file writer component
+
+    # Compose logger from defined components
+    configs:
+      'off': {}
+
+      # Writes structured data directly to InfluxDB and cache
+      influx:
+        <<: *base
+        writers:
+        - *cached_writer
+        - *influx_writer
+
+      influx_restricted:
+        <<: *base
+        writers:
+        - *cached_writer
+        - *influx_writer_restricted
+
+      # Takes structured data, formats it, and writes to a file
+      file:
+        <<: *base
+        writers:
+        - *file_from_structured
+
+      # Writes to both destinations applying formatting only for the file
+      file+influx:
+        <<: *base
+        writers:
+        - *cached_writer
+        - *influx_writer
+        - *file_from_structured

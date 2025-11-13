@@ -1,0 +1,111 @@
+# ---------------------------------------------------------------------------
+# Template: corr_logger_template_winddir
+#
+# Description:
+#   Defines a logger that utilises WindDirCorrectionTransform to perform a
+#   zero-line orientation correction to a wind direction sensor.
+#   It reads a specified raw field, applies the transform, then
+#   outputs structured data for databases and uses a ComposedWriter to
+#   apply formatting for text file output.
+#
+# Required Logger Variables:
+#   - wind_dir_field:      (string) raw wind direction data field
+#   - apparent_dir_name:   (string) name for the new corrected data field
+#   - zero_line_reference: (number) orientation offset in degrees (e.g., 180)
+#   - measurement_name:    (string) measurement name for InfluxDB writers
+#
+# ---------------------------------------------------------------------------
+logger_templates:
+  corr_logger_template_winddir:
+
+    # Common base defining the core read/transform logic
+    # Its output is always structured data
+    base: &base
+      readers:
+      - class: CachedDataReader
+        kwargs:
+          data_server: <<cdw_port>>
+          subscription:
+            fields:
+              <<wind_dir_field>>:
+                seconds: 0
+      transforms:
+      - class: WindDirCorrectionTransform
+        module: contrib.soi.logger.transforms.winddircorrection_transform
+        kwargs:
+          wind_dir_field: <<wind_dir_field>>
+          apparent_dir_name: <<apparent_dir_name>>
+          zero_line_reference: <<zero_line_reference>>
+
+    # Available reusable writer components
+    writers:
+      # Simple writers that consume structured data
+      cached: &cached_writer
+        class: CachedDataWriter
+        kwargs:
+          data_server: <<cdw_port>>
+      influx: &influx_writer
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_default_bucket>>
+          measurement_name: <<measurement_name>>
+      influx_restricted: &influx_writer_restricted
+        class: InfluxDBWriter
+        kwargs:
+          bucket_name: <<influxdb_restricted_bucket>>
+          measurement_name: <<measurement_name>>
+
+      # Base file writer definition (to be wrapped by the ComposedWriter)
+      file: &file_writer
+        class: LogfileWriter
+        kwargs:
+          header_file: <<header_dir>>/wind_dir_corrected_hdr.txt
+          filebase: <<file_root>>/<<cruise>>_<<logger>>
+          split_char: ','
+          suffix: '.txt'
+
+      # ComposedWriter to format structured data into a string for file output
+      file_from_structured: &file_from_structured
+        class: ComposedWriter
+        kwargs:
+          transforms:
+          - class: FormatTransform
+            module: logger.transforms.format_transform
+            kwargs:
+              format_str: '{<<apparent_dir_name>>}'
+          - class: TimestampTransform
+            kwargs:
+              sep: ','
+          writers:
+          - *file_writer # Uses the base file writer component
+
+    # Compose logger from defined components
+    configs:
+      'off': {}
+
+      # Writes structured data directly to InfluxDB and cdw
+      influx:
+        <<: *base
+        writers:
+        - *cached_writer
+        - *influx_writer
+
+      influx_restricted:
+        <<: *base
+        writers:
+        - *cached_writer
+        - *influx_writer_restricted
+
+      # Takes structured data, formats it and writes to file
+      file:
+        <<: *base
+        writers:
+        - *file_from_structured
+
+      # Writes to both destinations applying formatting only for the file
+      file+influx:
+        <<: *base
+        writers:
+        - *cached_writer
+        - *influx_writer
+        - *file_from_structured

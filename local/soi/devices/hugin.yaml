@@ -12,8 +12,8 @@ Hugin:
     # Handles AUV position and depth telegrams (Latitude, Longitude, Depth)
     # Example: $PFFILLD,964009759,59.483966,N,010.479030,E,137.6,C,2.4,2.4,,SI
     # ’ --string ‘$PKMSLLD,1750965608,H,9999,00.000446,S,000.000053,W,0.0,C,10.0,10.0,,EG’
+    PKMSLLD: "$PKMSLLD,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{LatitudeDD:of},{LatHemi:ow},{LongitudeDD:of},{LonHemi:ow},{Depth:of},{DepthRef:ow},{LatStdDev:of},{LonStdDev:of},{DepthStdDev:of},{SourceType:ow}"
 
-    PKMSLLD: "$PKMSLLD,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{Latitude:nlat_dir},{Longitude:nlat_dir},{Depth:of},{DepthRef:ow},{LatStdDev:of},{LonStdDev:of},{DepthStdDev:of},{SourceType:ow}"
     # Handles AUV orientation, altitude, and velocity telegrams (Attitude, Altitude, Velocity)
     # Example: $PFFIAAV,964009759,330.0,329.5,-16.0,-0.6,61.0,1.95,0.00
     PKMSAAV: "$PKMSAAV,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{Heading:of},{Course:of},{Pitch:of},{Roll:of},{Altitude:of},{FwdVel:of},{StbVel:of}"
@@ -31,10 +31,26 @@ Hugin:
     PKMSSUP: "$PKMSSUP,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{AUVStatus:ow},{MasterTriggerMode:ow},{TriggerRateDist:of},{SecondaryTriggerRate:of},{Voltage:of},{BatteryLife:od}"
 
     # Handles Topside information from HuginOS
-    # Example: $PFFITSI,1097434879,5.2,C,,,,165,,,34,18430
-    PKMSTSI: "$PKMSTSI,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{HuginOS_Ver:nc},{HuginOS_Mode:ow},{HiPAP_Age:od},{ACL_Age:od},{ADL_Age:od},{RF_Age:od},{Sat_Age:od},{Svc_Age:od},{UTM_Zone:od},{RemMissionVehicleTime:od}"
+    PKMSTSI:
+    - "$PKMSTSI,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{HuginOS_Ver:nc},{HuginOS_Mode:ow},{HiPAP_Age:od},{ACL_Age:od},{ADL_Age:od},{RF_Age:od},{Sat_Age:od},{Svc_Age:od},{UTM_Zone:od},{RemMissionVehicleTime:od}"
+    - "$PKMSTSI,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{HuginOS_Ver:nc},{HuginOS_Mode:ow},{HiPAP_Age:nc},{ACL_Age:nc},{ADL_Age:nc},{RF_Age:nc},{Sat_Age:nc},{Svc_Age:nc},{UTM_Zone:nc},{RemMissionVehicleTime:nc}"
+    - "$PKMSTSI,{VehicleTime:og},{VehicleClass:ow},{VehicleID:og},{HuginOS_Ver:nc},{HuginOS_Mode:ow},{HiPAP_Age:nc},{ACL_Age:nc},{ADL_Age:nc},{RF_Age:nc},{Sat_Age:nc},{Svc_Age:nc},{UTM_Zone:nc},{RemMissionVehicleTime:nc},{ExtraField:nc}"
 
-  ########
+    # Handles SIMRAD Navigation Status (PSIMSNS)
+    PSIMSNS:
+    - "$PSIMSNS,{Timestamp:of},{Field2:nc},{Field3:od},{Field4:od},{Pitch:of},{Roll:of},{Heading:of},{Depth:of},{Field9:nc},{Field10:ow},{Field11:of},{Field12:nc},{Field13:ow}"
+    - "$PSIMSNS,{Timestamp:nc},{Field2:nc},{Field3:nc},{Field4:nc},{Pitch:nc},{Roll:nc},{Heading:nc},{Depth:nc},{Field9:nc},{Field10:nc},{Field11:nc},{Field12:nc},{Field13:nc}"
+    
+    # Handles SIMRAD GPS Status (PSIMGPS) - PLACEHOLDER
+    PSIMGPS:
+    - "$PSIMGPS,{Timestamp:of},{Field2:od},{Latitude:nlat_dir},{Longitude:nlat_dir},{FixType:od},{Field6:of}"
+    - "$PSIMGPS,{Timestamp:nc},{Field2:nc},{Latitude:nc},{Longitude:nc},{FixType:nc},{Field6:nc}"
+    ########
+
+    # NMEA IN Strings
+    GGA: "${:.2}GGA,{GPSTime:f},{Latitude:nlat_dir},{Longitude:nlat_dir},{FixQuality:d},{NumSats:d},{HDOP:of},{AntennaHeight:of},M,{GeoidHeight:of},M,{LastDGPSUpdate:of},{DGPSStationID:od}*{CheckSum:x}"
+    GST: "${:.2}GST,{GPSTime:f},{RMS:of},{SemiMajorStd:of},{SemiMinorStd:of},{Orientation:of},{LatitudeStd:of},{LongitudeStd:of},{AltitudeStd:of}*{CheckSum:x}"
+    HDT: "${:.2}HDT,{HeadingTrue:f},T*{CheckSum:x}"
   # Metadata from Hugin ICD
   fields:
     VehicleClass:
@@ -206,3 +222,55 @@ Hugin:
     Checksum:
       units: "hex"
       description: "Optional NMEA checksum"
+    # Added fields from NMEA IN Strings
+    GPSTime:
+      units: "HHMMSS.sss"
+      description: "GPS Time of Day (UTC)"
+    FixQuality:
+      units: "code"
+      description: "GPS Fix Quality (0=Invalid, 1=GPS, 2=DGPS, etc.)"
+    NumSats:
+      units: "count"
+      description: "Number of satellites"
+    HDOP:
+      units: "na"
+      description: "Horizontal Dilution of Precision"
+    AntennaHeight:
+      units: "meters"
+      description: "Antenna height above/below mean sea level"
+    GeoidHeight:
+      units: "meters"
+      description: "Height of geoid (mean sea level) above WGS84 ellipsoid"
+    LastDGPSUpdate:
+      units: "seconds"
+      description: "Age of DGPS data"
+    DGPSStationID:
+      units: "id"
+      description: "DGPS reference station ID"
+    CheckSum:
+      units: "hex"
+      description: "NMEA checksum (as used in format string)"
+    RMS:
+      units: "meters"
+      description: "RMS value of the standard deviation of the range inputs"
+    SemiMajorStd:
+      units: "meters"
+      description: "Standard deviation of semi-major axis of error ellipse"
+    SemiMinorStd:
+      units: "meters"
+      description: "Standard deviation of semi-minor axis of error ellipse"
+    Orientation:
+      units: "degrees"
+      description: "Orientation of semi-major axis of error ellipse (degrees from True North)"
+    LatitudeStd:
+      units: "meters"
+      description: "Standard deviation of latitude error"
+    LongitudeStd:
+      units: "meters"
+      description: "Standard deviation of longitude error"
+    AltitudeStd:
+      units: "meters"
+      description: "Standard deviation of altitude error"
+    HeadingTrue:
+      units: "degrees"
+      description: "True heading"

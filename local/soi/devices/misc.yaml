@@ -1,37 +1,4 @@
 ######################################
-Draft:
-  category: "device_type"
-  description: "Draft"
-
-  # $HMADFT, 4.59,3,46,12*45
-  format: "$HMADFT,{DraftFwd:g},{DraftAft},{CRC:g}*{CheckSum:x}"
-  fields:
-    DraftFwd:
-      units: "m"
-      description: "Draft Fwd w/ 2 dec"
-    DraftAft:
-      units: "m"
-      description: "Draft Aft w/ 2 dec"
-    CRC:
-      units: ""
-      description: ""
-
-######################################
-Flowmeter:
-  category: "device_type"
-  description: "Flowmeter"
-
-  # $FLOWAFT,20.98
-  format:
-    Aft: "$FLOWAFT,{Flowrate:g}"
-    Fore: "$FLOWFWD,{Flowrate:g}"
-
-  fields:
-    Flowrate:
-      units: "l/min"
-      description: "Flowrate"
-
-######################################
 Fluorometer:
   category: "device_type"
   description: "Fluorometer"
@@ -41,8 +8,10 @@ Fluorometer:
 
   #99/99/99 99:99:99 695 159 534
   format:
-    NoChl: "{Date:S}\t{Time:S}\t{NU:d}\t{ChlSigRaw:d}\t{Therm:d}"
-    WithChl: "{Date:S}\t{Time:S}\t{ChlSig:g}\t{NU:d}\t{ChlSigRaw:d}\t{Therm:d}"
+    NoChlSpace: "{Date:S} {Time:S} {NU:d} {ChlSigRaw:d} {Therm:d}"
+    WithChlSpace: "{Date:S} {Time:S} {ChlSig:g} {NU:d} {ChlSigRaw:d} {Therm:d}"
+    NoChlTab: "{Date:S}\t{Time:S}\t{NU:d}\t{ChlSigRaw:d}\t{Therm:d}"
+    WithChlTab: "{Date:S}\t{Time:S}\t{ChlSig:g}\t{NU:d}\t{ChlSigRaw:d}\t{Therm:d}"
 
   fields:
     ChlSig:
@@ -82,47 +51,6 @@ MET4:
       description: "Hummidity"
 
 ######################################
-MetPakPro:
-  category: "device_type"
-  description: "MetPakPro"
-  #Q,010,008.53,1012.6,076.0,+025.3,+020.8,,+99998.0006,+99998.0004,0000.000,+11.9,00,47
-  #Q,240,004.59,1006.2,,,,,+99998.0006,+99998.0004,0000.000,+11.8,70,60
-  #Q,329,001.87,1014.4,097.0,+019.7,+019.2,+24.1,00,5C
-
-  
-  format: 
-    fm: "{:1W}{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},,{:og},{:og},{:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
-    wh: "{:1W}{NodeLetter:w},{WindDir:od},{WindSpd:og},{AirPres:og},{Humidity:og},{AirTemp:og},{DewPoint:og},{SupplyVoltage:og},{SupplyCode:ow},{:1W}{CheckSum:x}"
-
-  fields:
-    NodeLetter:
-      description: ""
-    WindDir:
-      units: "deg"
-      description: "Wind direction, relative"
-    WindSpd:
-      units: "m/s"
-      description: "Wind speed"
-    AirPres:
-      units: "hPa"
-      description: "Air Pressure"
-    Humidity:
-      units: "%"
-      description: "Hummidity"
-    AirTemp:
-      units: "C"
-      description: "Air Temperature"
-    DewPoint:
-      units: ""
-      description: ""
-    SupplyVoltage:
-      units: "v"
-      description: ""
-    SupplyCode:
-      units: ""
-      description: ""
-
-######################################
 MiniSVS:
   category: "device_type"
   description: "MiniSVS"
@@ -152,77 +80,19 @@ MiniSVST:
       description: "Sound velocity"
 
 ######################################
-MOXA_ioLogik_EL12xx:
-  category: "device_type"
-  description: "MOXA ioLogik EL12xx ADC"
-
-  format:
-    adc_ch0: "0,{:g},{aiValueRaw0:g},{aiValueScaled0:g}"
-    adc_ch1: "1,{:g},{aiValueRaw1:g},{aiValueScaled1:g}"
-    adc_ch2: "2,{:g},{aiValueRaw2:g},{aiValueScaled2:g}"
-    adc_ch3: "3,{:g},{aiValueRaw3:g},{aiValueScaled3:g}"
-
-  fields:
-    aiValueRaw0:
-      units: ""
-      description: "Raw value from ADC channel 0"
-    aiValueScaled0:
-      units: "volts"
-      description: "actual value from ADC channel 0 in volts"
-    aiValueRaw1:
-      units: ""
-      description: "Raw value from ADC channel 1"
-    aiValueScaled1:
-      units: "volts"
-      description: "actual value from ADC channel 1 in volts"
-    aiValueRaw2:
-      units: ""
-      description: "Raw value from ADC channel 2"
-    aiValueScaled2:
-      units: "volts"
-      description: "actual value from ADC channel 2 in volts"
-    aiValueRaw3:
-      units: ""
-      description: "Raw value from ADC channel 3"
-    aiValueScaled3:
-      units: "volts"
-      description: "actual value from ADC channel 3 in volts"
-
-
-######################################
 ParBiospherical:
   category: "device_type"
   description: "Par - Biospherical Instruments"
 
-  format: "{:g},{:g},{:g},{Voltage:g}"
+  format: "{AnalogChannel:g},{:g},{:g},{Voltage:g}"
 
   fields:
+    AnalogChannel:
+      units: ""
+      description: "AI on Moxa"
     Voltage:
       units: "v"
       description: "Raw Voltage"
-
-######################################
-Par:
-  category: "device_type"
-  description: "Par"
-
-  format: 
-    FKclassic: "$FKPVS,{Voltage1:g},{Voltage2:g}*{CheckSum:x}"
-    FKt: "$FKPVS,{Voltage1:g}*{CheckSum:x}"
-
-  fields:
-    Voltage1:
-      units: "v"
-      description: "Voltage 1"
-    Voltage2:
-      units: "v"
-      description: "Voltage 2"
-    Irradiance1:
-      units: "\u03BCE/cm**2sec"
-      description: "Irradiance 1"
-    Irradiance:
-      units: "\u03BCE/cm**2sec"
-      description: "Irradiance 2"
 
 ######################################
 sunburst_pH:
@@ -388,7 +258,9 @@ SBE_CST:
   description: "SBE C-Star Transmissometer"
 
   # CST-0000 12683 00000 00000 99.999 527
-  format: "CST-{SN:S}\t{RefCount:g}\t{SigCount:g}\t{CorrSigCount:g}\t{CalcBeams:g}\t{Therm:g}"
+  format: 
+    space: "CST-{SN:S} {RefCount:g} {SigCount:g} {CorrSigCount:g} {CalcBeams:g} {Therm:g}"
+    tab: "CST-{SN:S}\t{RefCount:g}\t{SigCount:g}\t{CorrSigCount:g}\t{CalcBeams:g}\t{Therm:g}"
 
   fields:
     SN:
