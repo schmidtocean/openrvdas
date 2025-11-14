@@ -9,7 +9,7 @@ Sonardyne:
     # $GPGGA,172952.297,1852.64912,N,06634.66999,W,2,00,29.3,-4219.756,M,0.0,M,0.0,0001*73
     # $GPGGA,141117.648,0458.95762,N,08218.99002,W,2,00,0.3,-998.288,M,0.0,M,0.0,0013*7B
     # GGA_FALKOR: "$GPGGA,{:os},0000*{:x}"
-    GGA_ALPHA: "$GPGGA,{GPSTime:f},{Latitude_ALPHA:nlat_dir},{Longitude_ALPHA:nlat_dir},{:d},{:d},{HDOP:of},{Depth_ALPHA:of},M,{:of},M,{:of},0000*{:x}"
+    GGA_ALPHA: "$GPGGA,{GPSTime:f},{Latitude_ALPHA:nlat_dir},{Longitude_ALPHA:nlat_dir},{:d},{:d},{HDOP:of},{Depth_ALPHA:of},M,{:of},M,{:of},0001*{:x}"
     GGA_BRAVO: "$GPGGA,{GPSTime:f},{Latitude_BRAVO:nlat_dir},{Longitude_BRAVO:nlat_dir},{:d},{:d},{HDOP:of},{Depth_BRAVO:of},M,{:of},M,{:of},0002*{:x}"
     GGA_CHARLIE: "$GPGGA,{GPSTime:f},{Latitude_CHARLIE:nlat_dir},{Longitude_CHARLIE:nlat_dir},{:d},{:d},{HDOP:of},{Depth_CHARLIE:of},M,{:of},M,{:of},0003*{:x}"
     GGA_DELTA: "$GPGGA,{GPSTime:f},{Latitude_DELTA:nlat_dir},{Longitude_DELTA:nlat_dir},{:d},{:d},{HDOP:of},{Depth_DELTA:of},M,{:of},M,{:of},0004*{:x}"
