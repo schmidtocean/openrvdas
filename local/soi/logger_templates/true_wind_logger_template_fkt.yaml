@@ -92,12 +92,18 @@ logger_templates:
         class: ComposedWriter
         kwargs:
           transforms:
-          - class: FormatTransform
+          # Serialize-deserialize as NMEATransform needs Dict
+          - class: ToJSONTransform
+          - class: FromJSONTransform
             kwargs:
-              format_str: '$<<mwd_talker_id>>,{<<true_dir_name>>:.2f},T,,M,{<<true_speed_name>>:.2f},N,,M'
-          - class: ChecksumTransform
+              das_record: False
+          - class: NMEATransform
+            nmea_list:
+            - MWDTransform
             kwargs:
-              checksum_type: nmea
+              true_wind_dir_field: <<true_dir_name>>
+              true_wind_speed_kt_field: <<true_speed_name>>
+              mwd_talker_id: <<mwd_talker_id>>
           - class: TimestampTransform
             kwargs:
               sep: ','
