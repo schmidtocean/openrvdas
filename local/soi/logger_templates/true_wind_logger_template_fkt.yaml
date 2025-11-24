@@ -82,28 +82,18 @@ logger_templates:
       file: &file_writer
         class: LogfileWriter
         kwargs:
-          header_file: <<header_dir>>/nmea_mwd2_hdr.txt
+          header_file: <<header_dir>>/truewind_hdr.txt
           filebase: <<file_root>>/<<cruise>>_<<measurement_name>>
           split_char: ','
           suffix: '.txt'
 
-      # ComposedWriter to format structured data into an NMEA MWD string for file output
       file_from_structured_nmea: &file_from_structured_nmea
         class: ComposedWriter
         kwargs:
           transforms:
-          # Serialize-deserialize as NMEATransform needs Dict
-          - class: ToJSONTransform
-          - class: FromJSONTransform
+          - class: FormatTransform
             kwargs:
-              das_record: False
-          - class: NMEATransform
-            nmea_list:
-            - MWDTransform
-            kwargs:
-              true_wind_dir_field: <<true_dir_name>>
-              true_wind_speed_kt_field: <<true_speed_name>>
-              mwd_talker_id: <<mwd_talker_id>>
+              format_str: '{<<true_dir_name>>:.2f},{<<true_speed_name>>:.2f}'
           - class: TimestampTransform
             kwargs:
               sep: ','
