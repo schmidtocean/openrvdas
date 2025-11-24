@@ -92,24 +92,16 @@ logger_templates:
         class: ComposedWriter
         kwargs:
           transforms:
-          # This transform filters the data object first
-          - class: SelectFieldsTransform
+          - class: FormatTransform
             kwargs:
-              keep:
-                - <<true_dir_name>>
-                - <<true_speed_name>>
-
-          # NMEATransform now receives a simple object with only the two fields it needs
-          - class: NMEATransform
-            nmea_list:
-            - MWDTransform
+              format_str: '$<<mwd_talker_id>>,{<<true_dir_name>>:.2f},T,,M,{<<true_speed_name>>:.2f},N,,M'
+          - class: ChecksumTransform
             kwargs:
-              true_wind_dir_field: <<true_dir_name>>
-              true_wind_speed_kt_field: <<true_speed_name>>
-              mwd_talker_id: <<mwd_talker_id>>
+              checksum_type: nmea
           - class: TimestampTransform
             kwargs:
               sep: ','
+
           writers:
           - *file_writer # Uses the base file writer component
 
