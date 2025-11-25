@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 import logging
-import sys
 import time
 
 from logger.transforms.transform import Transform
 from logger.utils.das_record import to_das_record_list
 
 ################################################################################
+
+
 class StatefulFormatTransform(Transform):
     """
     Caches the latest value of every field it sees.
@@ -20,9 +21,11 @@ class StatefulFormatTransform(Transform):
         max_age_seconds: If a stored value is older than this, it is discarded
                          and the format will fail/skip until refreshed.
         """
+        # Call the parent class's constructor first
+        super().__init__()
         self.format_str = format_str
         self.max_age_seconds = max_age_seconds
-        
+
         # The Memory: Dictionary to store { 'FieldName': Value }
         self.state = {}
         # The Clock: Dictionary to store { 'FieldName': Timestamp }
@@ -33,10 +36,10 @@ class StatefulFormatTransform(Transform):
             return None
 
         results = []
-        
+
         # Handle list of records
         das_records = to_das_record_list(record)
-        
+
         for rec in das_records:
             if not rec.fields:
                 continue
@@ -51,8 +54,11 @@ class StatefulFormatTransform(Transform):
             if self.max_age_seconds:
                 current_time = time.time()
                 # Find keys to delete
-                expired_keys = [k for k, ts in self.state_ts.items() 
-                                if (current_time - ts) > self.max_age_seconds]
+                expired_keys = [
+                    k
+                    for k, ts in self.state_ts.items()
+                    if (current_time - ts) > self.max_age_seconds
+                ]
                 for k in expired_keys:
                     logging.debug(f"Field {k} expired (Age > {self.max_age_seconds}s)")
                     del self.state[k]
