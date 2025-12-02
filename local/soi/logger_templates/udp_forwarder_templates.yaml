@@ -1,0 +1,173 @@
+# ---------------------------------------------------------------------------
+# Template File: udp_forwarder_templates.yaml
+# Description:   Reusable logic for forwarding Cached Data to UDP.
+# ---------------------------------------------------------------------------
+
+logger_templates:
+
+  # ===========================================================================
+  # Template: Forward MWD NMEA (Wind)
+  # ===========================================================================
+  forward_mwd_nmea:
+    base: &mwd_base
+      readers:
+        - class: CachedDataReader
+          kwargs:
+            data_server: 'localhost:8766'
+            subscription:
+              fields:
+                <<true_wind_dir_field>>: {seconds: 0}
+                <<true_wind_speed_field>>: {seconds: 0}
+      writers:
+        - class: ComposedWriter
+          kwargs:
+            transforms:
+              - class: NMEATransform
+                nmea_list: [MWDTransform]
+                kwargs:
+                  true_wind_dir_field: <<true_wind_dir_field>>
+                  true_wind_speed_kt_field: <<true_wind_speed_field>>
+                  mwd_talker_id: <<talker_id>>
+            writers:
+              - class: UDPWriter
+                kwargs:
+                  port: <<dest_port>>
+                  destination: <<dest_ip>>
+                  eol: '\r\n'
+
+    configs:
+      'off': {}
+      'on':
+        <<: *mwd_base
+
+  # ===========================================================================
+  # Template: Forward DPT NMEA (Depth)
+  # ===========================================================================
+  forward_dpt_nmea:
+    base: &dpt_base
+      readers:
+        - class: CachedDataReader
+          kwargs:
+            data_server: 'localhost:8766'
+            subscription:
+              fields:
+                <<depth_field>>: {seconds: 0}
+                <<offset_field>>: {seconds: 0}
+      writers:
+        - class: ComposedWriter
+          kwargs:
+            transforms:
+              - class: NMEATransform
+                nmea_list: [DPTTransform]
+                kwargs:
+                  depth_field: <<depth_field>>
+                  offset_field: <<offset_field>>
+                  dpt_talker_id: <<talker_id>>
+            writers:
+              - class: UDPWriter
+                kwargs:
+                  port: <<dest_port>>
+                  destination: <<dest_ip>>
+                  eol: '\r\n'
+    
+    configs:
+      'off': {}
+      'on':
+        <<: *dpt_base
+
+  # ===========================================================================
+  # Template: Forward XDR NMEA (Meteo/Sensors)
+  # ===========================================================================
+  forward_xdr_nmea:
+    base: &xdr_base
+      readers:
+        - class: CachedDataReader
+          kwargs:
+            data_server: 'localhost:8766'
+            subscription:
+              fields:
+                <<barometer_field>>: {seconds: 0}
+                <<air_temp_field>>: {seconds: 0}
+                <<sea_temp_field>>: {seconds: 0}
+      writers:
+        - class: ComposedWriter
+          kwargs:
+            transforms:
+              - class: NMEATransform
+                nmea_list: [XDRTransform]
+                kwargs:
+                  xdr_talker_id: <<talker_id>>
+                  barometer_field: <<barometer_field>>
+                  air_temp_field: <<air_temp_field>>
+                  sea_temp_field: <<sea_temp_field>>
+                  barometer_output_field: 'Barometer'
+                  air_temp_output_field: 'AirTemp'
+                  sea_temp_output_field: 'SeaTemp'
+            writers:
+              - class: UDPWriter
+                kwargs:
+                  port: <<dest_port>>
+                  destination: <<dest_ip>>
+                  eol: '\r\n'
+
+    configs:
+      'off': {}
+      'on':
+        <<: *xdr_base
+
+  # ===========================================================================
+  # Template: Cached String Forwarder (Stateless / Pass-through)
+  # Use this if you only need data from a single timestamp (1 device)
+  # ===========================================================================
+  cached_string_forwarder:
+    base: &cached_str_base
+      readers:
+        - class: CachedDataReader
+          kwargs:
+            data_server: 'localhost:8766'
+            subscription: <<subscription_config>>
+      transforms:
+        - class: FormatTransform
+          module: logger.transforms.format_transform
+          kwargs:
+            format_str: <<format_string>>
+      writers:
+        - class: UDPWriter
+          kwargs:
+            port: <<dest_port>>
+            destination: <<dest_ip>>
+            eol: <<eol>>
+
+    configs:
+      'off': {}
+      'on':
+        <<: *cached_str_base
+
+  # ===========================================================================
+  # Template: Stateful String Forwarder (The Merger)
+  # Use this if you need to combine data from different devices/times
+  # ===========================================================================
+  stateful_string_forwarder:
+    base: &stateful_str_base
+      readers:
+        - class: CachedDataReader
+          kwargs:
+            data_server: 'localhost:8766'
+            subscription: <<subscription_config>>
+      transforms:
+        - class: StatefulFormatTransform
+          module: contrib.soi.logger.transforms.stateful_format_transform
+          kwargs:
+            format_str: <<format_string>>
+            max_age_seconds: <<max_age>>
+      writers:
+        - class: UDPWriter
+          kwargs:
+            port: <<dest_port>>
+            destination: <<dest_ip>>
+            eol: <<eol>>
+            
+    configs:
+      'off': {}
+      'on':
+        <<: *stateful_str_base
