@@ -5,17 +5,19 @@ Winch:
   # If device type can output multiple formats, include them as a
   # list. Parser will use the first one that matches the whole line.
   format:
-
+    #RD,20251113,02:36:39.341,13,0,-8.1,00000000,00000000,1484 
+    #$R30C,20251113,02:36:47.639,3,0,-17,00000000,00000000,
+    #RD,20251111,22:42:29.633,690,0,-8.5,00000000,00000000,0000 
     # $FKWNC,2020-01-26T08:50:20.915150,MASH10,-3.0,0,-5.4
     # $FKWNC,2020-01-28T00:46:45.628005,Mermac,323.0,0,-8.7
     #Cable Length [m]:-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.16Cable Length [m]:-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.16Cable Length [m]:-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.16Cable Length [m]:-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.16Cable Length [m]:-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.16
     # "-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.15Cable Length [m]"
     #$R30C,0000.0,-00005,0000.0,-00031.3*08
     FKWNC: "$FKWNC,{Timestamp:ti},{WinchID:w},{Tension:g},{Rate:g},{Payout:g}"
-    RD: "RD,{Tension:g},{Rate:g},{Payout:g},{:g}"
+    RD: "RD,{Date:S},{Timestamp:S},{Tension:g},{Rate:g},{Payout:g},{:g},{:g},{:g}"
     SB: "{Payout:og},{:S}{:s}{:S}{:s}{:S}{Rate:og},{:S}{:s}{:S}{:s}{:S}{Tension:og}{:S}{:s}{:S}{:s}{:S}"
     RC: "$RC03,{Tension:g},{Rate:g},{Payout:g},{:d}*{CheckSum:x}"
-    R3: "$R30C,{:g},{Tension:g},{Rate:g},{Payout:g}*{CheckSum:x}" 
+    R3: "$R30C,{Date:S},{Timestamp:S},{Tension:g},{Rate:g},{Payout:g},{:g},{:g}"
     #SB: "{Payout:og},Cable Speed [m]:{Rate:og},Cable Tension [Te]:{Tension:og}Cable Length [m]:"   
   ########
   # Optional metadata to help make sense of the parsed values.
