@@ -743,7 +743,7 @@ devices:
     category: "device"
     device_type: "Winch"
     serial_number: "unknown"
-    description: ""
+    description: "Mash"
 
     fields:
       Timestamp: "Winch_Mash10_Timestamp"
@@ -757,7 +757,7 @@ devices:
     category: "device"
     device_type: "Winch"
     serial_number: "unknown"
-    description: ""
+    description: "Mermac"
 
     fields:
       Timestamp: "Winch_Mermac_Timestamp"
@@ -765,6 +765,20 @@ devices:
       Tension: "Winch_Mermac_Tension"
       Rate: "Winch_Mermac_Rate"
       Payout: "Winch_Mermac_Payout"
+
+  ######################################
+  winch_odim:
+    category: "device"
+    device_type: "Winch"
+    serial_number: "unknown"
+    description: "ODIM"
+
+    fields:
+      Timestamp: "Winch_Odim_Timestamp"
+      WinchID: "Winch_Odim_WinchID"
+      Tension: "Winch_Odim_Tension"
+      Rate: "Winch_Odim_Rate"
+      Payout: "Winch_Odim_Payout"
 
   ######################################
   windsonic_fm:
