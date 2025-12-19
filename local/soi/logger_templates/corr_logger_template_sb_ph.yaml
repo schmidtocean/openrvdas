@@ -7,6 +7,9 @@
 #   specified raw field, applies the transform, then outputs structured
 #   data for databases and uses a ComposedWriter to apply formatting
 #   for text file output.
+#   Slope is not defined or passed here, as per slope transform docstring:
+#   If None, slopes will be loaded from YAML files in local/soi/slopes/ directory
+#   this is based on var names
 #
 # Required Logger Variables:
 #   - input_field:         (string) The raw data field to read
