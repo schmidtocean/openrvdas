@@ -1,31 +1,24 @@
 # ---------------------------------------------------------------------------
-# Template: corr_logger_template_sb_ph
+# Template: corr_logger_template_slope
 #
 # Description:
-#   Defines a logger that utilises AMTPHTransform to apply temperature
-#   compensation to an AMT Deep Sea pH sensor. It reads a raw pH voltage
-#   field and a temperature field, applies the Nernst-based correction
-#   using provided calibration constants, then outputs structured
+#   Defines a logger that utilises SlopeCorrectionTransform to apply a
+#   slope and offset to a field, or to simply rename it. It reads a
+#   specified raw field, applies the transform, then outputs structured
 #   data for databases and uses a ComposedWriter to apply formatting
 #   for text file output.
-#
-#   Calibration coefficients (a0 and a1_20c) can be passed explicitly via
-#   logger variables. If not provided, they will be loaded from YAML files 
-#   in the local/soi/slopes/ directory based on the voltage_field name.
+#   Slope is not defined or passed here, as per slope transform docstring:
+#   If None, slopes will be loaded from YAML files in local/soi/slopes/ directory
+#   this is based on var names
 #
 # Required Logger Variables:
-#   - voltage_field:       (string) The raw pH voltage field to read
-#   - temp_field:          (string) The seawater temperature field to read
-#   - output_field:        (string) The name for the new corrected pH field
+#   - input_field:         (string) The raw data field to read
+#   - output_field:        (string) The name for the new corrected data field
 #   - measurement_name:    (string) The measurement name for InfluxDB writers
-#
-# Optional Logger Variables:
-#   - cal_a0:              (float)  The calibration offset coefficient (a0)
-#   - cal_a1_20c:          (float)  The calibration slope coefficient at 20C (a1)
 #
 # ---------------------------------------------------------------------------
 logger_templates:
-  corr_logger_template_sb_ph:
+  corr_logger_template_slope:
 
     # Common base defining the core read/transform logic
     # Output is always structured data
@@ -36,23 +29,13 @@ logger_templates:
           data_server: <<cdw_port>>
           subscription:
             fields:
-              <<voltage_field>>:
-                seconds: 0
-              <<temp_field>>:
+              <<input_field>>:
                 seconds: 0
       transforms:
-      - class: AMTPhTransform
-        module: contrib.soi.logger.transforms.amt_ph_transform
+      - class: SlopeCorrectionTransform
+        module: contrib.soi.logger.transforms.slopecorrection_transform
         kwargs:
-          output_field: <<output_field>>
-          voltage_field: <<voltage_field>>
-          temp_field: <<temp_field>>
-          a0: <<cal_a0>>
-          a1_20c: <<cal_a1_20c>>
-          update_on_fields: <<voltage_field>>
-          max_field_age:
-            <<temp_field>>: 5
-            <<voltage_field>>: 2
+          output_fields: {'<<input_field>>': '<<output_field>>'}
 
     # Available reusable writer components
     writers:
