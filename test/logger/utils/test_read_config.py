@@ -652,15 +652,41 @@ loggers:
         )
 
     def test_variable_not_found(self) -> None:
-        """Test that a ValueError is raised when a variable is not found."""
+        """
+        Test that missing variables no longer raise ValueError.
+        They should be preserved as placeholders for find_unmatched_variables to catch later.
+        """
         # Create a test config with a missing variable
         test_config = {
             "test": "<<missing_variable>>"
         }
 
-        # Test that substitute_variables raises ValueError
-        with self.assertRaises(ValueError):
-            read_config.substitute_variables(test_config, {})
+        # Should not raise ValueError anymore
+        result = read_config.substitute_variables(test_config, {})
+        # Should return the unexpanded placeholder
+        self.assertEqual(result, {"test": "<<missing_variable>>"})
+
+    def test_variable_with_default(self) -> None:
+        """Test the new <<var|default>> syntax."""
+        variables = {"existing_var": "found"}
+
+        # Test 1: Variable exists, ignore default
+        config1 = {"key": "<<existing_var|default_val>>"}
+        self.assertEqual(
+            read_config.substitute_variables(config1, variables), {"key": "found"}
+        )
+
+        # Test 2: Variable missing, use default
+        config2 = {"key": "<<missing_var|default_val>>"}
+        self.assertEqual(
+            read_config.substitute_variables(config2, variables), {"key": "default_val"}
+        )
+
+        # Test 3: Type conversion (string to int)
+        config3 = {"port": "<<missing_port|8080>>"}
+        result = read_config.substitute_variables(config3, variables)
+        self.assertEqual(result["port"], 8080)
+        self.assertIsInstance(result["port"], int)
 
     def test_template_not_found(self) -> None:
         """Test that a ValueError is raised when a template is not found."""
