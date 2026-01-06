@@ -315,7 +315,9 @@ Windsonic:
   description: "Windsonic"
 
   # $WIMWV,120,R,002.10,M,00*5D
-  format: "$WIMWV,{WindDir:d},R,{WindSpd:g},M,{:ow}*{CheckSum:x}"
+  format:
+    normal: "$WIMWV,{WindDir:d},R,{WindSpd:f},M,{Status:ow}*{CheckSum:x}"
+    no-wind: "$WIMWV,,R,{WindSpd:f},M,{Status:ow}*{CheckSum:x}"
 
   fields:
     WindDir:
@@ -324,6 +326,8 @@ Windsonic:
     WindSpd:
       units: "m/s"
       description: "Wind speed, relative"
+    Status:
+      description: "Data Validity (A=Valid, V=Invalid)"
 
 ######################################
 Raingauge:

@@ -776,6 +776,7 @@ devices:
     fields:
       WindDir: "Windsonic_WindDir"
       WindSpd: "Windsonic_WindSpd"
+      Status: "Windsonic_Status"
 
   #####################################
   maximet_fm:
