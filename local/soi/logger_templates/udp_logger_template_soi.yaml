@@ -46,13 +46,13 @@ logger_templates:
         class: InfluxDBWriter
         kwargs:
           # Syntax: <<override_var:fallback_default>>
-          bucket_name: <<bucket:influxdb_default_bucket>>
+          bucket_name: <<bucket|influxdb_default_bucket>>
           measurement_name: <<device_name>>
       influx_restricted: &influx_writer_restricted
         class: InfluxDBWriter
         kwargs:
           # Allows overriding the restricted bucket if needed, but defaults to the restricted global
-          bucket_name: <<bucket:influxdb_restricted_bucket>>
+          bucket_name: <<bucket|influxdb_restricted_bucket>>
           measurement_name: <<device_name>>
 
       # File writer definition
