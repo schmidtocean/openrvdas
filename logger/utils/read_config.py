@@ -390,6 +390,7 @@ def substitute_variables(config: ConfigValue, variables: Dict[str, Any]) -> Conf
     Supports:
       - <<var>>                → replaces with variable value
       - <<var|default>>        → uses default if var missing
+      - <<var|other_var>>      → uses other_var value if var missing
       - nested defaults        → <<var|<<fallback|default>>>>
       - type conversion        → <<timeout|10>> → int(10)
       - pass-through unresolved placeholders
@@ -437,6 +438,10 @@ def substitute_variables(config: ConfigValue, variables: Dict[str, Any]) -> Conf
             if var_name in variables:
                 return variables[var_name]
             elif default_value is not None:
+                # Check if default_value itself is a variable name
+                if default_value in variables:
+                    return variables[default_value]
+
                 # Recursively resolve nested default
                 resolved_default = substitute_variables(default_value, variables)
                 return _convert_type(resolved_default) if isinstance(resolved_default, str) else resolved_default
@@ -450,6 +455,10 @@ def substitute_variables(config: ConfigValue, variables: Dict[str, Any]) -> Conf
             if var_name in variables:
                 return str(variables[var_name])
             elif default_value is not None:
+                # Check if default_value itself is a variable name
+                if default_value in variables:
+                    return str(variables[default_value])
+
                 resolved_default = substitute_variables(default_value, variables)
                 return str(_convert_type(resolved_default) if isinstance(resolved_default, str) else resolved_default)
             else:
