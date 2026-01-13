@@ -14,7 +14,7 @@ Winch:
     # "-11.4,Cable Speed [m]:0.00,Cable Tension [Te]:0.15Cable Length [m]"
     #$R30C,0000.0,-00005,0000.0,-00031.3*08
     FKWNC: "$FKWNC,{Timestamp:ti},{WinchID:w},{Tension:g},{Rate:g},{Payout:g}"
-    RD: "RD,{Timestamp:ti},{Tension:g},{Rate:g},{Payout:g},{:g}"
+    RD: "RD,{Timestamp:nc},{Tension:g},{Rate:g},{Payout:g},{:g}"
     SB: "{Payout:og},{:S}{:s}{:S}{:s}{:S}{Rate:og},{:S}{:s}{:S}{:s}{:S}{Tension:og}{:S}{:s}{:S}{:s}{:S}"
     RC: "$RC03,{Tension:g},{Rate:g},{Payout:g},{:d}*{CheckSum:x}"
     R3: "$R30C,{Date:S},{Timestamp:S},{Tension:g},{Rate:g},{Payout:g},{:g},{:g}"
