@@ -56,11 +56,9 @@ jobs:
           }
         fi
 
-        # Pull the latest changes
-        git pull origin ${{ github.ref_name }} || {
-          echo "Failed to pull latest changes from ${{ github.ref_name }}"
-          exit 1
-        }
+        # Reset tracked files to match origin (avoids merge conflicts and hanging)
+        # Untracked files are preserved
+        git reset --hard origin/${{ github.ref_name }}
 
         # If we stashed changes earlier, try to apply them
         if git stash list | grep -q "Stashed by CI workflow"; then

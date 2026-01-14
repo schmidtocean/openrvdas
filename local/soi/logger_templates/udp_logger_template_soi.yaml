@@ -11,6 +11,8 @@
 #   - device_name      (string) The device name to map to
 #   - filebase:        (string or map) The base path/name for the data file(s)
 #   - header_file:     (string or map) The base path/name for the header file(s)
+# Optional Logger Variables:
+#   - bucket:          (string) Custom InfluxDB bucket to override defaults
 # ---------------------------------------------------------------------------
 logger_templates:
   udp_logger_template_soi:
@@ -43,12 +45,14 @@ logger_templates:
       influx: &influx_writer
         class: InfluxDBWriter
         kwargs:
-          bucket_name: <<influxdb_default_bucket>>
+          # Syntax: <<override_var:fallback_default>> or <<override_var:<<fallback_default>>>>
+          bucket_name: <<bucket|<<influxdb_default_bucket>>>>
           measurement_name: <<device_name>>
       influx_restricted: &influx_writer_restricted
         class: InfluxDBWriter
         kwargs:
-          bucket_name: <<influxdb_restricted_bucket>>
+          # Allows overriding the restricted bucket if needed, but defaults to the restricted global
+          bucket_name: <<bucket|<<influxdb_restricted_bucket>>>>
           measurement_name: <<device_name>>
 
       # File writer definition
@@ -60,7 +64,7 @@ logger_templates:
           split_char: ','
           suffix: '.txt'
 
-# ComposedWriter to parse string from base and send to Influx
+      # ComposedWriter to parse string from base and send to Influx
       influx_from_string: &influx_from_string
         class: ComposedWriter
         kwargs:
