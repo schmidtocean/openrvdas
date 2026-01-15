@@ -109,3 +109,26 @@ contros_ch4:
     CheckSum:
       units: "hexadecimal"
       description: "Checksum for NMEA string validation, calculated as XOR of characters between `$` and `*`"
+
+######################################
+sbe63:
+  category: "device_type"
+  description: "SBE63 oxygen optode"
+
+  format:
+    default: "{PhaseDelay:g},{ThermistorVoltage:g},{DissolvedOxygen:g},{Temperature}"
+
+  fields:
+    PhaseDelay:
+      units: "us"
+      description: "raw phase delay"
+    ThermistorVoltage:
+      units: "counts"
+      description: ""
+    DissolvedOxygen:
+      units: "ml/L"
+      description: "Constant salinity oxygen reading"
+    Temperature:
+      units: "degrees C"
+      description: ""
+
