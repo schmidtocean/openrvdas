@@ -72,3 +72,17 @@ devices:
       ProbeTemp: "PT_CH4_Probe_Temp"
       GasTemp: "PT_CH4_Gas_Temp"
       RelHumidity: "PT_CH4_Rel_Humidity"
+
+
+  ######################################
+  pt_sbe63_oxygen:
+    category: "device"
+    device_type: "Oxygen"
+    serial_number: "unknown"
+    description: "SBE 63 is an individually calibrated, high-accuracy, optical oxygen sensor"
+
+    fields:
+      PhaseDelay: "PT_SBE63_PhaseDelay"
+      ThermistorVoltage: "PT_SBE63_ThermVoltage"
+      DissolvedOxygen: "PT_SBE63_Concentration"
+      Temperature: "PT_SBE63_Temperature"
