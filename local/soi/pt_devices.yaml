@@ -75,7 +75,7 @@ devices:
 
 
   ######################################
-  pt_sbe63_oxygen:
+  pt_oxygen_sbe63:
     category: "device"
     device_type: "Oxygen"
     serial_number: "unknown"
