@@ -37,38 +37,7 @@ jobs:
       run: |
         # Fetch the latest changes
         git fetch origin
-
-        # Check if there are any local changes
-        if ! git diff-index --quiet HEAD --; then
-          echo "Stashing local changes"
-          git stash push -m "Stashed by CI workflow"
-        fi
-
-        # Get the current branch name
-        current_branch=$(git rev-parse --abbrev-ref HEAD)
-
-        # Checkout the branch that triggered the workflow
-        if [ "$current_branch" != "${{ github.ref_name }}" ]; then
-          echo "Switching from $current_branch to ${{ github.ref_name }}"
-          git checkout ${{ github.ref_name }} || {
-            echo "Failed to checkout ${{ github.ref_name }}"
-            exit 1
-          }
-        fi
-
-        # Reset tracked files to match origin (avoids merge conflicts and hanging)
-        # Untracked files are preserved
         git reset --hard origin/${{ github.ref_name }}
-
-        # If we stashed changes earlier, try to apply them
-        if git stash list | grep -q "Stashed by CI workflow"; then
-          echo "Attempting to apply stashed changes"
-          git stash apply || {
-            echo "Warning: Failed to apply stashed changes. They remain in the stash."
-          }
-        fi
-
-        # Show the current status
         git status
 
     - name: Set up Python environment
