@@ -47,13 +47,13 @@ logger_templates:
         kwargs:
           # Syntax: <<override_var:fallback_default>> or <<override_var:<<fallback_default>>>>
           bucket_name: <<bucket|<<influxdb_default_bucket>>>>
-          measurement_name: <<device_name>>
+          measurement_name: <<device_name|<<logger>>>>
       influx_restricted: &influx_writer_restricted
         class: InfluxDBWriter
         kwargs:
           # Allows overriding the restricted bucket if needed, but defaults to the restricted global
           bucket_name: <<bucket|<<influxdb_restricted_bucket>>>>
-          measurement_name: <<device_name>>
+          measurement_name: <<device_name|<<logger>>>>
 
       # File writer definition
       file: &file_writer
@@ -71,7 +71,7 @@ logger_templates:
           transforms:
           - class: PrefixTransform
             kwargs:
-              prefix: <<device_name>>
+              prefix: <<device_name|<<logger>>>>
           - class: ParseTransform
             kwargs:
               definition_path: <<definition_path>>
@@ -87,7 +87,7 @@ logger_templates:
           transforms:
           - class: PrefixTransform
             kwargs:
-              prefix: <<device_name>>
+              prefix: <<device_name|<<logger>>>>
           - class: ParseTransform
             kwargs:
               definition_path: <<definition_path>>
