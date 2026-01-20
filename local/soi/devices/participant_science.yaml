@@ -116,7 +116,7 @@ sbe63:
   description: "SBE63 oxygen optode"
 
   format:
-    default: "{PhaseDelay:g},{ThermistorVoltage:g},{DissolvedOxygen:g},{Temperature}"
+    default: "{PhaseDelay:g},{ThermistorVoltage:g},{DissolvedOxygen:g},{Temperature:g}"
 
   fields:
     PhaseDelay:
