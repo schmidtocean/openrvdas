@@ -534,6 +534,23 @@ def substitute_variables(config: ConfigValue, variables: Dict[str, Any]) -> Conf
                 i += 1
         return ''.join(out)
 
+    def _is_single_placeholder(s: str) -> bool:
+        """True only if `s` is exactly one <<...>> placeholder (supports nesting)."""
+        if not isinstance(s, str) or not s.startswith("<<"):
+            return False
+        depth, i = 1, 2
+        while i < len(s) and depth:
+            if s[i : i + 2] == "<<":
+                depth += 1
+                i += 2
+                continue
+            if s[i : i + 2] == ">>":
+                depth -= 1
+                i += 2
+                continue
+            i += 1
+        return depth == 0 and i == len(s)
+
     if isinstance(config, dict):
         return {substitute_variables(k, variables): substitute_variables(v, variables)
                 for k, v in config.items()}
@@ -542,7 +559,7 @@ def substitute_variables(config: ConfigValue, variables: Dict[str, Any]) -> Conf
         return [substitute_variables(v, variables) for v in config]
 
     if isinstance(config, str):
-        if config.startswith("<<") and config.endswith(">>"):
+        if _is_single_placeholder(config):
             return _resolve_variable(config[2:-2])
         return _walk_string(config)
 
