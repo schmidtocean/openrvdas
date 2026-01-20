@@ -77,7 +77,7 @@ devices:
   ######################################
   pt_oxygen_sbe63:
     category: "device"
-    device_type: "Oxygen"
+    device_type: "sbe63"
     serial_number: "unknown"
     description: "SBE 63 is an individually calibrated, high-accuracy, optical oxygen sensor"
 
