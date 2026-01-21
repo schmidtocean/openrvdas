@@ -20,7 +20,7 @@ from logger.transforms.derived_data_transform import DerivedDataTransform  # noq
 
 ################################################################################
 #
-class AMTPHTransform(DerivedDataTransform):
+class AMTPhTransform(DerivedDataTransform):
     """Perform the conversion and add the applicable fields to the DASRecord or
     dict.
     """
