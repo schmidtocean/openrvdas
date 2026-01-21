@@ -552,8 +552,13 @@ def substitute_variables(config: ConfigValue, variables: Dict[str, Any]) -> Conf
         return depth == 0 and i == len(s)
 
     if isinstance(config, dict):
-        return {substitute_variables(k, variables): substitute_variables(v, variables)
-                for k, v in config.items()}
+        out = {}
+        for k, v in config.items():
+            if k == "<<":
+                out[k] = substitute_variables(v, variables)
+                continue
+            out[substitute_variables(k, variables)] = substitute_variables(v, variables)
+        return out
 
     if isinstance(config, list):
         return [substitute_variables(v, variables) for v in config]
