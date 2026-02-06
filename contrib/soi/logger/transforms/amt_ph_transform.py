@@ -48,11 +48,11 @@ class AMTPhTransform(DerivedDataTransform):
                  Field name for seawater temperature (T).
 
         a0
-                 Calibration offset coefficient (a0). If None, will be loaded
+                 Calibration coefficient a0. If None, will be loaded
                  from YAML file in local/soi/slopes/ directory.
 
         a1_20c
-                 Calibration slope coefficient (a1) normalized to 20C.
+                 Calibration coefficient a1_20c normalized to 20C.
                  If None, will be loaded from YAML file.
 
         update_on_fields
@@ -107,11 +107,10 @@ class AMTPhTransform(DerivedDataTransform):
             try:
                 with open(yaml_path, "r") as yaml_file:
                     data = yaml.safe_load(yaml_file)
-                    # Support both new AMT specific keys and traditional slope/offset keys
                     if self.a1_20c is None:
-                        self.a1_20c = data.get("a1_20c", data.get("slope"))
+                        self.a1_20c = data.get("a1_20c")
                     if self.a0 is None:
-                        self.a0 = data.get("a0", data.get("offset"))
+                        self.a0 = data.get("a0")
 
                     if self.a1_20c is not None and self.a0 is not None:
                         logging.info(
@@ -123,7 +122,7 @@ class AMTPhTransform(DerivedDataTransform):
                         )
                     else:
                         logging.error(
-                            "Failed to find required coefficients in %s", yaml_filename
+                            "Missing required a0 and/or a1_20c in %s", yaml_filename
                         )
             except Exception as e:
                 logging.error("Error loading YAML from %s: %s", yaml_path, e)
@@ -237,8 +236,14 @@ class AMTPhTransform(DerivedDataTransform):
 
             # Ensure we have calibration constants
             if self.a0 is None or self.a1_20c is None:
-                logging.debug("Calibration coefficients missing; skipping computation.")
-                continue
+                logging.error(
+                    'AMTPhTransform missing calibration coefficients for %s. '
+                    'Provide a0 and a1_20c in the same units as %s (counts for SB_ph_analog).',
+                    self.voltage_field, self.voltage_field
+                )
+                raise RuntimeError(
+                    f'AMTPhTransform missing calibration coefficients for {self.voltage_field}'
+                )
 
             logging.debug("Computing new pH")
             ph_value = self.calculate_ph(
