@@ -19,9 +19,11 @@
 #   - output_field:        (string) The name for the new corrected pH field
 #   - measurement_name:    (string) The measurement name for InfluxDB writers
 #
-# Optional Logger Variables:
+#  Logger Variables:
 #   - cal_a0:              (float)  The calibration offset coefficient (a0)
 #   - cal_a1_20c:          (float)  The calibration slope coefficient at 20C (a1)
+#   - header_file:         (string) Override header file path for file output
+#   - filebase:            (string) Override file base path for file output
 #
 # ---------------------------------------------------------------------------
 logger_templates:
@@ -76,8 +78,8 @@ logger_templates:
       file: &file_writer
         class: LogfileWriter
         kwargs:
-          header_file: <<header_dir>>/<<logger>>_hdr.txt
-          filebase: <<file_root>>/<<cruise>>_<<measurement_name>>_corr
+          header_file: <<header_file|<<header_dir>>/<<logger>>_hdr.txt>>
+          filebase: <<filebase|<<file_root>>/<<cruise>>_<<measurement_name>>_corr>>
           split_char: ','
           suffix: '.txt'
 
