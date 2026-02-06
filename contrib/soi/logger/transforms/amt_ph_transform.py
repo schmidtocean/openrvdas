@@ -11,7 +11,7 @@ import time
 import logging
 import yaml
 
-from os.path import dirname, abspath, join, exists, realpath
+from os.path import dirname, abspath, join, exists, realpath, getmtime
 
 sys.path.append(dirname(dirname(dirname(dirname(realpath(__file__))))))
 from logger.utils.das_record import DASRecord, to_das_record_list  # noqa: E402
@@ -104,6 +104,17 @@ class AMTPhTransform(DerivedDataTransform):
         yaml_path = join(self.slopes_dir, yaml_filename)
 
         if exists(yaml_path):
+            try:
+                age_seconds = time.time() - getmtime(yaml_path)
+                if age_seconds > 7 * 24 * 60 * 60:
+                    age_days = age_seconds / 86400.0
+                    logging.warning(
+                        "Calibration file %s is %.1f days old", yaml_path, age_days
+                    )
+            except Exception as e:
+                logging.warning(
+                    "Unable to check age of calibration file %s: %s", yaml_path, e
+                )
             try:
                 with open(yaml_path, "r") as yaml_file:
                     data = yaml.safe_load(yaml_file)
