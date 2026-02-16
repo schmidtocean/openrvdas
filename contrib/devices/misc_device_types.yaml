@@ -136,6 +136,18 @@ PCO2_LDEO:
 
 
 ######################################
+PCO2_GO8050:
+  category: "device_type"
+  description: "General Oceanics Model 8050 pCO2"
+
+  # $PPCO2,STD3,0,31/01/26,01:30:10,2026-01-31T01:30:09Z,-41.3044,-46.2995,430.20,16.56,2375.70,428.38,10.46,0.06,35.23,1024.80,1022.00,2.95,80.58,74.00,1.46,9.89,9.89,9.89,0.00,5.00,22.69, 17.6100,  34.5549,76.7,2.4,1021.184,16.26*67
+
+  format:
+    STD: "$PPCO2,STD{StdNum:d}{StdSuffix:ow},{Std_Error:od},{:nc},{:nc},{:ti},{:og},{:og},{Std_StdValue:og},{Std_EquTemp:og},{Std_CO2Raw:og},{Std_CO2Cal:og},{Std_H2ORaw:og},{Std_H2OCal:og},{Std_CellTemp:og},{Std_CellPres:og},{Std_AtmPres:og},{Std_EquPres:og},{Std_LicorFlow:og},{Std_PumpSpeed:og},{Std_VentFlow:og},{Std_CondATM:og},{Std_CondEQU:og},{Std_Drip1:og},{Std_Drip2:og},{Std_CondTemp:og},{Std_BoxTemp:og},{Std_TSGTemp:og},{Std_TSGSal:og},{Std_Aux1:og},{Std_WaterFlow:og},{Std_Aux2:og},{Std_Aux3:og}*{Checksum:x}"
+    ATM: "$PPCO2,ATM,{Atm_Error:od},{:nc},{:nc},{:ti},{:og},{:og},{Atm_StdValue:nc},{Atm_EquTemp:og},{Atm_CO2Raw:og},{Atm_CO2Cal:og},{Atm_H2ORaw:og},{Atm_H2OCal:og},{Atm_CellTemp:og},{Atm_CellPres:og},{Atm_AtmPres:og},{Atm_EquPres:og},{Atm_LicorFlow:og},{Atm_PumpSpeed:og},{Atm_VentFlow:og},{Atm_CondATM:og},{Atm_CondEQU:og},{Atm_Drip1:og},{Atm_Drip2:og},{Atm_CondTemp:og},{Atm_BoxTemp:og},{Atm_TSGTemp:og},{Atm_TSGSal:og},{Atm_Aux1:og},{Atm_WaterFlow:og},{Atm_Aux2:og},{Atm_Aux3:og}*{Checksum:x}"
+    EQU: "$PPCO2,EQU,{Equ_Error:od},{:nc},{:nc},{:ti},{:og},{:og},{Equ_StdValue:nc},{Equ_EquTemp:og},{Equ_CO2Raw:og},{Equ_CO2Cal:og},{Equ_H2ORaw:og},{Equ_H2OCal:og},{Equ_CellTemp:og},{Equ_CellPres:og},{Equ_AtmPres:og},{Equ_EquPres:og},{Equ_LicorFlow:og},{Equ_PumpSpeed:og},{Equ_VentFlow:og},{Equ_CondATM:og},{Equ_CondEQU:og},{Equ_Drip1:og},{Equ_Drip2:og},{Equ_CondTemp:og},{Equ_BoxTemp:og},{Equ_TSGTemp:og},{Equ_TSGSal:og},{Equ_Aux1:og},{Equ_WaterFlow:og},{Equ_Aux2:og},{Equ_Aux3:og}*{Checksum:x}"
+
+######################################
 PGUV:
   category: "device_type"
   description: "Biospherical Instruments GUV-2511"
