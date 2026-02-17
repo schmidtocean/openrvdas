@@ -30,6 +30,7 @@ class AMTPhTransform(DerivedDataTransform):
         output_field,
         voltage_field,
         temp_field,
+        depth_field=None,
         a0=None,
         a1_20c=None,
         update_on_fields=[],
@@ -46,6 +47,11 @@ class AMTPhTransform(DerivedDataTransform):
 
         temp_field
                  Field name for seawater temperature (T).
+
+        depth_field
+                 Optional field name for depth/pressure. Used only to
+                 downgrade stale-temperature logging from WARNING to INFO
+                 when depth is shallower than 10m.
 
         a0
                  Calibration coefficient a0. If None, will be loaded
@@ -73,6 +79,7 @@ class AMTPhTransform(DerivedDataTransform):
         self.output_field = output_field
         self.voltage_field = voltage_field
         self.temp_field = temp_field
+        self.depth_field = depth_field
 
         self.a0 = float(a0) if a0 is not None else None
         self.a1_20c = float(a1_20c) if a1_20c is not None else None
@@ -87,6 +94,8 @@ class AMTPhTransform(DerivedDataTransform):
         self.voltage_val_time = 0
         self.temp_val = None
         self.temp_val_time = 0
+        self.depth_val = None
+        self.depth_val_time = 0
 
         # Calibration file logic
         self.slopes_dir = join(
@@ -145,7 +154,10 @@ class AMTPhTransform(DerivedDataTransform):
     ############################
     def fields(self):
         """Which fields are we interested in to produce transformed data?"""
-        return [self.voltage_field, self.temp_field]
+        fields = [self.voltage_field, self.temp_field]
+        if self.depth_field:
+            fields.append(self.depth_field)
+        return fields
 
     ############################
     def _metadata(self):
@@ -235,6 +247,13 @@ class AMTPhTransform(DerivedDataTransform):
                     if self.temp_field in self.update_on_fields:
                         update = True
 
+            if self.depth_field in fields:
+                if timestamp >= self.depth_val_time:
+                    self.depth_val = fields.get(self.depth_field)
+                    self.depth_val_time = timestamp
+                    if self.depth_field in self.update_on_fields:
+                        update = True
+
             # If we've not seen anything that updates fields that would
             # trigger a new corrected pH value, skip rest of computation.
             if not update:
@@ -309,11 +328,31 @@ class AMTPhTransform(DerivedDataTransform):
 
         temp_max_age = self.max_field_age.get(self.temp_field, None)
         if temp_max_age and timestamp - self.temp_val_time > temp_max_age:
-            logging.warning(
-                "temp_field too old - max age %g, age %g",
-                temp_max_age,
-                timestamp - self.temp_val_time,
-            )
+            log_fn = logging.warning
+            depth_value = None
+            if self.depth_val is not None:
+                try:
+                    depth_value = float(self.depth_val)
+                except (TypeError, ValueError):
+                    depth_value = None
+
+            if depth_value is not None and depth_value < 10:
+                log_fn = logging.info
+
+            if depth_value is not None:
+                log_fn(
+                    "temp_field too old - max age %g, age %g, depth_field %s=%g",
+                    temp_max_age,
+                    timestamp - self.temp_val_time,
+                    self.depth_field,
+                    depth_value,
+                )
+            else:
+                log_fn(
+                    "temp_field too old - max age %g, age %g",
+                    temp_max_age,
+                    timestamp - self.temp_val_time,
+                )
             return True
 
         voltage_max_age = self.max_field_age.get(self.voltage_field, None)
