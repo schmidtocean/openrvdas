@@ -140,6 +140,10 @@ par_fm_port:
 #   class: MOXA
 #   port:
 #   filebase: test/FKt990101/data/FKt990101_par_fm_port-
+pco2:
+  class: UDP
+  port: 34017
+  filebase: test/FKt990101/data/FKt990101_pco2-
 pH_sunburst_1:
   class: UDP
   port: 31515
