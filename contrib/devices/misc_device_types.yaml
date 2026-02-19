@@ -149,6 +149,251 @@ PCO2_GO8050:
     EQU: "$PPCO2,EQU,{Equ_Error:od},{:nc},{:nc},{:ti},{:og},{:og},{Equ_StdValue:nc},{Equ_EquTemp:og},{Equ_CO2Raw:og},{Equ_CO2Cal:og},{Equ_H2ORaw:og},{Equ_H2OCal:og},{Equ_CellTemp:og},{Equ_CellPres:og},{Equ_AtmPres:og},{Equ_EquPres:og},{Equ_LicorFlow:og},{Equ_PumpSpeed:og},{Equ_VentFlow:og},{Equ_CondATM:og},{Equ_CondEQU:og},{Equ_Drip1:og},{Equ_Drip2:og},{Equ_CondTemp:og},{Equ_BoxTemp:og},{Equ_TSGTemp:og},{Equ_TSGSal:og},{Equ_Aux1:og},{Equ_WaterFlow:og},{Equ_Aux2:og},{Equ_Aux3:og}*{Checksum:x}"
     EQU_DRAIN: "$PPCO2,EQU-DRAIN,{Equ_Error:od},{:nc},{:nc},{:ti},{:og},{:og},{Equ_StdValue:nc},{Equ_EquTemp:og},{Equ_CO2Raw:og},{Equ_CO2Cal:og},{Equ_H2ORaw:og},{Equ_H2OCal:og},{Equ_CellTemp:og},{Equ_CellPres:og},{Equ_AtmPres:og},{Equ_EquPres:og},{Equ_LicorFlow:og},{Equ_PumpSpeed:og},{Equ_VentFlow:og},{Equ_CondATM:og},{Equ_CondEQU:og},{Equ_Drip1:og},{Equ_Drip2:og},{Equ_CondTemp:og},{Equ_BoxTemp:og},{Equ_TSGTemp:og},{Equ_TSGSal:og},{Equ_Aux1:og},{Equ_WaterFlow:og},{Equ_Aux2:og},{Equ_Aux3:og}*{Checksum:x}"
 
+
+  fields:
+    StdNum:
+      units: ""
+      description: "STD run number (e.g. 3 for STD3 or 4 for STD4-DRAIN)"
+    StdSuffix:
+      units: ""
+      description: "STD run suffix (for example s/z or -DRAIN)"
+    Std_Error:
+      units: ""
+      description: "STD run: Instrument error code"
+    Std_StdValue:
+      units: "umol/mol"
+      description: "STD run: Reported standard/reference value (may be NaN outside standard runs)"
+    Std_EquTemp:
+      units: "C"
+      description: "STD run: Equilibrator temperature"
+    Std_CO2Raw:
+      units: "mV"
+      description: "STD run: Raw CO2 detector signal"
+    Std_CO2Cal:
+      units: "umol/mol"
+      description: "STD run: Calibrated CO2 concentration"
+    Std_H2ORaw:
+      units: "mV"
+      description: "STD run: Raw H2O detector signal"
+    Std_H2OCal:
+      units: "mmol/mol"
+      description: "STD run: Calibrated H2O concentration"
+    Std_CellTemp:
+      units: "C"
+      description: "STD run: LI-COR cell temperature"
+    Std_CellPres:
+      units: "mbar"
+      description: "STD run: LI-COR cell pressure"
+    Std_AtmPres:
+      units: "mbar"
+      description: "STD run: Atmospheric pressure"
+    Std_EquPres:
+      units: "mbar"
+      description: "STD run: Equilibrator pressure (differential)"
+    Std_LicorFlow:
+      units: "mL/min"
+      description: "STD run: Analyzer flow rate"
+    Std_PumpSpeed:
+      units: "counts"
+      description: "STD run: Headspace pump speed setting"
+    Std_VentFlow:
+      units: "mL/min"
+      description: "STD run: Vent flow rate"
+    Std_CondATM:
+      units: "V"
+      description: "STD run: ATM condenser moisture detector signal"
+    Std_CondEQU:
+      units: "V"
+      description: "STD run: EQU condenser moisture detector signal"
+    Std_Drip1:
+      units: "V"
+      description: "STD run: Leak detector 1 signal"
+    Std_Drip2:
+      units: "V"
+      description: "STD run: Leak detector 2 signal"
+    Std_CondTemp:
+      units: "C"
+      description: "STD run: Condenser temperature"
+    Std_BoxTemp:
+      units: "C"
+      description: "STD run: Dry box internal temperature"
+    Std_TSGTemp:
+      units: "C"
+      description: "STD run: TSG seawater temperature"
+    Std_TSGSal:
+      units: "PSU"
+      description: "STD run: TSG salinity"
+    Std_Aux1:
+      units: ""
+      description: "STD run: Auxiliary channel 1"
+    Std_WaterFlow:
+      units: "L/min"
+      description: "STD run: Seawater flow rate"
+    Std_Aux2:
+      units: ""
+      description: "STD run: Auxiliary channel 2"
+    Std_Aux3:
+      units: "C"
+      description: "STD run: Auxiliary temperature channel"
+    Atm_Error:
+      units: ""
+      description: "ATM run: Instrument error code"
+    Atm_StdValue:
+      units: "umol/mol"
+      description: "ATM run: Reported standard/reference value (may be NaN outside standard runs)"
+    Atm_EquTemp:
+      units: "C"
+      description: "ATM run: Equilibrator temperature"
+    Atm_CO2Raw:
+      units: "mV"
+      description: "ATM run: Raw CO2 detector signal"
+    Atm_CO2Cal:
+      units: "umol/mol"
+      description: "ATM run: Calibrated CO2 concentration"
+    Atm_H2ORaw:
+      units: "mV"
+      description: "ATM run: Raw H2O detector signal"
+    Atm_H2OCal:
+      units: "mmol/mol"
+      description: "ATM run: Calibrated H2O concentration"
+    Atm_CellTemp:
+      units: "C"
+      description: "ATM run: LI-COR cell temperature"
+    Atm_CellPres:
+      units: "mbar"
+      description: "ATM run: LI-COR cell pressure"
+    Atm_AtmPres:
+      units: "mbar"
+      description: "ATM run: Atmospheric pressure"
+    Atm_EquPres:
+      units: "mbar"
+      description: "ATM run: Equilibrator pressure (differential)"
+    Atm_LicorFlow:
+      units: "mL/min"
+      description: "ATM run: Analyzer flow rate"
+    Atm_PumpSpeed:
+      units: "counts"
+      description: "ATM run: Headspace pump speed setting"
+    Atm_VentFlow:
+      units: "mL/min"
+      description: "ATM run: Vent flow rate"
+    Atm_CondATM:
+      units: "V"
+      description: "ATM run: ATM condenser moisture detector signal"
+    Atm_CondEQU:
+      units: "V"
+      description: "ATM run: EQU condenser moisture detector signal"
+    Atm_Drip1:
+      units: "V"
+      description: "ATM run: Leak detector 1 signal"
+    Atm_Drip2:
+      units: "V"
+      description: "ATM run: Leak detector 2 signal"
+    Atm_CondTemp:
+      units: "C"
+      description: "ATM run: Condenser temperature"
+    Atm_BoxTemp:
+      units: "C"
+      description: "ATM run: Dry box internal temperature"
+    Atm_TSGTemp:
+      units: "C"
+      description: "ATM run: TSG seawater temperature"
+    Atm_TSGSal:
+      units: "PSU"
+      description: "ATM run: TSG salinity"
+    Atm_Aux1:
+      units: ""
+      description: "ATM run: Auxiliary channel 1"
+    Atm_WaterFlow:
+      units: "L/min"
+      description: "ATM run: Seawater flow rate"
+    Atm_Aux2:
+      units: ""
+      description: "ATM run: Auxiliary channel 2"
+    Atm_Aux3:
+      units: "C"
+      description: "ATM run: Auxiliary temperature channel"
+    Equ_Error:
+      units: ""
+      description: "EQU run: Instrument error code"
+    Equ_StdValue:
+      units: "umol/mol"
+      description: "EQU run: Reported standard/reference value (may be NaN outside standard runs)"
+    Equ_EquTemp:
+      units: "C"
+      description: "EQU run: Equilibrator temperature"
+    Equ_CO2Raw:
+      units: "mV"
+      description: "EQU run: Raw CO2 detector signal"
+    Equ_CO2Cal:
+      units: "umol/mol"
+      description: "EQU run: Calibrated CO2 concentration"
+    Equ_H2ORaw:
+      units: "mV"
+      description: "EQU run: Raw H2O detector signal"
+    Equ_H2OCal:
+      units: "mmol/mol"
+      description: "EQU run: Calibrated H2O concentration"
+    Equ_CellTemp:
+      units: "C"
+      description: "EQU run: LI-COR cell temperature"
+    Equ_CellPres:
+      units: "mbar"
+      description: "EQU run: LI-COR cell pressure"
+    Equ_AtmPres:
+      units: "mbar"
+      description: "EQU run: Atmospheric pressure"
+    Equ_EquPres:
+      units: "mbar"
+      description: "EQU run: Equilibrator pressure (differential)"
+    Equ_LicorFlow:
+      units: "mL/min"
+      description: "EQU run: Analyzer flow rate"
+    Equ_PumpSpeed:
+      units: "counts"
+      description: "EQU run: Headspace pump speed setting"
+    Equ_VentFlow:
+      units: "mL/min"
+      description: "EQU run: Vent flow rate"
+    Equ_CondATM:
+      units: "V"
+      description: "EQU run: ATM condenser moisture detector signal"
+    Equ_CondEQU:
+      units: "V"
+      description: "EQU run: EQU condenser moisture detector signal"
+    Equ_Drip1:
+      units: "V"
+      description: "EQU run: Leak detector 1 signal"
+    Equ_Drip2:
+      units: "V"
+      description: "EQU run: Leak detector 2 signal"
+    Equ_CondTemp:
+      units: "C"
+      description: "EQU run: Condenser temperature"
+    Equ_BoxTemp:
+      units: "C"
+      description: "EQU run: Dry box internal temperature"
+    Equ_TSGTemp:
+      units: "C"
+      description: "EQU run: TSG seawater temperature"
+    Equ_TSGSal:
+      units: "PSU"
+      description: "EQU run: TSG salinity"
+    Equ_Aux1:
+      units: ""
+      description: "EQU run: Auxiliary channel 1"
+    Equ_WaterFlow:
+      units: "L/min"
+      description: "EQU run: Seawater flow rate"
+    Equ_Aux2:
+      units: ""
+      description: "EQU run: Auxiliary channel 2"
+    Equ_Aux3:
+      units: "C"
+      description: "EQU run: Auxiliary temperature channel"
+    Checksum:
+      units: "hex"
+      description: "Sentence checksum"
 ######################################
 PGUV:
   category: "device_type"
