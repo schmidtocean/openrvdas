@@ -1,0 +1,1 @@
+Timestamp,Header,RunType,Error,Date,PC_Time,GPS_Time,Latitude,Longitude,StdValue,EquTemp,CO2Raw,CO2Cal,H2ORaw,H2OCal,CellTemp,CellPres,AtmPres,EquPres,LicorFlow,PumpSpeed,VentFlow,CondATM,CondEQU,Drip1,Drip2,CondTemp,BoxTemp,TSGTemp,TSGSal,Aux1,WaterFlow,Aux2,Aux3*CheckSum
