@@ -9,9 +9,10 @@
 #   data for databases and uses a ComposedWriter to apply formatting
 #   for text file output.
 #
-#   Calibration coefficients (a0 and a1_20c) can be passed explicitly via
-#   logger variables. If not provided, they will be loaded from YAML files 
-#   in the local/soi/slopes/ directory based on the voltage_field name.
+#   Calibration coefficients can be provided via logger variables. If either
+#   is missing, AMTPhTransform will attempt to load both from
+#   local/soi/slopes/<voltage_field>_slope.yaml. If neither source provides
+#   valid coefficients, the logger will raise an error.
 #
 # Required Logger Variables:
 #   - voltage_field:       (string) The raw pH voltage field to read
@@ -22,8 +23,8 @@
 #  Logger Variables:
 #   - depth_field:         (string) Depth/pressure field used to set stale-temp
 #                                   logging level (INFO when depth < 10 m)
-#   - cal_a0:              (float)  Calibration coefficient a0
-#   - cal_a1_20c:          (float)  Calibration coefficient a1_20c (20C)
+#   - cal_a0:              (float|null) Calibration coefficient a0
+#   - cal_a1_20c:          (float|null) Calibration coefficient a1_20c (20C)
 #   - header_file:         (string) Override header file path for file output
 #   - filebase:            (string) Override file base path for file output
 #
@@ -54,8 +55,8 @@ logger_templates:
           voltage_field: <<voltage_field>>
           temp_field: <<temp_field>>
           depth_field: <<depth_field|__depth_unused__>>
-          a0: <<cal_a0>>
-          a1_20c: <<cal_a1_20c>>
+          a0: <<cal_a0|null>>
+          a1_20c: <<cal_a1_20c|null>>
           update_on_fields: <<voltage_field>>
           max_field_age:
             <<temp_field>>: 5
