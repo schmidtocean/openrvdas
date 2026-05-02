@@ -250,7 +250,9 @@ devices:
     description: ""
 
     fields:
+      Temperature: "MiniSVS_Fwd_Temperature"
       SoundVelocity: "MiniSVS_Aft_SoundVelocity"
+
 
   ######################################
   minisvs_fwd:
@@ -260,9 +262,11 @@ devices:
     description: ""
 
     fields:
+      Temperature: "MiniSVS_Fwd_Temperature"
       SoundVelocity: "MiniSVS_Fwd_SoundVelocity"
 
-######################################
+
+# ######################################
   par_fm_port:
     category: "device"
     device_type: "ParBiospherical"
