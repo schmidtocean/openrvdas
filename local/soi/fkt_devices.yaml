@@ -252,6 +252,19 @@ devices:
     fields:
       SoundVelocity: "MiniSVS_Aft_SoundVelocity"
 
+
+  ######################################
+  minisvst_aft:
+    category: "device"
+    device_type: "MiniSVST"
+    serial_number: "35821"
+    description: ""
+
+    fields:
+      Temperature: "MiniSVS_Aft_Temperature"
+      SoundVelocity: "MiniSVS_Aft_SoundVelocity"
+
+
   ######################################
   minisvs_fwd:
     category: "device"
@@ -261,6 +274,19 @@ devices:
 
     fields:
       SoundVelocity: "MiniSVS_Fwd_SoundVelocity"
+
+  ######################################
+
+  minisvst_fwd:
+    category: "device"
+    device_type: "MiniSVS"
+    serial_number: "44486"
+    description: ""
+
+    fields:
+      Temperature: "MiniSVS_Fwd_Temperature"
+      SoundVelocity: "MiniSVST_Fwd_SoundVelocity"
+
 
 ######################################
   par_fm_port:
