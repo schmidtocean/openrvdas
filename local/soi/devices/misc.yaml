@@ -68,20 +68,6 @@ MiniSVS:
       units: "m/s"
       description: "Sound velocity"
 
-# ######################################
-# MiniSVST:
-#   category: "device_type"
-#   description: "MiniSVST"
-
-#   format: "{Temperature:g} {SoundVelocity:g}"
-
-#   fields:
-#     Temperature:
-#       units: "C"
-#       description: "Temperature"
-#     SoundVelocity:
-#       units: "m/s"
-#       description: "Sound velocity"
 
 ######################################
 ParBiospherical:
