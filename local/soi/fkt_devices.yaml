@@ -279,13 +279,13 @@ devices:
 
   minisvst_fwd:
     category: "device"
-    device_type: "MiniSVS"
+    device_type: "MiniSVST"
     serial_number: "44486"
     description: ""
 
     fields:
       Temperature: "MiniSVS_Fwd_Temperature"
-      SoundVelocity: "MiniSVST_Fwd_SoundVelocity"
+      SoundVelocity: "MiniSVS_Fwd_SoundVelocity"
 
 
 ######################################
