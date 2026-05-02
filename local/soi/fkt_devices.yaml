@@ -253,16 +253,16 @@ devices:
       SoundVelocity: "MiniSVS_Aft_SoundVelocity"
 
 
-  ######################################
-  minisvst_aft:
-    category: "device"
-    device_type: "MiniSVST"
-    serial_number: "35821"
-    description: ""
+  # ######################################
+  # minisvst_aft:
+  #   category: "device"
+  #   device_type: "MiniSVST"
+  #   serial_number: "35821"
+  #   description: ""
 
-    fields:
-      Temperature: "MiniSVS_Aft_Temperature"
-      SoundVelocity: "MiniSVS_Aft_SoundVelocity"
+  #   fields:
+  #     Temperature: "MiniSVS_Aft_Temperature"
+  #     SoundVelocity: "MiniSVS_Aft_SoundVelocity"
 
 
   ######################################
@@ -277,18 +277,18 @@ devices:
 
   ######################################
 
-  minisvst_fwd:
-    category: "device"
-    device_type: "MiniSVST"
-    serial_number: "44486"
-    description: ""
+#   minisvst_fwd:
+#     category: "device"
+#     device_type: "MiniSVST"
+#     serial_number: "44486"
+#     description: ""
 
-    fields:
-      Temperature: "MiniSVS_Fwd_Temperature"
-      SoundVelocity: "MiniSVS_Fwd_SoundVelocity"
+#     fields:
+#       Temperature: "MiniSVS_Fwd_Temperature"
+#       SoundVelocity: "MiniSVS_Fwd_SoundVelocity"
 
 
-######################################
+# ######################################
   par_fm_port:
     category: "device"
     device_type: "ParBiospherical"

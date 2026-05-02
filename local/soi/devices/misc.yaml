@@ -53,23 +53,12 @@ MET4:
 ######################################
 MiniSVS:
   category: "device_type"
-  description: "MiniSVS"
+  description: "MiniSVS with or without temperature"
 
   format:
     space: " {SoundVelocity:g}"
     no-space: "{SoundVelocity:g}"
-
-  fields:
-    SoundVelocity:
-      units: "m/s"
-      description: "Sound velocity"
-
-######################################
-MiniSVST:
-  category: "device_type"
-  description: "MiniSVST"
-
-  format: "{Temperature:g} {SoundVelocity:g}"
+    with-temp: "{Temperature:g} {SoundVelocity:g}"
 
   fields:
     Temperature:
@@ -78,6 +67,21 @@ MiniSVST:
     SoundVelocity:
       units: "m/s"
       description: "Sound velocity"
+
+# ######################################
+# MiniSVST:
+#   category: "device_type"
+#   description: "MiniSVST"
+
+#   format: "{Temperature:g} {SoundVelocity:g}"
+
+#   fields:
+#     Temperature:
+#       units: "C"
+#       description: "Temperature"
+#     SoundVelocity:
+#       units: "m/s"
+#       description: "Sound velocity"
 
 ######################################
 ParBiospherical:
