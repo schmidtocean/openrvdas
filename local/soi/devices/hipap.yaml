@@ -18,14 +18,35 @@ HiPAP:
     # Example: $PSIMSSB,130248.934,M01,A,,D,N,M,3641.63178,S,07305.80905,W,458.876,0.185,N,,
     # - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},{AddlVal2:of},"
     # - "$PSIMSSB,{GPSTime:f},{BeaconID:w},{Status:w},{ErrorCode:ow},{CoordSys:w},{Orientation:w},{SWFilter:w},{X_coord:nlat_dir},{Y_coord:nlat_dir},{Depth:f},{Accuracy:f},{AddlInfo:w},{AddlVal1:of},"
-    PSIMSSB_ALPHA: "$PSIMSSB,{GPSTime_ALPHA:f},M08,{Status_ALPHA:w},{ErrorCode_ALPHA:ow},{CoordSys_ALPHA:w},{Orientation_ALPHA:w},{SWFilter_ALPHA:w},{X_coord_ALPHA:nlat_dir},{Y_coord_ALPHA:nlat_dir},{Depth_ALPHA:f},{Accuracy_ALPHA:f},{AddlInfo_ALPHA:w},{AddlVal1_ALPHA:of},{AddlVal2_ALPHA:of},,{Val4_ALPHA:od},{Val5_ALPHA:od}"
-    PSIMSSB_BRAVO: "$PSIMSSB,{GPSTime_BRAVO:f},M01,{Status_BRAVO:w},{ErrorCode_BRAVO:ow},{CoordSys_BRAVO:w},{Orientation_BRAVO:w},{SWFilter_BRAVO:w},{X_coord_BRAVO:nlat_dir},{Y_coord_BRAVO:nlat_dir},{Depth_BRAVO:f},{Accuracy_BRAVO:f},{AddlInfo_BRAVO:w},{AddlVal1_BRAVO:of},{AddlVal2_BRAVO:of},,{Val4_BRAVO:od},{Val5_BRAVO:od}"
+    PSIMSSB_ZULU: "$PSIMSSB,{GPSTime_ZULU:f},M08,{Status_ZULU:w},{ErrorCode_ZULU:ow},{CoordSys_ZULU:w},{Orientation_ZULU:w},{SWFilter_ZULU:w},{X_coord_ZULU:nlat_dir},{Y_coord_ZULU:nlat_dir},{Depth_ZULU:f},{Accuracy_ZULU:f},{AddlInfo_ZULU:w},{AddlVal1_ZULU:of},{AddlVal2_ZULU:of},,{Val4_ZULU:od},{Val5_ZULU:od}"
+    PSIMSSB_ZULU_FSK: "$PSIMSSB,{GPSTime_ZULU:f},B16,{Status_ZULU:w},{ErrorCode_ZULU:ow},{CoordSys_ZULU:w},{Orientation_ZULU:w},{SWFilter_ZULU:w},{X_coord_ZULU:nlat_dir},{Y_coord_ZULU:nlat_dir},{Depth_ZULU:f},{Accuracy_ZULU:f},{AddlInfo_ZULU:w},{AddlVal1_ZULU:of},{AddlVal2_ZULU:of},,{Val4_ZULU:od},{Val5_ZULU:od}"
+    #PSIMSSB_YANKEE: "$PSIMSSB,{GPSTime_YANKEE:f},M01,{Status_YANKEE:w},{ErrorCode_YANKEE:ow},{CoordSys_YANKEE:w},{Orientation_YANKEE:w},{SWFilter_YANKEE:w},{X_coord_YANKEE:nlat_dir},{Y_coord_YANKEE:nlat_dir},{Depth_YANKEE:f},{Accuracy_YANKEE:f},{AddlInfo_YANKEE:w},{AddlVal1_YANKEE:of},{AddlVal2_YANKEE:of},,{Val4_YANKEE:od},{Val5_YANKEE:od}"
+    #PSIMSSB_YANKEE: "$PSIMSSB,{GPSTime_YANKEE:f},BXX,{Status_YANKEE:w},{ErrorCode_YANKEE:ow},{CoordSys_YANKEE:w},{Orientation_YANKEE:w},{SWFilter_YANKEE:w},{X_coord_YANKEE:nlat_dir},{Y_coord_YANKEE:nlat_dir},{Depth_YANKEE:f},{Accuracy_YANKEE:f},{AddlInfo_YANKEE:w},{AddlVal1_YANKEE:of},{AddlVal2_YANKEE:of},,{Val4_YANKEE:od},{Val5_YANKEE:od}"
+    PSIMSSB_WHISKEY: "$PSIMSSB,{GPSTime_WHISKEY:f},M05,{Status_WHISKEY:w},{ErrorCode_WHISKEY:ow},{CoordSys_WHISKEY:w},{Orientation_WHISKEY:w},{SWFilter_WHISKEY:w},{X_coord_WHISKEY:nlat_dir},{Y_coord_WHISKEY:nlat_dir},{Depth_WHISKEY:f},{Accuracy_WHISKEY:f},{AddlInfo_WHISKEY:w},{AddlVal1_WHISKEY:of},{AddlVal2_WHISKEY:of},,{Val4_WHISKEY:od},{Val5_WHISKEY:od}"
+    PSIMSSB_WHISKEY_FSK: "$PSIMSSB,{GPSTime_WHISKEY:f},B37,{Status_WHISKEY:w},{ErrorCode_WHISKEY:ow},{CoordSys_WHISKEY:w},{Orientation_WHISKEY:w},{SWFilter_WHISKEY:w},{X_coord_WHISKEY:nlat_dir},{Y_coord_WHISKEY:nlat_dir},{Depth_WHISKEY:f},{Accuracy_WHISKEY:f},{AddlInfo_WHISKEY:w},{AddlVal1_WHISKEY:of},{AddlVal2_WHISKEY:of},,{Val4_WHISKEY:od},{Val5_WHISKEY:od}"
+    PSIMSSB_HOTEL: "$PSIMSSB,{GPSTime_HOTEL:f},B14,{Status_HOTEL:w},{ErrorCode_HOTEL:ow},{CoordSys_HOTEL:w},{Orientation_HOTEL:w},{SWFilter_HOTEL:w},{X_coord_HOTEL:nlat_dir},{Y_coord_HOTEL:nlat_dir},{Depth_HOTEL:f},{Accuracy_HOTEL:f},{AddlInfo_HOTEL:w},{AddlVal1_HOTEL:of},{AddlVal2_HOTEL:of},,{Val4_HOTEL:od},{Val5_HOTEL:od}"
+
     # Handles sensor values telegrams for head attitude
     # Example: $PSIMSNS,164711.822,M01,1,1,-0.10,0.18,0.00,20.44,,d1,0.006,,M121
     # Example2:$PSIMSNS,193747.229,,1,1,0.35,-0.20,0.00,16.12,,60,0.000,,M121"
+    PSIMSNS_ZULU:
+    - "$PSIMSNS,{GPSTime_ZULU:f},M08,{TransducerNum_ZULU:od},{SensorStatus_ZULU:od},{Roll_ZULU:of},{Pitch_ZULU:of},{Heave_ZULU:of},{Heading_ZULU:of},,{SensorID_ZULU:ow},{SensorValue_ZULU:of},,{SystemID_ZULU:ow}{:os}"
+    - "$PSIMSNS,{GPSTime_ZULU:f},M08,{TransducerNum_ZULU:od},{SensorStatus_ZULU:od},{Roll_ZULU:of},{Pitch_ZULU:of},{Heave_ZULU:of},{Heading_ZULU:of}{:os}"
+    - "$PSIMSNS,{GPSTime_ZULU:f},B16,{TransducerNum_ZULU:od},{SensorStatus_ZULU:od},{Roll_ZULU:of},{Pitch_ZULU:of},{Heave_ZULU:of},{Heading_ZULU:of},,{SensorID_ZULU:ow},{SensorValue_ZULU:of},,{SystemID_ZULU:ow}{:os}"
+    - "$PSIMSNS,{GPSTime_ZULU:f},B16,{TransducerNum_ZULU:od},{SensorStatus_ZULU:od},{Roll_ZULU:of},{Pitch_ZULU:of},{Heave_ZULU:of},{Heading_ZULU:of}{:os}"
+    PSIMSNS_WHISKEY:
+    - "$PSIMSNS,{GPSTime_WHISKEY:f},M05,{TransducerNum_WHISKEY:od},{SensorStatus_WHISKEY:od},{Roll_WHISKEY:of},{Pitch_WHISKEY:of},{Heave_WHISKEY:of},{Heading_WHISKEY:of},,{SensorID_WHISKEY:ow},{SensorValue_WHISKEY:of},,{SystemID_WHISKEY:ow}{:os}"
+    - "$PSIMSNS,{GPSTime_WHISKEY:f},M05,{TransducerNum_WHISKEY:od},{SensorStatus_WHISKEY:od},{Roll_WHISKEY:of},{Pitch_WHISKEY:of},{Heave_WHISKEY:of},{Heading_WHISKEY:of}{:os}"
+    - "$PSIMSNS,{GPSTime_WHISKEY:f},B37,{TransducerNum_WHISKEY:od},{SensorStatus_WHISKEY:od},{Roll_WHISKEY:of},{Pitch_WHISKEY:of},{Heave_WHISKEY:of},{Heading_WHISKEY:of},,{SensorID_WHISKEY:ow},{SensorValue_WHISKEY:of},,{SystemID_WHISKEY:ow}{:os}"
+    - "$PSIMSNS,{GPSTime_WHISKEY:f},B37,{TransducerNum_WHISKEY:od},{SensorStatus_WHISKEY:od},{Roll_WHISKEY:of},{Pitch_WHISKEY:of},{Heave_WHISKEY:of},{Heading_WHISKEY:of}{:os}"
+    PSIMSNS_HOTEL:
+    - "$PSIMSNS,{GPSTime_HOTEL:f},B14,{TransducerNum_HOTEL:od},{SensorStatus_HOTEL:od},{Roll_HOTEL:of},{Pitch_HOTEL:of},{Heave_HOTEL:of},{Heading_HOTEL:of},,{SensorID_HOTEL:ow},{SensorValue_HOTEL:of},,{SystemID_HOTEL:ow}{:os}"
+    - "$PSIMSNS,{GPSTime_HOTEL:f},B14,{TransducerNum_HOTEL:od},{SensorStatus_HOTEL:od},{Roll_HOTEL:of},{Pitch_HOTEL:of},{Heave_HOTEL:of},{Heading_HOTEL:of}{:os}"
     PSIMSNS:
     - "$PSIMSNS,{GPSTime:f},{TransceiverNum:ow},{TransducerNum:od},{SensorStatus:od},{Roll:of},{Pitch:of},{Heave:of},{Heading:of},,{SensorID:ow},{SensorValue:of},,{SystemID:ow}"
     - "$PSIMSNS,{GPSTime:f},,{TransducerNum:od},{SensorStatus:od},{Roll:of},{Pitch:of},{Heave:of},{Heading:of},,{SensorID:ow},{SensorValue:of},,{SystemID:ow}"
+    - "$PSIMSNS,{GPSTime:f},{TransceiverNum:ow},{TransducerNum:od},{SensorStatus:od},{Roll:of},{Pitch:of},{Heave:of},{Heading:of}{:os}"
+    - "$PSIMSNS,{GPSTime:f},,{TransducerNum:od},{SensorStatus:od},{Roll:of},{Pitch:of},{Heave:of},{Heading:of}{:os}"
   ########
   # Metadata for the parsed values.
   fields:
@@ -59,88 +80,212 @@ HiPAP:
       units: "ID"
       description: "Unknown system ID from example"
 
-    # PSIMSSB_ALPHA Fields
-    GPSTime_ALPHA:
-      units: "UTC"
-      description: "Coordinated Universal Time (hhmmss.ss) for ALPHA"
-    Status_ALPHA:
-      units: "code"
-      description: "Measurement status for ALPHA: A for OK, V for not OK"
-    ErrorCode_ALPHA:
-      units: "code"
-      description: "Three-character error code for ALPHA if status is V"
-    CoordSys_ALPHA:
-      units: "code"
-      description: "Coordinate system for ALPHA: C=Cartesian, P=Polar, U=UTM"
-    Orientation_ALPHA:
-      units: "code"
-      description: "Coordinate orientation for ALPHA: H=Vessel Head Up, N=North, E=East"
-    SWFilter_ALPHA:
-      units: "code"
-      description: "Software filter status for ALPHA: M=Measured, F=Filtered, P=Predicted"
-    X_coord_ALPHA:
-      units: "meters or degrees"
-      description: "X coordinate for ALPHA (e.g., Starboard, North, Eastings)"
-    Y_coord_ALPHA:
-      units: "meters or degrees"
-      description: "Y coordinate for ALPHA (e.g., Forwards, East, Northings)"
-    Depth_ALPHA:
+    # PSIMSNS_ZULU Fields
+    TransducerNum_ZULU:
+      units: "ID"
+      description: "Transducer number for ZULU"
+    SensorStatus_ZULU:
+      description: "Unknown sensor status field from example for ZULU"
+    Roll_ZULU:
+      units: "degrees"
+      description: "Roll angle in degrees for ZULU"
+    Pitch_ZULU:
+      units: "degrees"
+      description: "Pitch angle in degrees for ZULU"
+    Heave_ZULU:
       units: "meters"
-      description: "Depth of beacon in meters for ALPHA"
-    Accuracy_ALPHA:
-      units: "meters"
-      description: "Expected accuracy of the position for ALPHA"
-    AddlInfo_ALPHA:
-      units: "code"
-      description: "Additional information for ALPHA: N=None, C=Compass, I=Inclinometer"
-    AddlVal1_ALPHA:
-      description: "First additional value for ALPHA (e.g., Tp compass or Tp x inclination)"
-    AddlVal2_ALPHA:
-      description: "Second additional value for ALPHA (e.g., Tp y inclination)"
-    Val4_ALPHA:
-      description: "Additional ordinal value 4 for ALPHA"
-    Val5_ALPHA:
-      description: "Additional ordinal value 5 for ALPHA"
+      description: "Heave in meters for ZULU"
+    Heading_ZULU:
+      units: "degrees"
+      description: "Heading in degrees (0-360) for ZULU"
+    SensorID_ZULU:
+      units: "ID"
+      description: "Unknown sensor ID from example for ZULU"
+    SensorValue_ZULU:
+      description: "Unknown sensor value from example for ZULU"
+    SystemID_ZULU:
+      units: "ID"
+      description: "Unknown system ID from example for ZULU"
 
-    # PSIMSSB_BRAVO Fields
-    GPSTime_BRAVO:
+    # PSIMSNS_WHISKEY Fields
+    TransducerNum_WHISKEY:
+      units: "ID"
+      description: "Transducer number for WHISKEY"
+    SensorStatus_WHISKEY:
+      description: "Unknown sensor status field from example for WHISKEY"
+    Roll_WHISKEY:
+      units: "degrees"
+      description: "Roll angle in degrees for WHISKEY"
+    Pitch_WHISKEY:
+      units: "degrees"
+      description: "Pitch angle in degrees for WHISKEY"
+    Heave_WHISKEY:
+      units: "meters"
+      description: "Heave in meters for WHISKEY"
+    Heading_WHISKEY:
+      units: "degrees"
+      description: "Heading in degrees (0-360) for WHISKEY"
+    SensorID_WHISKEY:
+      units: "ID"
+      description: "Unknown sensor ID from example for WHISKEY"
+    SensorValue_WHISKEY:
+      description: "Unknown sensor value from example for WHISKEY"
+    SystemID_WHISKEY:
+      units: "ID"
+      description: "Unknown system ID from example for WHISKEY"
+
+    # PSIMSNS_HOTEL Fields
+    TransducerNum_HOTEL:
+      units: "ID"
+      description: "Transducer number for HOTEL"
+    SensorStatus_HOTEL:
+      description: "Unknown sensor status field from example for HOTEL"
+    Roll_HOTEL:
+      units: "degrees"
+      description: "Roll angle in degrees for HOTEL"
+    Pitch_HOTEL:
+      units: "degrees"
+      description: "Pitch angle in degrees for HOTEL"
+    Heave_HOTEL:
+      units: "meters"
+      description: "Heave in meters for HOTEL"
+    Heading_HOTEL:
+      units: "degrees"
+      description: "Heading in degrees (0-360) for HOTEL"
+    SensorID_HOTEL:
+      units: "ID"
+      description: "Unknown sensor ID from example for HOTEL"
+    SensorValue_HOTEL:
+      description: "Unknown sensor value from example for HOTEL"
+    SystemID_HOTEL:
+      units: "ID"
+      description: "Unknown system ID from example for HOTEL"
+
+    # PSIMSSB_ZULU Fields
+    GPSTime_ZULU:
       units: "UTC"
-      description: "Coordinated Universal Time (hhmmss.ss) for BRAVO"
-    Status_BRAVO:
+      description: "Coordinated Universal Time (hhmmss.ss) for ZULU"
+    Status_ZULU:
       units: "code"
-      description: "Measurement status for BRAVO: A for OK, V for not OK"
-    ErrorCode_BRAVO:
+      description: "Measurement status for ZULU: A for OK, V for not OK"
+    ErrorCode_ZULU:
       units: "code"
-      description: "Three-character error code for BRAVO if status is V"
-    CoordSys_BRAVO:
+      description: "Three-character error code for ZULU if status is V"
+    CoordSys_ZULU:
       units: "code"
-      description: "Coordinate system for BRAVO: C=Cartesian, P=Polar, U=UTM"
-    Orientation_BRAVO:
+      description: "Coordinate system for ZULU: C=Cartesian, P=Polar, U=UTM"
+    Orientation_ZULU:
       units: "code"
-      description: "Coordinate orientation for BRAVO: H=Vessel Head Up, N=North, E=East"
-    SWFilter_BRAVO:
+      description: "Coordinate orientation for ZULU: H=Vessel Head Up, N=North, E=East"
+    SWFilter_ZULU:
       units: "code"
-      description: "Software filter status for BRAVO: M=Measured, F=Filtered, P=Predicted"
-    X_coord_BRAVO:
+      description: "Software filter status for ZULU: M=Measured, F=Filtered, P=Predicted"
+    X_coord_ZULU:
       units: "meters or degrees"
-      description: "X coordinate for BRAVO (e.g., Starboard, North, Eastings)"
-    Y_coord_BRAVO:
+      description: "X coordinate for ZULU (e.g., Starboard, North, Eastings)"
+    Y_coord_ZULU:
       units: "meters or degrees"
-      description: "Y coordinate for BRAVO (e.g., Forwards, East, Northings)"
-    Depth_BRAVO:
+      description: "Y coordinate for ZULU (e.g., Forwards, East, Northings)"
+    Depth_ZULU:
       units: "meters"
-      description: "Depth of beacon in meters for BRAVO"
-    Accuracy_BRAVO:
+      description: "Depth of beacon in meters for ZULU"
+    Accuracy_ZULU:
       units: "meters"
-      description: "Expected accuracy of the position for BRAVO"
-    AddlInfo_BRAVO:
+      description: "Expected accuracy of the position for ZULU"
+    AddlInfo_ZULU:
       units: "code"
-      description: "Additional information for BRAVO: N=None, C=Compass, I=Inclinometer"
-    AddlVal1_BRAVO:
-      description: "First additional value for BRAVO (e.g., Tp compass or Tp x inclination)"
-    AddlVal2_BRAVO:
-      description: "Second additional value for BRAVO (e.g., Tp y inclination)"
-    Val4_BRAVO:
-      description: "Additional ordinal value 4 for BRAVO"
-    Val5_BRAVO:
-      description: "Additional ordinal value 5 for BRAVO"
+      description: "Additional information for ZULU: N=None, C=Compass, I=Inclinometer"
+    AddlVal1_ZULU:
+      description: "First additional value for ZULU (e.g., Tp compass or Tp x inclination)"
+    AddlVal2_ZULU:
+      description: "Second additional value for ZULU (e.g., Tp y inclination)"
+    Val4_ZULU:
+      description: "Additional ordinal value 4 for ZULU"
+    Val5_ZULU:
+      description: "Additional ordinal value 5 for ZULU"
+
+    # PSIMSSB_WHISKEY Fields
+    GPSTime_WHISKEY:
+      units: "UTC"
+      description: "Coordinated Universal Time (hhmmss.ss) for WHISKEY"
+    Status_WHISKEY:
+      units: "code"
+      description: "Measurement status for WHISKEY: A for OK, V for not OK"
+    ErrorCode_WHISKEY:
+      units: "code"
+      description: "Three-character error code for WHISKEY if status is V"
+    CoordSys_WHISKEY:
+      units: "code"
+      description: "Coordinate system for WHISKEY: C=Cartesian, P=Polar, U=UTM"
+    Orientation_WHISKEY:
+      units: "code"
+      description: "Coordinate orientation for WHISKEY: H=Vessel Head Up, N=North, E=East"
+    SWFilter_WHISKEY:
+      units: "code"
+      description: "Software filter status for WHISKEY: M=Measured, F=Filtered, P=Predicted"
+    X_coord_WHISKEY:
+      units: "meters or degrees"
+      description: "X coordinate for WHISKEY (e.g., Starboard, North, Eastings)"
+    Y_coord_WHISKEY:
+      units: "meters or degrees"
+      description: "Y coordinate for WHISKEY (e.g., Forwards, East, Northings)"
+    Depth_WHISKEY:
+      units: "meters"
+      description: "Depth of beacon in meters for WHISKEY"
+    Accuracy_WHISKEY:
+      units: "meters"
+      description: "Expected accuracy of the position for WHISKEY"
+    AddlInfo_WHISKEY:
+      units: "code"
+      description: "Additional information for WHISKEY: N=None, C=Compass, I=Inclinometer"
+    AddlVal1_WHISKEY:
+      description: "First additional value for WHISKEY (e.g., Tp compass or Tp x inclination)"
+    AddlVal2_WHISKEY:
+      description: "Second additional value for WHISKEY (e.g., Tp y inclination)"
+    Val4_WHISKEY:
+      description: "Additional ordinal value 4 for WHISKEY"
+    Val5_WHISKEY:
+      description: "Additional ordinal value 5 for WHISKEY"
+
+    # PSIMSSB_HOTEL Fields
+    GPSTime_HOTEL:
+      units: "UTC"
+      description: "Coordinated Universal Time (hhmmss.ss) for HOTEL"
+    Status_HOTEL:
+      units: "code"
+      description: "Measurement status for HOTEL: A for OK, V for not OK"
+    ErrorCode_HOTEL:
+      units: "code"
+      description: "Three-character error code for HOTEL if status is V"
+    CoordSys_HOTEL:
+      units: "code"
+      description: "Coordinate system for HOTEL: C=Cartesian, P=Polar, U=UTM"
+    Orientation_HOTEL:
+      units: "code"
+      description: "Coordinate orientation for HOTEL: H=Vessel Head Up, N=North, E=East"
+    SWFilter_HOTEL:
+      units: "code"
+      description: "Software filter status for HOTEL: M=Measured, F=Filtered, P=Predicted"
+    X_coord_HOTEL:
+      units: "meters or degrees"
+      description: "X coordinate for HOTEL (e.g., Starboard, North, Eastings)"
+    Y_coord_HOTEL:
+      units: "meters or degrees"
+      description: "Y coordinate for HOTEL (e.g., Forwards, East, Northings)"
+    Depth_HOTEL:
+      units: "meters"
+      description: "Depth of beacon in meters for HOTEL"
+    Accuracy_HOTEL:
+      units: "meters"
+      description: "Expected accuracy of the position for HOTEL"
+    AddlInfo_HOTEL:
+      units: "code"
+      description: "Additional information for HOTEL: N=None, C=Compass, I=Inclinometer"
+    AddlVal1_HOTEL:
+      description: "First additional value for HOTEL (e.g., Tp compass or Tp x inclination)"
+    AddlVal2_HOTEL:
+      description: "Second additional value for HOTEL (e.g., Tp y inclination)"
+    Val4_HOTEL:
+      description: "Additional ordinal value 4 for HOTEL"
+    Val5_HOTEL:
+      description: "Additional ordinal value 5 for HOTEL"
