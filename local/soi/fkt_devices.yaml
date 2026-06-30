@@ -250,7 +250,7 @@ devices:
     description: ""
 
     fields:
-      Temperature: "MiniSVS_Fwd_Temperature"
+      Temperature: "MiniSVS_Aft_Temperature"
       SoundVelocity: "MiniSVS_Aft_SoundVelocity"
 
 
