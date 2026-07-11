@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import logging
-import sys
 
 # Don't barf if they don't have redis installed. Only complain if
 # they actually try to use it, below
@@ -11,10 +10,7 @@ try:
 except ModuleNotFoundError:
     REDIS_ENABLED = False
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.readers.reader import Reader  # noqa: E402
-from logger.utils.formats import Text  # noqa: E402
 
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = '6379'
@@ -24,14 +20,14 @@ DEFAULT_PORT = '6379'
 class RedisReader(Reader):
     """Read messages from a redis pubsub channel."""
 
-    def __init__(self, channel, password=None):
+    def __init__(self, channel, password=None, **kwargs):
         """
         Read text records from a Redis pubsub server channel.
         ```
         channel      Redis channel to read from, format channel[@hostname[:port]]
         ```
         """
-        super().__init__(output_format=Text)
+        super().__init__(**kwargs)
 
         if not REDIS_ENABLED:
             raise ModuleNotFoundError('RedisReader(): Redis is not installed. Please '

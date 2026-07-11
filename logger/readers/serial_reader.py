@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import logging
-import sys
 
 # Don't freak out if pyserial isn't installed - unless they actually
 # try to instantiate a SerialReader
@@ -11,8 +10,6 @@ try:
 except ModuleNotFoundError:
     SERIAL_MODULE_FOUND = False
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.readers.reader import Reader  # noqa: E402
 
 
@@ -26,7 +23,7 @@ class SerialReader(Reader):
                  stopbits=1, timeout=None, xonxoff=False, rtscts=False,
                  write_timeout=None, dsrdtr=False, inter_byte_timeout=None,
                  exclusive=None, max_bytes=None, eol=None, allow_empty=False,
-                 encoding='utf-8', encoding_errors='ignore'):
+                 encoding='utf-8', encoding_errors='ignore', **kwargs):
         """If max_bytes is specified on initialization, read up to that many
         bytes when read() is called. If eol is not specified, read() will
         read up to the first newline it receives. In both cases, if
@@ -69,8 +66,7 @@ class SerialReader(Reader):
             eol: \r
         ```
         """
-        super().__init__(encoding=encoding,
-                         encoding_errors=encoding_errors)
+        super().__init__(encoding=encoding, encoding_errors=encoding_errors, **kwargs)
 
         if not SERIAL_MODULE_FOUND:
             raise RuntimeError('Serial port functionality not available. Please '

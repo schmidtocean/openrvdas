@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import logging
-import sys
 
 # Don't barf if they don't have paho mqtt installed. Only complain if
 # they actually try to use it, below. If it *is* installed, check which
@@ -20,15 +19,13 @@ try:
 except ModuleNotFoundError:
     PAHO_ENABLED = False
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.writers.writer import Writer  # noqa: E402
 
 
 class MQTTWriter(Writer):
     """Write to paho-mqtt broker channel."""
 
-    def __init__(self, broker, channel, client_name=None, qos=0):
+    def __init__(self, broker, channel, client_name=None, qos=0, **kwargs):
         """
         Write text records to a paho-mqtt broker channel.
         ```
@@ -40,6 +37,8 @@ class MQTTWriter(Writer):
         ```
         See /readers/mqtt_reader.py for info on how to start a broker
         """
+        super().__init__(**kwargs)  # processes 'quiet' and type hints
+
         if not PAHO_ENABLED:
             raise ModuleNotFoundError('MQTTReader(): paho-mqtt is not installed. Please '
                                       'try "pip install paho-mqtt" prior to use.')

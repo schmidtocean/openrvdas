@@ -3,14 +3,11 @@
 import getpass
 import smtplib
 import socket
-import sys
 import threading
 import time
 
 from email.message import EmailMessage
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 
 from logger.writers.writer import Writer  # noqa: E402
 
@@ -18,7 +15,7 @@ from logger.writers.writer import Writer  # noqa: E402
 class EmailWriter(Writer):
     """Send the record as an email message."""
 
-    def __init__(self, to, sender=None, subject=None, max_freq=3 * 60, quiet=False):
+    def __init__(self, to, sender=None, subject=None, max_freq=3 * 60, **kwargs):
         """
         ```
         to           Comma-separated list of email addresses
@@ -35,7 +32,7 @@ class EmailWriter(Writer):
         configured and running if you wish to send email anywhere other than
         localhost.
         """
-        super().__init__(quiet=quiet)
+        super().__init__(**kwargs)  # processes 'quiet' and type hints
 
         if not sender:
             username = getpass.getuser()

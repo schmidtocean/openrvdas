@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
 import shutil
-import sys
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.utils.das_record import DASRecord  # noqa: E402
 from logger.writers.writer import Writer  # noqa: E402
 
@@ -13,7 +10,9 @@ class RecordScreenWriter(Writer):
     """Write DASRecords to terminal screen in some survivable
     format. Mostly intended for debugging."""
 
-    def __init__(self):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)  # processes 'quiet' and type hints
+
         self.values = {}
         self.timestamps = {}
         self.latest = 0

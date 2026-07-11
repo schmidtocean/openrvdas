@@ -4,12 +4,9 @@ import errno
 import logging
 import socket
 import struct
-import sys
 
 from typing import Union
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.utils.das_record import DASRecord  # noqa E402
 from logger.writers.writer import Writer  # noqa E402
 
@@ -78,8 +75,7 @@ class UDPWriter(Writer):
 
     def __init__(self, destination=None, port=None,
                  mc_interface=None, mc_ttl=3, num_retry=2, warning_limit=5, eol='',
-                 reuseaddr=False, reuseport=False, quiet=False,
-                 encoding='utf-8', encoding_errors='ignore'):
+                 reuseaddr=False, reuseport=False, **kwargs):
         """Write records to a UDP network socket.
         ```
         destination  The destination to send UDP packets to. If '' or None,
@@ -123,8 +119,8 @@ class UDPWriter(Writer):
         ```
 
         """
-        super().__init__(quiet=quiet, encoding=encoding,
-                         encoding_errors=encoding_errors)
+        # Initialize type checking
+        super().__init__(**kwargs)  # processes 'quiet', encodings and type hints
 
         self.num_retry = num_retry
         self.warning_limit = warning_limit

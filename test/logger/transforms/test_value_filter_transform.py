@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
 import logging
-import sys
 import unittest
 
-sys.path.append('.')
 from logger.transforms.value_filter_transform import ValueFilterTransform  # noqa: E402
 from logger.transforms.parse_transform import ParseTransform  # noqa: E402
 
@@ -70,8 +68,12 @@ class TestValueFilterTransform(unittest.TestCase):
             record = 'knud 2017-11-04T05:12:21.981359Z'
             self.assertEqual(q.transform(record), None)
             self.assertEqual(cm.output,
-                             ['WARNING:root:Record passed to ValueFilterTransform was neither a dict nor a '
-                              "DASRecord. Type was <class 'str'>: knud 2017-11-04T05:12:21.981359Z"])
+                             ['WARNING:root:Unable to convert record to format '
+                              '"ValueFilterTransform" can process',
+                              'WARNING:root:Must be instance or list of (<class \'dict\'>, '
+                              '<class \'logger.utils.das_record.DASRecord\'>)',
+                              'WARNING:root:Received <class \'str\'>: '
+                              'knud 2017-11-04T05:12:21.981359Z'])
 
         with self.assertRaises(ValueError):
             ValueFilterTransform(bounds='LFDepth:0:6000,HFDepth:0:5000', log_level='a string')

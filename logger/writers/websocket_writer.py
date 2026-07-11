@@ -4,18 +4,19 @@
 import asyncio
 import logging
 import ssl
-import sys
 import threading
+import time
+import inspect
 
 from typing import Union
 from urllib.parse import urlparse
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
+
 from logger.writers.writer import Writer  # noqa E402
 
 try:
     import websockets
+
     WEBSOCKETS_INSTALLED = True
 except ImportError:
     WEBSOCKETS_INSTALLED = False
@@ -25,16 +26,27 @@ except ImportError:
 class WebsocketWriter(Writer):
     ############################
 
-    def __init__(self, uri, cert_file=None, key_file=None, quiet=False):
+    def __init__(self, uri, cert_file=None, key_file=None, max_queue_size=None, **kwargs):
         """
         ```
-        uri         Protocol, hostname and port to serve as. E.g. 'wss://openrvdas:8081'
-                    If protocol is 'wss', use SSL, and cert_file and key_file must be specified.
+        uri             Protocol, hostname and port to serve as. E.g. 'wss://openrvdas:8081'
+                        If protocol is 'wss', use SSL, and cert_file and key_file must be
+                        specified.
 
-        cert_file   If using ssl, the file path to relevant certificate file and key files.
+        cert_file       If using ssl, the file path to relevant certificate and key files.
         key_file
+
+        max_queue_size  If specified, the maximum number of records to hold in each client's
+                        send queue. When the queue exceeds this size, the oldest records are
+                        discarded and a warning is logged indicating how many records were
+                        dropped and how old the oldest dropped record was. Useful when
+                        consumers only care about the most recent data (e.g. live dashboards)
+                        and you want to avoid unbounded queue growth during network hiccups.
         ```
         """
+        # Initialize type checking
+        super().__init__(**kwargs)  # processes 'quiet' and type hints
+
         if not WEBSOCKETS_INSTALLED:
             raise ImportError('WebsocketWriter requires Python "websockets" module; '
                               'please run "pip install websockets"')
@@ -43,9 +55,6 @@ class WebsocketWriter(Writer):
         self.host = parsed_uri.hostname
         self.port = parsed_uri.port
         self.protocol = parsed_uri.scheme
-
-        # Initialize record type checking.
-        super().__init__(quiet=quiet)
 
         if self.protocol == 'wss':
             self.ssl = True
@@ -60,6 +69,7 @@ class WebsocketWriter(Writer):
 
         self.cert_file = cert_file
         self.key_file = key_file
+        self.max_queue_size = max_queue_size
 
         # Map from client_id to websocket
         self.client_map = {}
@@ -76,17 +86,46 @@ class WebsocketWriter(Writer):
         self.server_run_thread.start()
 
     ############################
+    def _put_and_trim(self, client_id, record):
+        """Enqueue a record (with timestamp) and drop oldest items if over max_queue_size.
+
+        Runs inside the event loop (called via call_soon_threadsafe), so asyncio
+        Queue operations are safe here.
+        """
+        queue = self.send_queue.get(client_id)
+        if queue is None:
+            return  # client disconnected before this callback ran
+
+        queue.put_nowait((time.time(), record))
+
+        if self.max_queue_size and queue.qsize() > self.max_queue_size:
+            n_to_drop = queue.qsize() - self.max_queue_size
+            oldest_time = None
+            for _ in range(n_to_drop):
+                try:
+                    ts, _ = queue.get_nowait()
+                    if oldest_time is None:
+                        oldest_time = ts
+                except asyncio.QueueEmpty:
+                    break
+            age_str = (f', oldest was {time.time() - oldest_time:.1f}s old'
+                       if oldest_time is not None else '')
+            logging.warning(
+                f'WebsocketWriter: dropped {n_to_drop} queued record(s) for client '
+                f'{client_id}{age_str} (max_queue_size={self.max_queue_size})')
+
+    ############################
     async def _send_from_queue(self, client_id):
         """
         Asynchronously wait for stuff to show up in client's queue, pop it off
-        and send to client's websocket
+        and send to client's websocket.  Queue items are (enqueue_time, record) tuples.
         """
         try:
             # The websocket, send_queue and send_queue_lock for this client
             websocket = self.client_map[client_id]
             send_queue = self.send_queue[client_id]
             while True:
-                record = await send_queue.get()
+                _enqueue_time, record = await send_queue.get()
                 await websocket.send(record)
                 logging.debug(f'WebsocketWriter sent client {client_id} record: {record}')
 
@@ -94,7 +133,8 @@ class WebsocketWriter(Writer):
             logging.info(f'Websocket connection lost for client {client_id}')
 
     ############################
-    async def _websocket_handler(self, websocket, path):
+    # FIX: path=None makes this compatible with both new (1 arg) and old (2 args) libs
+    async def _websocket_handler(self, websocket, path=None):
         with self.client_map_lock:
             # Find a unique client_id for this client
             client_id = 0
@@ -128,12 +168,44 @@ class WebsocketWriter(Writer):
         self.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self.loop)
 
-        start_server = websockets.serve(ws_handler=self._websocket_handler,  # type: ignore
-                                        host=self.host, port=self.port,
-                                        ssl=ssl_context)
+        # Build arguments dynamically to support both old and new websockets versions
+        serve_kwargs = {
+            'host': self.host,
+            'port': self.port,
+            'ssl': ssl_context
+        }
 
-        self.loop.run_until_complete(start_server)
-        self.loop.run_forever()
+        # Check signature of websockets.serve to decide on 'handler' vs 'ws_handler'
+        sig = inspect.signature(websockets.serve)
+        if 'handler' in sig.parameters:
+            serve_kwargs['handler'] = self._websocket_handler
+        else:
+            serve_kwargs['ws_handler'] = self._websocket_handler
+
+        async def runner():
+            # Create the server object/context manager
+            # We must do this INSIDE the coroutine so that 'websockets'
+            # can find the running loop.
+            server_result = websockets.serve(**serve_kwargs)
+
+            # Modern websockets (v10+): returns an AsyncContextManager
+            if hasattr(server_result, '__aenter__'):
+                async with server_result:
+                    # Keep the loop running while the server is active
+                    await asyncio.Future()
+
+            # Legacy websockets: returns an awaitable that yields the server
+            else:
+                await server_result
+                # Keep the loop running
+                await asyncio.Future()
+
+        try:
+            # run_until_complete starts the loop, then executes runner(),
+            # which keeps running via await asyncio.Future()
+            self.loop.run_until_complete(runner())
+        except Exception as e:
+            logging.error(f"WebsocketWriter server loop error: {e}")
 
     ############################
     def write(self, record: Union[str, bytes]):
@@ -146,7 +218,7 @@ class WebsocketWriter(Writer):
 
         logging.debug(f'WebsocketWriter received record: {record}')
         with self.client_map_lock:
-            for client_id, sender in self.client_map.items():
+            for client_id in self.client_map:
                 logging.debug(f'Pushing record to client {client_id}')
-                self.loop.call_soon_threadsafe(                        # type: ignore
-                    self.send_queue[client_id].put_nowait, record)
+                self.loop.call_soon_threadsafe(  # type: ignore
+                    self._put_and_trim, client_id, record)
