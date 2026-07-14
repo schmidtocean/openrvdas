@@ -23,6 +23,7 @@ Sonardyne:
     GGA_LIMA: "$GPGGA,{GPSTime:f},{Latitude_LIMA:nlat_dir},{Longitude_LIMA:nlat_dir},{:d},{:d},{HDOP:of},{Depth_LIMA:of},M,{:of},M,{:of},0012*{:x}"
     GGA_MIKE: "$GPGGA,{GPSTime:f},{Latitude_MIKE:nlat_dir},{Longitude_MIKE:nlat_dir},{:d},{:d},{HDOP:of},{Depth_MIKE:of},M,{:of},M,{:of},0013*{:x}"
     GGA_NOVEMBER: "$GPGGA,{GPSTime:f},{Latitude_NOVEMBER:nlat_dir},{Longitude_NOVEMBER:nlat_dir},{:d},{:d},{HDOP:of},{Depth_NOVEMBER:of},M,{:of},M,{:of},0014*{:x}"
+    GGA_OSCAR: "$GPGGA,{GPSTime:f},{Latitude_OSCAR:nlat_dir},{Longitude_OSCAR:nlat_dir},{:d},{:d},{HDOP:of},{Depth_OSCAR:of},M,{:of},M,{:of},0015*{:x}"
     # $PSONLLD,082623.22,006 2203,A,3.4798595,73.67486242,65.472,1.99,1.99,0.00,2.70,,,,*2B  
     # PSONLLD_2703: "$PSONLLD,{GPSTime:f},S5K 2703,{Status_2703:w},{Latitude_2703:f},{Longitude_2703:f},{Depth_2703:f},{HorizontalErrorMajor_2703:f},{HorizontalErrorMinor_2703:f},{DirectionHorizontal_2703:f},{DepthError_2703:f},,,,*{:x}"
     # PSONLLD_2307: "$PSONLLD,{GPSTime:f},7K3 2307,{Status_2307:w},{Latitude_2307:f},{Longitude_2307:f},{Depth_2307:f},{HorizontalErrorMajor_2307:f},{HorizontalErrorMinor_2307:f},{DirectionHorizontal_2307:f},{DepthError_2307:f},,,,*{:x}"
@@ -42,7 +43,7 @@ Sonardyne:
     PSIMSSB_LIMA: "$PSIMSSB,{GPSTime:f},B12,{:w},{XCoord_LIMA:f},{YCoord_LIMA:f},{Depth_LIMA:f},{:of},T,{:of},*{:x}"
     PSIMSSB_MIKE: "$PSIMSSB,{GPSTime:f},B13,{:w},{XCoord_MIKE:f},{YCoord_MIKE:f},{Depth_MIKE:f},{:of},T,{:of},*{:x}"
     PSIMSSB_NOVEMBER: "$PSIMSSB,{GPSTime:f},B14,{:w},{XCoord_NOVEMBER:f},{YCoord_NOVEMBER:f},{Depth_NOVEMBER:f},{:of},T,{:of},*{:x}"
-    
+    PSIMSSB_OSCAR: "$PSIMSSB,{GPSTime:f},B15,{:w},{XCoord_OSCAR:f},{YCoord_OSCAR:f},{Depth_OSCAR:f},{:of},T,{:of},*{:x}"
 
   ########
   # Optional metadata to help make sense of the parsed values.
@@ -258,5 +259,20 @@ Sonardyne:
       units: "meters"
       description: "Y Coordinate relative to vessel"
     Depth_NOVEMBER:
+      units: "meters"
+      description: ""
+    Latitude_OSCAR:
+      units: "ddeg"
+      description: "Latitude in degrees"
+    Longitude_OSCAR:
+      units: "ddeg"
+      description: "Longitude in degrees"
+    XCoord_OSCAR:
+      units: "meters"
+      description: "X Coordinate relative to vessel"
+    YCoord_OSCAR:
+      units: "meters"
+      description: "Y Coordinate relative to vessel"
+    Depth_OSCAR:
       units: "meters"
       description: ""

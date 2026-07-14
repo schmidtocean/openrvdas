@@ -876,6 +876,11 @@ devices:
       XCoord_NOVEMBER: "USBL_XCoord_NOVEMBER"
       YCoord_NOVEMBER: "USBL_YCoord_NOVEMBER"
       Depth_NOVEMBER: "USBL_Depth_NOVEMBER"
+      Latitude_OSCAR: "USBL_Latitude_OSCAR"
+      Longitude_OSCAR: "USBL_Longitude_OSCAR"
+      XCoord_OSCAR: "USBL_XCoord_OSCAR"
+      YCoord_OSCAR: "USBL_YCoord_OSCAR"
+      Depth_OSCAR: "USBL_Depth_OSCAR"
   
   ######################################
   winch_mash10:
