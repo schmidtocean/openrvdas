@@ -488,7 +488,7 @@ CTD_SBE911:
       units: "mV"
       description: "PMEL ORP sensor"
     NitrateConcentration:
-      units: "µM"
+      units: "uM"
       description: "Suna Nitrate sensor"
     Fluorescence:
       units: "mg/m3"
