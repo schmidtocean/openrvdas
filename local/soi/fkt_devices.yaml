@@ -26,6 +26,7 @@ devices:
       BeamTransmission: "CTD_SBE911_BeamTransmission"
       BeamAttenuattion: "CTD_SBE911_BeamAttenuation"
       # OxidationReductionPotential: "CTD_SBE911_OxidationReductionPotential"
+      NitrateConcentration: "CTD_SBE911_NitrateConcentration"
       Fluorescence: "CTD_SBE911_Fluorescence"
       Turbidity: "CTD_SBE911_Turbidity"
       BottlesFired: "CTD_SBE911_BottlesFired"
