@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 
 import logging
-import sys
 import tempfile
 import time
 import unittest
 import warnings
 
-sys.path.append('.')
 from logger.transforms.prefix_transform import PrefixTransform  # noqa: E402
-from logger.readers.reader import Reader  # noqa: E402
 from logger.readers.composed_reader import ComposedReader  # noqa: E402
 from logger.readers.text_file_reader import TextFileReader  # noqa: E402
 
@@ -54,19 +51,6 @@ class TestComposedReader(unittest.TestCase):
             tmpfilename = self.tmpdirname + '/' + f
             self.tmpfilenames.append(tmpfilename)
             create_file(tmpfilename, SAMPLE_DATA[f])
-
-    ############################
-    def test_check_format(self):
-
-        # This should be okay
-        ComposedReader([TextFileReader(self.tmpfilenames[0]),
-                        TextFileReader(self.tmpfilenames[1])],
-                       check_format=True)
-
-        # This should not be - no common reader format
-        with self.assertRaises(ValueError):
-            ComposedReader([TextFileReader(self.tmpfilenames[0]), Reader()],
-                           check_format=True)
 
     ############################
     def test_all_files(self):

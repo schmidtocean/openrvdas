@@ -3,10 +3,7 @@
 import logging
 import mmap
 import socket
-import sys
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.readers.reader import Reader  # noqa: E402
 
 # the size of each recv() call in read_to_eol()
@@ -22,7 +19,7 @@ class TCPReader(Reader):
     ############################
     def __init__(self, interface=None, port=None, eol=None,
                  reuseaddr=True, reuseport=False,
-                 encoding='utf-8', encoding_errors='ignore'):
+                 encoding='utf-8', encoding_errors='ignore', **kwargs):
         """
         ```
         interface    IP (or resolvable name) of interface to listen on.  None or ''
@@ -55,8 +52,7 @@ class TCPReader(Reader):
                 https://docs.python.org/3/howto/unicode.html#encodings
         ```
         """
-        super().__init__(encoding=encoding,
-                         encoding_errors=encoding_errors)
+        super().__init__(encoding=encoding, encoding_errors=encoding_errors, **kwargs)
 
         if interface:
             # resolve once in constructor

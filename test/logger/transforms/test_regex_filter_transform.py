@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
 import logging
-import sys
 import unittest
 
-sys.path.append('.')
 from logger.transforms.regex_filter_transform import RegexFilterTransform  # noqa: E402
 
 
@@ -20,12 +18,12 @@ class TestRegexFilterTransform(unittest.TestCase):
         self.assertEqual(transform.transform('not foo'), 'not foo')
         self.assertIsNone(transform.transform('foo bar'))
 
-        transform = RegexFilterTransform(pattern='^\dfoo')  # noqa: W605
+        transform = RegexFilterTransform(pattern=r'^\dfoo')  # noqa: W605
         self.assertIsNone(transform.transform(None))
         self.assertIsNone(transform.transform('not foo'))
         self.assertEqual(transform.transform('9foo bar'), '9foo bar')
 
-        transform = RegexFilterTransform(pattern='^\dfoo', negate=True)  # noqa: W605
+        transform = RegexFilterTransform(pattern=r'^\dfoo', negate=True)  # noqa: W605
         self.assertEqual(transform.transform('not foo'), 'not foo')
         self.assertIsNone(transform.transform('6foo bar'))
 

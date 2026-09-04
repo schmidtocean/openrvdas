@@ -50,11 +50,8 @@ writers:
 ```
 """
 import logging
-import sys
 import time
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 
 from logger.writers.writer import Writer  # noqa: E402
 from server.server_api_command_line import ServerAPICommandLine  # noqa: E402
@@ -63,7 +60,7 @@ from server.server_api_command_line import ServerAPICommandLine  # noqa: E402
 class LoggerManagerWriter(Writer):
     """Write received text records to the LoggerManager."""
 
-    def __init__(self, database=None, api=None, allowed_prefixes=[]):
+    def __init__(self, database=None, api=None, allowed_prefixes=[], **kwargs):
         """Write received text records as commands to the LoggerManager.
         ```
         database
@@ -89,6 +86,8 @@ class LoggerManagerWriter(Writer):
         of prior commands to settle.
         ```
         """
+        super().__init__(**kwargs)  # processes 'quiet' and type hints
+
         if database and api:
             raise ValueError('Must specify either "database" or "api" but not both.')
 

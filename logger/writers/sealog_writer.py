@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 
-import sys
 import pprint
 import logging
 import urllib
 from typing import Union
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.utils.das_record import DASRecord  # noqa:E402
 from logger.utils.read_config import read_config  # noqa:E402
 from logger.utils.sealog_event import SealogEvent, to_event  # noqa:E402
@@ -55,8 +52,8 @@ class SealogWriter(Writer):
     """
 
     ############################
-    def __init__(self, url: str, token: str, config_file: str, quiet: bool = False):
-        super().__init__(quiet=quiet)
+    def __init__(self, url: str, token: str, config_file: str, **kwargs):
+        super().__init__(**kwargs)  # processes 'quiet' and type hints
 
         self.url = url
         self.token = token

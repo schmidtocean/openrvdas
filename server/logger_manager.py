@@ -8,15 +8,10 @@ import multiprocessing
 import os
 import signal
 import socket  # to get hostname
-import sys
 import threading
 import time
 
 from importlib import reload
-from os.path import dirname, realpath
-
-# Add the openrvdas components onto sys.path
-sys.path.append(dirname(dirname(realpath(__file__))))
 
 # Imports for running CachedDataServer
 from server.cached_data_server import CachedDataServer  # noqa: E402
@@ -233,7 +228,7 @@ class LoggerManager:
                 logging.info('Sending updated cruise definitions to CDS.')
                 self._write_record_to_data_server(
                     'status:cruise_definition', cruise_dict)
-            except (AttributeError, ValueError, TypeError) as e:
+            except Exception as e:
                 logging.info('Failed to update cruise definition: %s', e)
 
     ############################
@@ -254,7 +249,7 @@ class LoggerManager:
                 # Now get and send cruise mode
                 mode_map = {'active_mode': self.api.get_active_mode()}
                 self._write_record_to_data_server('status:cruise_mode', mode_map)
-            except ValueError as e:
+            except Exception as e:
                 logging.warning('Error while trying to send logger status: %s', e)
             time.sleep(self.interval)
 

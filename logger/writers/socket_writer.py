@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import os
-import sys
 import socket
 import tempfile
 import atexit
@@ -8,8 +7,6 @@ import threading
 from typing import Any, Dict
 
 # Add parent directory to path
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.writers.writer import Writer  # noqa: E402
 
 # Global reference counter for channels
@@ -23,12 +20,14 @@ class SocketWriter(Writer):
     Writes records to a Unix domain socket.
     """
 
-    def __init__(self, channel: str):
+    def __init__(self, channel: str, **kwargs):
         """Initialize a Writer for the specified channel.
 
         Args:
             channel: A string identifier for the communication channel
         """
+        super().__init__(**kwargs)  # processes 'quiet' and type hints
+
         # Create a unique socket path based on the channel name
         import hashlib
         channel_hash = hashlib.md5(channel.encode()).hexdigest()[:8]

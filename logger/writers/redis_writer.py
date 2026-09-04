@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import logging
-import sys
 
 # Don't barf if they don't have redis installed. Only complain if
 # they actually try to use it, below
@@ -11,8 +10,6 @@ try:
 except ModuleNotFoundError:
     REDIS_ENABLED = False
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.writers.writer import Writer  # noqa: E402
 
 DEFAULT_HOST = 'localhost'
@@ -22,13 +19,15 @@ DEFAULT_PORT = '6379'
 class RedisWriter(Writer):
     """Write to redis server pubsub channel."""
 
-    def __init__(self, channel, password=None):
+    def __init__(self, channel, password=None, **kwargs):
         """
         Write text records to a Redis pubsub server channel.
         ```
         channel      Redis channel to write to, format channel[@hostname[:port]]
         ```
         """
+        super().__init__(**kwargs)  # processes 'quiet' and type hints
+
         if not REDIS_ENABLED:
             raise ModuleNotFoundError('RedisReader(): Redis is not installed. Please '
                                       'try "pip3 install redis" prior to use.')

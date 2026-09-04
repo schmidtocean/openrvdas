@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import os
-import sys
 import socket
 import tempfile
 import atexit
@@ -8,8 +7,6 @@ import threading
 from typing import Optional, Dict
 
 # Add parent directory to path
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.readers.reader import Reader  # noqa: E402
 
 # Global reference counter for channels
@@ -24,7 +21,7 @@ class SocketReader(Reader):
     """
 
     def __init__(self, channel: str, timeout: Optional[float] = None,
-                 buffer_size: int = 4096, keep_binary: bool = False):
+                 buffer_size: int = 4096, keep_binary: bool = False, **kwargs):
         """Initialize a Reader for the specified channel.
 
         Args:
@@ -36,6 +33,8 @@ class SocketReader(Reader):
 
             keep_binary: If true, don't convert received record to string
         """
+        super().__init__(**kwargs)
+
         self.timeout = timeout
         self.buffer_size = buffer_size
         self.keep_binary = keep_binary

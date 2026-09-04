@@ -3,14 +3,15 @@
 import unittest
 import logging
 from unittest.mock import Mock, patch
-import sys
 
-# Add the parent directory to sys.path to import the GoogleSheetsWriter
-sys.path.append('.')
-from logger.writers.google_sheets_writer import GoogleSheetsWriter  # noqa: E402
+from logger.writers.google_sheets_writer import GoogleSheetsWriter, GOOGLE_SHEETS_ENABLED  # noqa: E402
 from logger.utils.das_record import DASRecord  # noqa: E402
 
 
+@unittest.skipUnless(GOOGLE_SHEETS_ENABLED,
+                     'Google API packages not installed; '
+                     'run: pip install google-api-python-client '
+                     'google-auth-httplib2 google-auth-oauthlib')
 class TestGoogleSheetsWriter(unittest.TestCase):
     """Test cases for GoogleSheetsWriter class."""
 
@@ -97,9 +98,10 @@ class TestGoogleSheetsWriter(unittest.TestCase):
             mock_spreadsheets_url.get.return_value.execute.return_value = {
                 'sheets': [{'properties': {'title': 'Sheet1'}}]
             }
-            mock_spreadsheets_url.values.return_value.get.return_value.execute.return_value = {'values': []}
+            mock_spreadsheets_url.values.return_value.get.return_value.execute.return_value = {'values': []}  # noqa E501
 
-            with patch('logger.writers.google_sheets_writer.build', return_value=mock_service_url):
+            with patch('logger.writers.google_sheets_writer.build',
+                       return_value=mock_service_url):
                 writer = GoogleSheetsWriter(
                     sheet_name_or_id=url,
                     auth_key_path="fake_key.json"
@@ -124,7 +126,8 @@ class TestGoogleSheetsWriter(unittest.TestCase):
 
         # Create new writer to trigger header loading
         with patch('logger.writers.google_sheets_writer.Credentials.from_service_account_file'), \
-                patch('logger.writers.google_sheets_writer.build', return_value=mock_service_headers):
+                patch('logger.writers.google_sheets_writer.build',
+                      return_value=mock_service_headers):
             writer = GoogleSheetsWriter(
                 sheet_name_or_id="test_sheet",
                 auth_key_path="fake_key.json",
@@ -236,7 +239,7 @@ class TestGoogleSheetsWriter(unittest.TestCase):
 
         # Verify that the last call used USER_ENTERED for value input option
         # (This ensures numeric values are preserved)
-        last_call_args = self.mock_update.call_args
+        self.mock_update.call_args
         # The update method should have been called with valueInputOption='USER_ENTERED'
         self.assertTrue(self.mock_update.execute.called)
 
@@ -380,7 +383,7 @@ class TestGoogleSheetsWriter(unittest.TestCase):
             mock_spreadsheets_oauth.get.return_value.execute.return_value = {
                 'sheets': [{'properties': {'title': 'Sheet1'}}]
             }
-            mock_spreadsheets_oauth.values.return_value.get.return_value.execute.return_value = {'values': []}
+            mock_spreadsheets_oauth.values.return_value.get.return_value.execute.return_value = {'values': []}  # noqa E501
             mock_build_oauth.return_value = mock_service_oauth
 
             writer = GoogleSheetsWriter(
@@ -452,10 +455,11 @@ class TestGoogleSheetsWriter(unittest.TestCase):
         mock_spreadsheets_create.batchUpdate.return_value.execute.return_value = {}
 
         # Third call: values().get() for loading headers
-        mock_spreadsheets_create.values.return_value.get.return_value.execute.return_value = {'values': []}
+        mock_spreadsheets_create.values.return_value.get.return_value.execute.return_value = {'values': []}  # noqa E501
 
         with patch('logger.writers.google_sheets_writer.Credentials.from_service_account_file'), \
-                patch('logger.writers.google_sheets_writer.build', return_value=mock_service_create):
+                patch('logger.writers.google_sheets_writer.build',
+                      return_value=mock_service_create):
             writer = GoogleSheetsWriter(
                 sheet_name_or_id="test_sheet",
                 auth_key_path="fake_key.json",
@@ -479,7 +483,8 @@ class TestGoogleSheetsWriter(unittest.TestCase):
         }
 
         with patch('logger.writers.google_sheets_writer.Credentials.from_service_account_file'), \
-                patch('logger.writers.google_sheets_writer.build', return_value=mock_service_no_create):
+                patch('logger.writers.google_sheets_writer.build',
+                      return_value=mock_service_no_create):
             with self.assertRaises(Exception) as context:
                 GoogleSheetsWriter(
                     sheet_name_or_id="test_sheet",

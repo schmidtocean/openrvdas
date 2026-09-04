@@ -2,12 +2,9 @@
 
 import logging
 import socket
-import sys
 
 from typing import Union
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.writers.writer import Writer  # noqa: E402
 
 
@@ -15,8 +12,7 @@ class TCPWriter(Writer):
     """Write TCP packtes to network."""
     def __init__(self, destination, port,
                  num_retry=2, warning_limit=5, eol='',
-                 reuseaddr=False, reuseport=False, quiet=False,
-                 encoding='utf-8', encoding_errors='ignore'):
+                 reuseaddr=False, reuseport=False, **kwargs):
         """
         Write records to a TCP network socket.
 
@@ -52,8 +48,7 @@ class TCPWriter(Writer):
 
         ```
         """
-        super().__init__(quiet=quiet, encoding=encoding,
-                         encoding_errors=encoding_errors)
+        super().__init__(**kwargs)  # processes 'quiet', encodings and type hints
 
         self.num_retry = num_retry
         self.warning_limit = warning_limit

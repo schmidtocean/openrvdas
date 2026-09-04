@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import logging
-import sys
 from queue import Queue
 
 # Don't barf if they don't have redis installed. Only complain if
@@ -20,8 +19,6 @@ try:
 except ModuleNotFoundError:
     PAHO_ENABLED = False
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.readers.reader import Reader  # noqa: E402
 
 
@@ -32,9 +29,8 @@ class MQTTReader(Reader):
     """
 
     def __init__(self, broker, channel, client_name,
-                 port=1883,
-                 clean_start=None,
-                 qos=0, return_as_bytes=False):
+                 port=1883, clean_start=None,
+                 qos=0, return_as_bytes=False, **kwargs):
         """
         Read text records from the channel subscription.
         ```
@@ -88,6 +84,9 @@ class MQTTReader(Reader):
         if qos not in [0, 1, 2]:
             raise ValueError('MQTTReader parameter qos must be integer value 0, 1 or 2. '
                              f'Found type "{type(qos).__name__}", value "{qos}".')
+
+        # Let's build it!
+        super().__init__(**kwargs)
 
         def on_connect(client, userdata, flags, rc, properties=None):
             logging.info(f'Connected With Result Code: {rc}')

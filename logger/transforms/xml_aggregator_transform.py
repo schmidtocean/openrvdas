@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 
 import logging
-import sys
 
 from threading import Lock
 from xml.sax.handler import ContentHandler
 from xml.sax import make_parser
 
-from os.path import dirname, realpath
-sys.path.append(dirname(dirname(dirname(realpath(__file__)))))
 from logger.transforms.transform import Transform  # noqa: E402
 
 
@@ -19,11 +16,12 @@ class XMLAggregatorTransform(Transform):
     single record."""
     ############################
 
-    def __init__(self, tag):
+    def __init__(self, tag, **kwargs):
         """
         'tag' should be the identity of the top-level XML element that
         we're expecting to read, e.g. 'OSU_DAS_Record'.
         """
+        super().__init__(**kwargs)  # processes 'quiet' and type hints
         self.tag = tag
 
         # Only let one thread touch buffer at a time. Of course, if we're
@@ -41,8 +39,8 @@ class XMLAggregatorTransform(Transform):
         """Aggregate, returning None until we're done, then return record."""
 
         # See if it's something we can process, and if not, try digesting
-        if not self.can_process_record(record):  # inherited from Transform()
-            return self.digest_record(record)  # inherited from Transform()
+        if not self.can_process_record(record):  # inherited from BaseModule()
+            return self.digest_record(record)  # inherited from BaseModule()
 
         with self.buffer_lock:
             # Feed record to the incremental parser
