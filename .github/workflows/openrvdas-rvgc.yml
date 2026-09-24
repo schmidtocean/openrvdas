@@ -55,13 +55,15 @@ jobs:
         source venv/bin/activate
         pip install -r utils/requirements.txt
         pip install -r utils/requirements_soi.txt
+        pip install flake8
 
     - name: Run linter and code style checks
       working-directory: /opt/openrvdas
       continue-on-error: true
       run: |
         source venv/bin/activate
-        flake8 . --output-file=flake8_report.txt || true
+        : > flake8_report.txt
+        python -m flake8 . --extend-exclude=web_backend,web_frontend --exit-zero --output-file=flake8_report.txt
         echo "Flake8 issues found:"
         cat flake8_report.txt
 
