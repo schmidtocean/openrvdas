@@ -38,6 +38,8 @@ jobs:
         # Deploy the triggering commit without moving any local branch.
         git fetch origin "$GITHUB_SHA"
         git checkout --detach --force "$GITHUB_SHA"
+        git submodule sync --recursive
+        git submodule update --init --recursive
         git status
 
     - name: Set up Python environment
@@ -82,7 +84,7 @@ jobs:
         PYTHONPATH: /opt/openrvdas
       run: |
         source venv/bin/activate
-        python -m unittest discover -v -s . -p 'test_*.py'
+        python -m unittest discover -v -s test -t . -p 'test_*.py'
         python -m unittest discover -v -s contrib/soi/logger/transforms
 
     - name: Check server status
