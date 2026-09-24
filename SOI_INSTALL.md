@@ -5,12 +5,12 @@ You will need to be able to run the ``sudo`` command. To begin installation, gra
 the command line using the following commands:
 ```
 OPENRVDAS_REPO=raw.githubusercontent.com/schmidtocean/openrvdas
-BRANCH=master-FKt
+BRANCH=master
 curl -O -L https://$OPENRVDAS_REPO/$BRANCH/utils/install_openrvdas.sh
 chmod +x install_openrvdas.sh
 sudo ./install_openrvdas.sh
 ```
-selecting ``master-FKt``, ``dev-FKt`` or other branch of the repo if your project has one.
+selecting ``master`` or another branch of the repo if your project has one.
 
 The script must be run as a user that has sudo permissions (the script will prompt several times
 for the sudo password when needed). It will ask a lot of questions and provide default answers in parens that will be filled in if you hit "return"; without any other input:
