@@ -32,12 +32,12 @@ jobs:
         echo "Current directory: $(pwd)"
         ls -la
 
-    - name: Update repository
+    - name: Check out workflow commit
       working-directory: /opt/openrvdas
       run: |
-        # Fetch the latest changes
-        git fetch origin
-        git reset --hard origin/${{ github.ref_name }}
+        # Deploy the triggering commit without moving any local branch.
+        git fetch origin "$GITHUB_SHA"
+        git checkout --detach --force "$GITHUB_SHA"
         git status
 
     - name: Set up Python environment
