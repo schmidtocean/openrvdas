@@ -73,13 +73,6 @@ jobs:
         name: flake8-report
         path: /opt/openrvdas/flake8_report.txt
 
-    - name: Reread and restart Supervisor services
-      run: |
-        supervisorctl reread
-        supervisorctl update
-        supervisorctl start all || true
-        echo "Supervisor restart exit code: $?"
-
     - name: Run all tests
       working-directory: /opt/openrvdas
       env:
@@ -90,7 +83,15 @@ jobs:
         python -m unittest discover -v -s ./test -t . -p 'test_*.py'
         python -m unittest discover -v -s contrib/soi/logger/transforms
 
+    - name: Reread and restart Supervisor services
+      if: always()
+      run: |
+        supervisorctl reread
+        supervisorctl update
+        supervisorctl start all
+
     - name: Check server status
+      if: always()
       run: |
         supervisorctl status || true
         echo "Supervisor status exit code: $?"
