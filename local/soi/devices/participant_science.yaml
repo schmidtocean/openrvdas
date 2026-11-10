@@ -123,8 +123,8 @@ sbe63:
       units: "us"
       description: "raw phase delay"
     ThermistorVoltage:
-      units: "counts"
-      description: ""
+      units: "V"
+      description: "raw thermistor voltage"
     DissolvedOxygen:
       units: "ml/L"
       description: "Constant salinity oxygen reading"
